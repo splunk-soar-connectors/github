@@ -1,0 +1,376 @@
+{
+    "appid": "5553a13b-ca44-4d03-ac48-293fce874001",
+    "name": "GitHub",
+    "description": "The GitHub app implements code and issue management features present on github.com",
+    "type": "ticketing",
+    "product_vendor": "GitHub",
+    "logo": "github.png",
+    "product_name": "GitHub",
+    "product_version_regex": ".*",
+    "publisher": "Phantom",
+    "license": "Copyright Phantom 2017",
+    "app_version": "1.0.0",
+    "utctime_updated": "2017-10-21T02:21:00.677374Z",
+    "package_name": "phantom_github",
+    "main_module": "github_connector.pyc",
+    "min_phantom_version": "3.0.264",
+    "app_wizard_version": "1.0.0",
+    "configuration": {
+        "api_token": {
+            "description": "user generated api token",
+            "data_type": "password",
+            "required": true,
+            "value_list": [],
+            "default": "",
+            "order": 0
+        },
+        "username": {
+            "description": "owner of api_token's username",
+            "data_type": "string",
+            "required": true,
+            "value_list": [],
+            "default": "",
+            "order": 1
+        }
+    },
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "verbose": "",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "create ticket",
+            "identifier": "create_ticket",
+            "description": "Create a ticket (issue)",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "project_key": {
+                    "description": "Project Key to add the issue to",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "title": {
+                    "description": "Title",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "description": {
+                    "description": "Description of the ticket",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                },
+                "fields": {
+                    "description": "JSON containing field values",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 3
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.project_key",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "project_key",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.title",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "title",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "description",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.fields",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "fields",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get ticket",
+            "identifier": "get_ticket",
+            "description": "Get ticket (issue) information",
+            "verbose": "",
+            "type": "generic",
+            "read_only": true,
+            "parameters": {
+                "id": {
+                    "description": "Ticket (Issue) Key",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.id",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "id",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list tickets",
+            "identifier": "list_tickets",
+            "description": "Get a list of tickets (issues) in a project",
+            "verbose": "",
+            "type": "generic",
+            "read_only": true,
+            "parameters": {
+                "project_key": {
+                    "description": "Project Key to list the tickets (issues) of",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "start_index": {
+                    "description": "Start index of the list",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "0",
+                    "order": 1
+                },
+                "max_results": {
+                    "description": "Max number of issues to return",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "50",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.project_key",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "project_key",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.start_index",
+                    "data_type": "numeric",
+                    "contains": [],
+                    "column_name": "start_index",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.max_results",
+                    "data_type": "numeric",
+                    "contains": [],
+                    "column_name": "max_results",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "update ticket",
+            "identifier": "update_ticket",
+            "description": "Update ticket (issue)",
+            "verbose": "",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "id": {
+                    "description": "Issue ID",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 0
+                },
+                "update_fields": {
+                    "description": "JSON containing field values",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [],
+                    "value_list": [],
+                    "default": "",
+                    "order": 1
+                },
+                "vault_id": {
+                    "description": "Vault ID of attachment",
+                    "data_type": "string",
+                    "required": false,
+                    "primary": false,
+                    "contains": [
+                        "vault id"
+                    ],
+                    "value_list": [],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.id",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "id",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.parameter.update_fields",
+                    "data_type": "string",
+                    "contains": [],
+                    "column_name": "update_fields",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.vault_id",
+                    "data_type": "string",
+                    "contains": [
+                        "vault id"
+                    ],
+                    "column_name": "vault_id",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        }
+    ]
+}
