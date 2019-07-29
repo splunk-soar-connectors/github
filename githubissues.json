@@ -1,0 +1,4389 @@
+{
+    "appid": "4f1909a8-0d46-4ce6-a2ec-dae2cb774efe",
+    "name": "GitHub Issues",
+    "description": "This app integrates with the GitHub API v3 to support issue-based actions",
+    "type": "ticketing",
+    "product_vendor": "GitHub",
+    "logo": "logo_githubissues.svg",
+    "logo_dark": "logo_githubissues_dark.svg",
+    "product_name": "GitHub Issues",
+    "product_version_regex": ".*",
+    "publisher": "Splunk",
+    "license": "Copyright (c) 2019 Splunk Inc.",
+    "app_version": "1.0.2",
+    "utctime_updated": "2019-07-16T18:31:44.932674Z",
+    "package_name": "phantom_githubissues",
+    "main_module": "githubissues_connector.pyc",
+    "min_phantom_version": "4.2.7532",
+    "app_wizard_version": "1.0.0",
+    "configuration": {
+        "personal_access_token": {
+            "description": "Personal Access Token",
+            "data_type": "password",
+            "required": true,
+            "order": 0
+        }
+    },
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list issues",
+            "identifier": "list_issues",
+            "description": "Get a list of issues for the GitHub repository",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "order": 1
+                },
+                "limit": {
+                    "description": "Maximum number of issues to be fetched",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
+                    "example_values": [
+                        "testrepo"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "Splunk"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars0.githubusercontent.com/u/id"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/username"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        7614131
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "username"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "LAKSJDOIWsase="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars0.githubusercontent.com/u/7614131?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/username"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        7614131
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "username"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "LAKSJDOIWsase="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.author_association",
+                    "data_type": "string",
+                    "example_values": [
+                        "COLLABORATOR"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.body",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test issue body right here"
+                    ],
+                    "column_name": "Issue Body",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.closed_at",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.comments",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/username/testrepo/issues/4/comments"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2018-04-23T01:15:25Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/username/testrepo/issues/4/events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/username/testrepo/issues/4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        316631564
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "a2eeef"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.default",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        864962287
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "enhancement"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "LAKSJDOIWsase="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/owner/repo/labels/enhancement"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/username/testrepo/issues/4/labels{/name}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.locked",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.milestone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "LAKSJDOIWsase="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        4
+                    ],
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "column_name": "Issue Number",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.repository_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/username/testrepo"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "open"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test issue title here"
+                    ],
+                    "column_name": "Issue Title",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2018-04-23T01:15:25Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/username/testrepo/issues/4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars0.githubusercontent.com/u/avatarid"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/username"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        99999
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "username"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "LAKSJDOIWsase="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/username"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_issues",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Total issues: 2"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list comments",
+            "identifier": "list_comments",
+            "description": "List comments for an issue on the GitHub repository",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "order": 1
+                },
+                "issue_number": {
+                    "description": "Issue ID",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "order": 2
+                },
+                "limit": {
+                    "description": "Maximum number of comments to be fetched",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "order": 3
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_number",
+                    "data_type": "numeric",
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
+                    "example_values": [
+                        "TestingAPI"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.author_association",
+                    "data_type": "string",
+                    "example_values": [
+                        "OWNER"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.body",
+                    "data_type": "string",
+                    "example_values": [
+                        "I am writing a comment to this issue"
+                    ],
+                    "column_name": "Comment Body",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T19:52:27Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/1#issuecomment-511961016"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        511961016
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.issue_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDEyOklzc3VlQ29tbWVudDUxMTk2MTAxNg=="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T19:52:27Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/comments/511961016"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/52245234"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        99999999
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ],
+                    "column_name": "Username",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_comments",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Total comments: 1"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get issue",
+            "identifier": "get_issue",
+            "description": "Retrieve an issue for the GitHub repository",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "default": "",
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "default": "",
+                    "order": 1
+                },
+                "issue_number": {
+                    "description": "Issue ID",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "default": "",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_number",
+                    "data_type": "numeric",
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
+                    "example_values": [
+                        "TestingAPI"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.author_association",
+                    "data_type": "string",
+                    "example_values": [
+                        "OWNER"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.body",
+                    "data_type": "string",
+                    "example_values": [
+                        "This is the body I believe of the issue"
+                    ],
+                    "column_name": "Issue Body",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.closed_at",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.comments",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/1/comments"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T19:52:15Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/1/events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        468834090
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/1/labels{/name}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.locked",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.milestone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6SXNzdWU0Njg4MzQwOTA="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ],
+                    "contains": [
+                        "github issue id"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.repository_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "open"
+                    ],
+                    "column_name": "State",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "This is a Test Issue"
+                    ],
+                    "column_name": "Issue Title",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T20:00:23Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.issue_number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.issue_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "create issue",
+            "identifier": "create_issue",
+            "description": "Create an issue for the GitHub repository",
+            "verbose": "Only users with push access can set assignees/labels for the issues. \nAssignees/labels are silently dropped otherwise.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "order": 1
+                },
+                "issue_title": {
+                    "description": "Title of the issue",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 2
+                },
+                "issue_body": {
+                    "description": "Contents of the issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 3
+                },
+                "assignees": {
+                    "description": "Comma-separated list of logins (usernames) for the users to assign to this issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 4
+                },
+                "labels": {
+                    "description": "Comma-separated list of labels to associate with this issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 5
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.assignees",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_body",
+                    "data_type": "string",
+                    "example_values": [
+                        "This is what the body looks like when testing from the app"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "I am testing from the app"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.labels",
+                    "data_type": "string",
+                    "example_values": [
+                        "test,multi-label,non-urgent"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
+                    "example_values": [
+                        "TestingAPI"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.author_association",
+                    "data_type": "string",
+                    "example_values": [
+                        "OWNER"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.body",
+                    "data_type": "string",
+                    "example_values": [
+                        "This is what the body looks like when testing from the app"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_at",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.comments",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/2/comments"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T20:07:26Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/2/events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        468840014
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "ededed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.default",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1454469929
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "test"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6TGFiZWwxNDU0NDY5OTI5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/labels/test"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/2/labels{/name}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.locked",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.milestone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6SXNzdWU0Njg4NDAwMTQ="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ],
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "column_name": "Issue Number",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.repository_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "open"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "I am testing from the app"
+                    ],
+                    "column_name": "Issue Title",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T20:07:27Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.issue_number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.issue_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Issue number: 2, Issue url: https://github.com/repoowner/TestingAPI/issues/2"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "update issue",
+            "identifier": "update_issue",
+            "description": "Update an issue for the GitHub repository",
+            "verbose": "Only users with push access can set assignees/labels for the new issues. \nAssignees/labels are silently dropped otherwise.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "order": 1
+                },
+                "issue_number": {
+                    "description": "Issue ID",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "default": "",
+                    "order": 2
+                },
+                "state": {
+                    "description": "State of the issue",
+                    "data_type": "string",
+                    "required": false,
+                    "value_list": [
+                        "open",
+                        "closed"
+                    ],
+                    "order": 3
+                },
+                "issue_title": {
+                    "description": "Title of the issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 4
+                },
+                "issue_body": {
+                    "description": "Contents of the issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 5
+                },
+                "assignees": {
+                    "description": "Comma-separated list of logins (usernames) for the users to assign to this issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 6
+                },
+                "labels": {
+                    "description": "Comma-separated list of labels to associate with this issue",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 7
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "demo_update"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.default",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/labels/demo_update"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6TGFiZWwxNDc0MTk0MTYy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1474194162
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "ededed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-29T11:27:10Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        53362718
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjUzMzYyNzE4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.repository_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-29T11:24:09Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        473601979
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "update test title"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "closed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.body",
+                    "data_type": "string",
+                    "example_values": [
+                        "test update body"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1/events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1/labels{/name}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.author_association",
+                    "data_type": "string",
+                    "example_values": [
+                        "OWNER"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1/comments"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11/Testing1/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6SXNzdWU0NzM2MDE5Nzk="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        53362718
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjUzMzYyNzE4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.milestone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        53362718
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjUzMzYyNzE4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.locked",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-27T05:42:57Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        53362718
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjUzMzYyNzE4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Issue number: 1, Issue url: https://github.com/testbg11/Testing1/issues/1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_body",
+                    "data_type": "string",
+                    "example_values": [
+                        "test update body"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "update test title"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.labels",
+                    "data_type": "string",
+                    "example_values": [
+                        "demo_update"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.assignees",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "closed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Testing1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.issue_number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.issue_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11/Testing1/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "create comment",
+            "identifier": "create_comment",
+            "description": "Create a comment for an issue on the GitHub repository",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "order": 1
+                },
+                "issue_number": {
+                    "description": "Issue ID",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "order": 2
+                },
+                "comment_body": {
+                    "description": "Contents of a comment to add to the issue",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 3
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.comment_body",
+                    "data_type": "string",
+                    "example_values": [
+                        "I am adding a comment from the app"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_number",
+                    "data_type": "numeric",
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
+                    "example_values": [
+                        "TestingAPI"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.author_association",
+                    "data_type": "string",
+                    "example_values": [
+                        "OWNER"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.body",
+                    "data_type": "string",
+                    "example_values": [
+                        "I am adding a comment from the app"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T20:11:38Z"
+                    ],
+                    "column_name": "Created At",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/2#issuecomment-511967194"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        511967194
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.issue_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDEyOklzc3VlQ29tbWVudDUxMTk2NzE5NA=="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-16T20:11:38Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/issues/comments/511967194"
+                    ],
+                    "contains": [
+                        "url"
+                    ],
+                    "column_name": "Comment URL",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/11890709?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        11890709
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjExODkwNzA5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/repoowner"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.comment_id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        511967194
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.comment_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/repoowner/TestingAPI/issues/2#issuecomment-511967194"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Comment id: 511967194, Comment url: https://github.com/repoowner/TestingAPI/issues/2#issuecomment-511967194"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "add labels",
+            "identifier": "add_labels",
+            "description": "Add label(s) to an issue on the GitHub repository",
+            "verbose": "Only users with push access can set labels for the issues. \nLabels are silently dropped otherwise.",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "repo_owner": {
+                    "description": "Owner of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "order": 0
+                },
+                "repo_name": {
+                    "description": "Name of the repository",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github repo"
+                    ],
+                    "order": 1
+                },
+                "issue_number": {
+                    "description": "Issue ID",
+                    "data_type": "numeric",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "order": 2
+                },
+                "labels": {
+                    "description": "Comma-separated list of labels to add to the issue",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 3
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_number",
+                    "data_type": "numeric",
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.labels",
+                    "data_type": "string",
+                    "example_values": [
+                        "test,Splunk,app-testing"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
+                    "example_values": [
+                        "TestingAPI"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "repoowner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "ededed"
+                    ],
+                    "column_name": "Color",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.default",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1454479580
+                    ],
+                    "column_name": "ID",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "app-testing"
+                    ],
+                    "column_name": "Label Name",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6TGFiZWwxNDU0NDc5NTgw"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/repoowner/TestingAPI/labels/app-testing"
+                    ],
+                    "contains": [
+                        "url"
+                    ],
+                    "column_name": "URL",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        }
+    ]
+}
