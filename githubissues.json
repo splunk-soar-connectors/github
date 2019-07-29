@@ -89,6 +89,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 5,
                     "example_values": [
                         "testrepo"
                     ]
@@ -99,6 +101,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Owner",
+                    "column_order": 6,
                     "example_values": [
                         "Splunk"
                     ]
@@ -181,8 +185,13 @@
                     "data_path": "action_result.data.*.assignee.login",
                     "data_type": "string",
                     "example_values": [
-                        "username"
-                    ]
+                        "testusername"
+                    ],
+                    "contains": [
+                        "github username"
+                    ],
+                    "column_name": "Assignee",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.data.*.assignee.node_id",
@@ -345,6 +354,9 @@
                     "data_type": "string",
                     "example_values": [
                         "username"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -585,7 +597,7 @@
                         "github issue id"
                     ],
                     "column_name": "Issue Number",
-                    "column_order": 1
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.data.*.repository_url",
@@ -602,7 +614,9 @@
                     "data_type": "string",
                     "example_values": [
                         "open"
-                    ]
+                    ],
+                    "column_name": "Issue State",
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.title",
@@ -611,7 +625,7 @@
                         "Test issue title here"
                     ],
                     "column_name": "Issue Title",
-                    "column_order": 0
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.updated_at",
@@ -709,6 +723,9 @@
                     "data_type": "string",
                     "example_values": [
                         "username"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -887,6 +904,8 @@
                     "contains": [
                         "github issue id"
                     ],
+                    "column_name": "Issue Number",
+                    "column_order": 0,
                     "example_values": [
                         1
                     ]
@@ -901,6 +920,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 1,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -911,6 +932,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Owner",
+                    "column_order": 2,
                     "example_values": [
                         "repoowner"
                     ]
@@ -929,7 +952,7 @@
                         "I am writing a comment to this issue"
                     ],
                     "column_name": "Comment Body",
-                    "column_order": 1
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
@@ -1069,8 +1092,11 @@
                     "example_values": [
                         "repoowner"
                     ],
-                    "column_name": "Username",
-                    "column_order": 0
+                    "contains": [
+                        "github username"
+                    ],
+                    "column_name": "User",
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.user.node_id",
@@ -1241,6 +1267,8 @@
                     "contains": [
                         "github issue id"
                     ],
+                    "column_name": "Issue Number",
+                    "column_order": 0,
                     "example_values": [
                         1
                     ]
@@ -1251,6 +1279,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 5,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -1261,6 +1291,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 6,
                     "example_values": [
                         "repoowner"
                     ]
@@ -1344,7 +1376,12 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
-                    ]
+                    ],
+                    "contains": [
+                        "github username"
+                    ],
+                    "column_name": "Assignee",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.data.*.assignee.node_id",
@@ -1507,6 +1544,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -1721,8 +1761,8 @@
                     "example_values": [
                         "open"
                     ],
-                    "column_name": "State",
-                    "column_order": 1
+                    "column_name": "Issue State",
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.title",
@@ -1731,7 +1771,7 @@
                         "This is a Test Issue"
                     ],
                     "column_name": "Issue Title",
-                    "column_order": 0
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.updated_at",
@@ -1829,6 +1869,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -2024,7 +2067,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
-                    ]
+                    ],
+                    "column_name": "Assignees",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.parameter.issue_body",
@@ -2045,7 +2090,9 @@
                     "data_type": "string",
                     "example_values": [
                         "test,multi-label,non-urgent"
-                    ]
+                    ],
+                    "column_name": "Labels",
+                    "column_order": 5
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -2053,6 +2100,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 6,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -2063,6 +2112,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Owner",
+                    "column_order": 7,
                     "example_values": [
                         "repoowner"
                     ]
@@ -2146,6 +2197,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -2309,6 +2363,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -2405,7 +2462,9 @@
                     "data_type": "string",
                     "example_values": [
                         "This is what the body looks like when testing from the app"
-                    ]
+                    ],
+                    "column_name": "Issue Body",
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.closed_at",
@@ -2568,7 +2627,9 @@
                     "data_type": "string",
                     "example_values": [
                         "open"
-                    ]
+                    ],
+                    "column_name": "Issue State",
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.title",
@@ -2675,6 +2736,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -2890,7 +2954,9 @@
                     "data_type": "string",
                     "example_values": [
                         "testbg11"
-                    ]
+                    ],
+                    "column_name": "Assignees",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.parameter.issue_body",
@@ -2921,7 +2987,9 @@
                     "data_type": "string",
                     "example_values": [
                         "demo_update"
-                    ]
+                    ],
+                    "column_name": "Labels",
+                    "column_order": 5
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -2929,6 +2997,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 6,
                     "example_values": [
                         "Testing1"
                     ]
@@ -2939,6 +3009,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Owner",
+                    "column_order": 7,
                     "example_values": [
                         "testbg11"
                     ]
@@ -3029,6 +3101,9 @@
                     "data_type": "string",
                     "example_values": [
                         "testbg11"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -3192,6 +3267,9 @@
                     "data_type": "string",
                     "example_values": [
                         "testbg11"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -3288,7 +3366,9 @@
                     "data_type": "string",
                     "example_values": [
                         "test update body"
-                    ]
+                    ],
+                    "column_name": "Issue Body",
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.closed_at",
@@ -3376,6 +3456,9 @@
                     "data_type": "string",
                     "example_values": [
                         "testbg11"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -3589,6 +3672,9 @@
                 {
                     "data_path": "action_result.data.*.number",
                     "data_type": "numeric",
+                    "contains": [
+                        "github issue id"
+                    ],
                     "example_values": [
                         1
                     ],
@@ -3610,7 +3696,9 @@
                     "data_type": "string",
                     "example_values": [
                         "closed"
-                    ]
+                    ],
+                    "column_name": "Issue State",
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.title",
@@ -3717,6 +3805,9 @@
                     "data_type": "string",
                     "example_values": [
                         "testbg11"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -3903,7 +3994,9 @@
                     "data_type": "string",
                     "example_values": [
                         "I am adding a comment from the app"
-                    ]
+                    ],
+                    "column_name": "Comment Body",
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.parameter.issue_number",
@@ -3913,7 +4006,9 @@
                     ],
                     "example_values": [
                         2
-                    ]
+                    ],
+                    "column_name": "Issue Number",
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -3921,6 +4016,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 4,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -3931,6 +4028,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Owner",
+                    "column_order": 5,
                     "example_values": [
                         "repoowner"
                     ]
@@ -4009,7 +4108,7 @@
                         "url"
                     ],
                     "column_name": "Comment URL",
-                    "column_order": 0
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.user.avatar_url",
@@ -4090,6 +4189,9 @@
                     "data_type": "string",
                     "example_values": [
                         "repoowner"
+                    ],
+                    "contains": [
+                        "github username"
                     ]
                 },
                 {
@@ -4278,6 +4380,8 @@
                     "contains": [
                         "github issue id"
                     ],
+                    "column_name": "Issue Number",
+                    "column_order": 0,
                     "example_values": [
                         1
                     ]
@@ -4287,7 +4391,9 @@
                     "data_type": "string",
                     "example_values": [
                         "test,Splunk,app-testing"
-                    ]
+                    ],
+                    "column_name": "Labels",
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -4295,6 +4401,8 @@
                     "contains": [
                         "github repo"
                     ],
+                    "column_name": "Repo Name",
+                    "column_order": 5,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -4305,6 +4413,8 @@
                     "contains": [
                         "github repo owner"
                     ],
+                    "column_name": "Repo Owner",
+                    "column_order": 6,
                     "example_values": [
                         "repoowner"
                     ]
@@ -4316,7 +4426,7 @@
                         "ededed"
                     ],
                     "column_name": "Color",
-                    "column_order": 1
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.default",
@@ -4331,9 +4441,7 @@
                     "data_type": "numeric",
                     "example_values": [
                         1454479580
-                    ],
-                    "column_name": "ID",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.name",
@@ -4342,7 +4450,7 @@
                         "app-testing"
                     ],
                     "column_name": "Label Name",
-                    "column_order": 0
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.node_id",
@@ -4360,8 +4468,8 @@
                     "contains": [
                         "url"
                     ],
-                    "column_name": "URL",
-                    "column_order": 3
+                    "column_name": "Labels URL",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.summary",
