@@ -123,8 +123,6 @@ class GithubIssuesConnector(BaseConnector):
     def _make_rest_call(self, endpoint, action_result, headers=None, method="get", raw_response=False, **kwargs):
         # **kwargs can be any additional parameters that requests.request accepts
 
-        config = self.get_config()
-
         resp_json = None
 
         if not headers:
@@ -140,19 +138,10 @@ class GithubIssuesConnector(BaseConnector):
         # Create a URL to connect to
         url = self._base_url + endpoint
 
-        self.debug_print('AAAAAAAAAAAAAAAA 1')
-        self.debug_print(str(url))
-        self.debug_print(str(headers))
-        self.debug_print(str(method))
-        self.debug_print(str(raw_response))
-        self.debug_print(str(kwargs))
-        self.debug_print('AAAAAAAAAAAAAAAA 1 end')
-
         try:
             r = request_func(
                             url,
                             headers=headers,
-                            verify=config.get('verify_server_cert', False),
                             **kwargs)
         except Exception as e:
             return RetVal(action_result.set_status( phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(e))), resp_json)
