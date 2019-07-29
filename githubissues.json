@@ -1203,7 +1203,6 @@
                     "contains": [
                         "github repo owner"
                     ],
-                    "default": "",
                     "order": 0
                 },
                 "repo_name": {
@@ -1214,7 +1213,6 @@
                     "contains": [
                         "github repo"
                     ],
-                    "default": "",
                     "order": 1
                 },
                 "issue_number": {
@@ -1225,7 +1223,6 @@
                     "contains": [
                         "github issue id"
                     ],
-                    "default": "",
                     "order": 2
                 }
             },
@@ -2842,7 +2839,6 @@
                     "contains": [
                         "github issue id"
                     ],
-                    "default": "",
                     "order": 2
                 },
                 "state": {
@@ -2890,56 +2886,98 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.labels.*.name",
+                    "data_path": "action_result.parameter.assignees",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_body",
+                    "data_type": "string",
+                    "example_values": [
+                        "test update body"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_number",
+                    "data_type": "numeric",
+                    "contains": [
+                        "github issue id"
+                    ],
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.issue_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "update test title"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.labels",
                     "data_type": "string",
                     "example_values": [
                         "demo_update"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.labels.*.default",
-                    "data_type": "boolean",
+                    "data_path": "action_result.parameter.repo_name",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo"
+                    ],
                     "example_values": [
-                        true,
-                        false
+                        "Testing1"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.labels.*.url",
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.state",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/repos/testbg11/Testing1/labels/demo_update"
+                        "closed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
                     ],
                     "contains": [
                         "url"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.labels.*.node_id",
+                    "data_path": "action_result.data.*.assignee.events_url",
                     "data_type": "string",
                     "example_values": [
-                        "MDU6TGFiZWwxNDc0MTk0MTYy"
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.labels.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1474194162
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.labels.*.color",
+                    "data_path": "action_result.data.*.assignee.followers_url",
                     "data_type": "string",
                     "example_values": [
-                        "ededed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.updated_at",
-                    "data_type": "string",
-                    "example_values": [
-                        "2019-07-29T11:27:10Z"
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
@@ -2963,33 +3001,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.organizations_url",
+                    "data_path": "action_result.data.*.assignee.gravatar_id",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/orgs"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignee.url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignee.events_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/events{/privacy}"
-                    ],
-                    "contains": [
-                        "url"
+                        ""
                     ]
                 },
                 {
@@ -3003,40 +3018,31 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.subscriptions_url",
-                    "data_type": "string",
+                    "data_path": "action_result.data.*.assignee.id",
+                    "data_type": "numeric",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/subscriptions"
-                    ],
-                    "contains": [
-                        "url"
+                        53362718
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.avatar_url",
+                    "data_path": "action_result.data.*.assignee.login",
                     "data_type": "string",
                     "example_values": [
-                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
-                    ],
-                    "contains": [
-                        "url"
+                        "testbg11"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.repos_url",
+                    "data_path": "action_result.data.*.assignee.node_id",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/repos"
-                    ],
-                    "contains": [
-                        "url"
+                        "MDQ6VXNlcjUzMzYyNzE4"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.followers_url",
+                    "data_path": "action_result.data.*.assignee.organizations_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/followers"
+                        "https://api.github.com/users/testbg11/orgs"
                     ],
                     "contains": [
                         "url"
@@ -3053,17 +3059,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.gravatar_id",
+                    "data_path": "action_result.data.*.assignee.repos_url",
                     "data_type": "string",
                     "example_values": [
-                        ""
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignee.starred_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                        "https://api.github.com/users/testbg11/repos"
                     ],
                     "contains": [
                         "url"
@@ -3078,10 +3077,23 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.login",
+                    "data_path": "action_result.data.*.assignee.starred_url",
                     "data_type": "string",
                     "example_values": [
-                        "testbg11"
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignee.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
@@ -3092,164 +3104,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignee.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        53362718
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignee.node_id",
-                    "data_type": "string",
-                    "example_values": [
-                        "MDQ6VXNlcjUzMzYyNzE4"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.repository_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/repos/testbg11/Testing1"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_at",
-                    "data_type": "string",
-                    "example_values": [
-                        "2019-07-29T11:24:09Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        473601979
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.title",
-                    "data_type": "string",
-                    "example_values": [
-                        "update test title"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.state",
-                    "data_type": "string",
-                    "example_values": [
-                        "closed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.body",
-                    "data_type": "string",
-                    "example_values": [
-                        "test update body"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.events_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/repos/testbg11/Testing1/issues/1/events"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.labels_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/repos/testbg11/Testing1/issues/1/labels{/name}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.author_association",
-                    "data_type": "string",
-                    "example_values": [
-                        "OWNER"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.comments_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/repos/testbg11/Testing1/issues/1/comments"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.html_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://github.com/testbg11/Testing1/issues/1"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.number",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.node_id",
-                    "data_type": "string",
-                    "example_values": [
-                        "MDU6SXNzdWU0NzM2MDE5Nzk="
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.following_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/following{/other_user}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.gists_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/gists{/gist_id}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.organizations_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/orgs"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.url",
+                    "data_path": "action_result.data.*.assignee.url",
                     "data_type": "string",
                     "example_values": [
                         "https://api.github.com/users/testbg11"
@@ -3259,37 +3114,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.user.events_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/events{/privacy}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.html_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://github.com/testbg11"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.subscriptions_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/subscriptions"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_path": "action_result.data.*.assignees.*.avatar_url",
                     "data_type": "string",
                     "example_values": [
                         "https://avatars3.githubusercontent.com/u/53362718?v=4"
@@ -3299,134 +3124,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.user.repos_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/repos"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.followers_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/followers"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.received_events_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/received_events"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.starred_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.site_admin",
-                    "data_type": "boolean",
-                    "example_values": [
-                        true,
-                        false
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.login",
-                    "data_type": "string",
-                    "example_values": [
-                        "testbg11"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.type",
-                    "data_type": "string",
-                    "example_values": [
-                        "User"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        53362718
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.user.node_id",
-                    "data_type": "string",
-                    "example_values": [
-                        "MDQ6VXNlcjUzMzYyNzE4"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.milestone",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.following_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/following{/other_user}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.gists_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/gists{/gist_id}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.organizations_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/orgs"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.events_url",
+                    "data_path": "action_result.data.*.assignees.*.events_url",
                     "data_type": "string",
                     "example_values": [
                         "https://api.github.com/users/testbg11/events{/privacy}"
@@ -3436,141 +3134,13 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.closed_by.html_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://github.com/testbg11"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.subscriptions_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/subscriptions"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.avatar_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.repos_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/repos"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.followers_url",
+                    "data_path": "action_result.data.*.assignees.*.followers_url",
                     "data_type": "string",
                     "example_values": [
                         "https://api.github.com/users/testbg11/followers"
                     ],
                     "contains": [
                         "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.received_events_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/received_events"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.starred_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.site_admin",
-                    "data_type": "boolean",
-                    "example_values": [
-                        true,
-                        false
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.login",
-                    "data_type": "string",
-                    "example_values": [
-                        "testbg11"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.type",
-                    "data_type": "string",
-                    "example_values": [
-                        "User"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        53362718
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.closed_by.node_id",
-                    "data_type": "string",
-                    "example_values": [
-                        "MDQ6VXNlcjUzMzYyNzE4"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.locked",
-                    "data_type": "boolean",
-                    "example_values": [
-                        true,
-                        false
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/repos/testbg11/Testing1/issues/1"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.created_at",
-                    "data_type": "string",
-                    "example_values": [
-                        "2019-07-27T05:42:57Z"
                     ]
                 },
                 {
@@ -3594,33 +3164,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.organizations_url",
+                    "data_path": "action_result.data.*.assignees.*.gravatar_id",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/orgs"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignees.*.url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11"
-                    ],
-                    "contains": [
-                        "url"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignees.*.events_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/events{/privacy}"
-                    ],
-                    "contains": [
-                        "url"
+                        ""
                     ]
                 },
                 {
@@ -3634,40 +3181,31 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.subscriptions_url",
-                    "data_type": "string",
+                    "data_path": "action_result.data.*.assignees.*.id",
+                    "data_type": "numeric",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/subscriptions"
-                    ],
-                    "contains": [
-                        "url"
+                        53362718
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.avatar_url",
+                    "data_path": "action_result.data.*.assignees.*.login",
                     "data_type": "string",
                     "example_values": [
-                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
-                    ],
-                    "contains": [
-                        "url"
+                        "testbg11"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.repos_url",
+                    "data_path": "action_result.data.*.assignees.*.node_id",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/repos"
-                    ],
-                    "contains": [
-                        "url"
+                        "MDQ6VXNlcjUzMzYyNzE4"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.followers_url",
+                    "data_path": "action_result.data.*.assignees.*.organizations_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/testbg11/followers"
+                        "https://api.github.com/users/testbg11/orgs"
                     ],
                     "contains": [
                         "url"
@@ -3684,17 +3222,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.gravatar_id",
+                    "data_path": "action_result.data.*.assignees.*.repos_url",
                     "data_type": "string",
                     "example_values": [
-                        ""
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignees.*.starred_url",
-                    "data_type": "string",
-                    "example_values": [
-                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                        "https://api.github.com/users/testbg11/repos"
                     ],
                     "contains": [
                         "url"
@@ -3709,10 +3240,23 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.login",
+                    "data_path": "action_result.data.*.assignees.*.starred_url",
                     "data_type": "string",
                     "example_values": [
-                        "testbg11"
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.assignees.*.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
@@ -3723,80 +3267,534 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.assignees.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        53362718
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.assignees.*.node_id",
+                    "data_path": "action_result.data.*.assignees.*.url",
                     "data_type": "string",
                     "example_values": [
-                        "MDQ6VXNlcjUzMzYyNzE4"
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
-                    "data_path": "action_result.message",
+                    "data_path": "action_result.data.*.author_association",
                     "data_type": "string",
                     "example_values": [
-                        "Issue number: 1, Issue url: https://github.com/testbg11/Testing1/issues/1"
+                        "OWNER"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.issue_body",
+                    "data_path": "action_result.data.*.body",
                     "data_type": "string",
                     "example_values": [
                         "test update body"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.issue_title",
+                    "data_path": "action_result.data.*.closed_at",
                     "data_type": "string",
                     "example_values": [
-                        "update test title"
+                        "2019-07-29T11:24:09Z"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.repo_owner",
+                    "data_path": "action_result.data.*.closed_by.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        53362718
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.login",
                     "data_type": "string",
                     "example_values": [
                         "testbg11"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.labels",
+                    "data_path": "action_result.data.*.closed_by.node_id",
                     "data_type": "string",
                     "example_values": [
-                        "demo_update"
+                        "MDQ6VXNlcjUzMzYyNzE4"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.assignees",
+                    "data_path": "action_result.data.*.closed_by.organizations_url",
                     "data_type": "string",
                     "example_values": [
-                        "testbg11"
+                        "https://api.github.com/users/testbg11/orgs"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.state",
+                    "data_path": "action_result.data.*.closed_by.received_events_url",
                     "data_type": "string",
                     "example_values": [
-                        "closed"
+                        "https://api.github.com/users/testbg11/received_events"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.issue_number",
+                    "data_path": "action_result.data.*.closed_by.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.closed_by.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments",
                     "data_type": "numeric",
                     "example_values": [
                         1
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.repo_name",
+                    "data_path": "action_result.data.*.comments_url",
                     "data_type": "string",
                     "example_values": [
-                        "Testing1"
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1/comments"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-27T05:42:57Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1/events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11/Testing1/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        473601979
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "ededed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.default",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1474194162
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "demo_update"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6TGFiZWwxNDc0MTk0MTYy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/labels/demo_update"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.labels_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1/labels{/name}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.locked",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.milestone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDU6SXNzdWU0NzM2MDE5Nzk="
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.repository_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.state",
+                    "data_type": "string",
+                    "example_values": [
+                        "closed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "update test title"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-07-29T11:27:10Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/repos/testbg11/Testing1/issues/1"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://avatars3.githubusercontent.com/u/53362718?v=4"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/events{/privacy}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.followers_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/followers"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.following_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/following{/other_user}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gists_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/gists{/gist_id}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.gravatar_id",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://github.com/testbg11"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        53362718
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.login",
+                    "data_type": "string",
+                    "example_values": [
+                        "testbg11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.node_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "MDQ6VXNlcjUzMzYyNzE4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.organizations_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/orgs"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.received_events_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/received_events"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.repos_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/repos"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.site_admin",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.starred_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/starred{/owner}{/repo}"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.subscriptions_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11/subscriptions"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "User"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.github.com/users/testbg11"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 },
                 {
@@ -3814,6 +3812,13 @@
                     ],
                     "contains": [
                         "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Issue number: 1, Issue url: https://github.com/testbg11/Testing1/issues/1"
                     ]
                 },
                 {
