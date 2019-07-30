@@ -708,11 +708,15 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         organization_name = param[GITHUB_JSON_ORGANIZATION]
+        limit = param.get('limit')
+
+        if (limit and not str(limit).isdigit()) or limit == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL,
                               GITHUB_LIST_USERS_ENDPOINT.format(organization_name=organization_name))
 
-        user_list = self._get_list_response(url=url, action_result=action_result)
+        user_list = self._get_list_response(url=url, action_result=action_result, limit=limit)
 
         # If None is returned, action is failed.
         # For empty list action is successful
@@ -740,12 +744,10 @@ class GithubConnector(BaseConnector):
         if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        repo = param[GITHUB_JSON_REPO].strip('/')
+        repo_owner = param[GITHUB_JSON_REPO_OWNER]
+        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo = '{0}/{1}'.format(repo_owner, repo_name)
         user = param[GITHUB_JSON_USER]
-
-        # 1. Validation of the format for provided repo name
-        if not repo.count('/') == 1:
-            return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_REPO_NAME_INCORRECT_MSG)
 
         # 2. Check if the user not a collaborator to the repo
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo))
@@ -824,7 +826,9 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         override = param.get(GITHUB_JSON_OVERRIDE, False)
-        repo = param[GITHUB_JSON_REPO].strip('/')
+        repo_owner = param[GITHUB_JSON_REPO_OWNER]
+        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo = '{0}/{1}'.format(repo_owner, repo_name)
         user = param[GITHUB_JSON_USER]
 
         # Default role is 'push' if repo role is not provided or incorrect repo role is provided by the user
@@ -834,10 +838,6 @@ class GithubConnector(BaseConnector):
         role_mapping_dict[GITHUB_REPO_ROLE_PULL] = GITHUB_REPO_ROLE_READ
         role_mapping_dict[GITHUB_REPO_ROLE_PUSH] = GITHUB_REPO_ROLE_WRITE
         role_mapping_dict[GITHUB_REPO_ROLE_ADMIN] = GITHUB_REPO_ROLE_ADMIN
-
-        # 1. Validation of the format for provided repo name
-        if not repo.count('/') == 1:
-            return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_REPO_NAME_INCORRECT_MSG)
 
         # 2. Check if the user already a direct collaborator to the repo
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo))
@@ -1208,10 +1208,15 @@ class GithubConnector(BaseConnector):
         if not(self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
+        limit = param.get('limit')
+
+        if (limit and not str(limit).isdigit()) or limit == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_TEAMS_ENDPOINT.
                               format(org_name=param[GITHUB_JSON_ORGANIZATION]))
 
-        list_teams = self._get_list_response(url, action_result)
+        list_teams = self._get_list_response(url, action_result, limit=limit)
 
         # If team_list is None, FAIL the action else if team_list is empty, do not fail
         # because number of teams in an organization can be zero
@@ -1285,10 +1290,15 @@ class GithubConnector(BaseConnector):
         if not(self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
+        limit = param.get('limit')
+
+        if (limit and not str(limit).isdigit()) or limit == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_REPOS_ENDPOINT
                               .format(org_name=param[GITHUB_JSON_ORGANIZATION]))
 
-        repo_list = self._get_list_response(url, action_result)
+        repo_list = self._get_list_response(url, action_result, limit=limit)
 
         # If repo_list is None, FAIL the action
         # If repo_list is empty, action is successful
@@ -1316,9 +1326,14 @@ class GithubConnector(BaseConnector):
         if not(self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
+        limit = param.get('limit')
+
+        if (limit and not str(limit).isdigit()) or limit == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_ORGANIZATIONS_ENDPOINT)
 
-        org_list = self._get_list_response(url, action_result)
+        org_list = self._get_list_response(url, action_result, limit=limit)
 
         # If org_list is None, FAIL the action
         # If org_list is empty, action is successful
@@ -1447,12 +1462,12 @@ class GithubConnector(BaseConnector):
         issue_body = param.get(GITHUB_JSON_ISSUE_BODY, '')
 
         # assignees should be comma-separated
-        assignees = param.get(GITHUB_JSON_ASSIGNEES, '')
-        assignees = [assignee.strip() for assignee in assignees.split(',') if len(assignee.strip())]
+        assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
+        assignees = ' '.join(assignees).split()
 
         # labels should be comma-separated
-        labels = param.get(GITHUB_JSON_LABELS, '')
-        labels = [label.strip() for label in labels.split(',') if len(label.strip())]
+        labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, '').split(',')]
+        labels = ' '.join(labels).split()
 
         request_data = {
             "title": issue_title,
@@ -1493,24 +1508,41 @@ class GithubConnector(BaseConnector):
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         issue_title = param.get(GITHUB_JSON_ISSUE_TITLE)
         issue_state = param.get(GITHUB_JSON_STATE)
-
-        issue_body = param.get(GITHUB_JSON_ISSUE_BODY, '')
+        issue_body = param.get(GITHUB_JSON_ISSUE_BODY)
 
         # assignees should be comma-separated
-        assignees = param.get(GITHUB_JSON_ASSIGNEES, '')
-        assignees = [assignee.strip() for assignee in assignees.split(',') if len(assignee.strip())]
+        assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
+        assignees = ' '.join(assignees).split()
 
         # labels should be comma-separated
-        labels = param.get(GITHUB_JSON_LABELS, '')
-        labels = [label.strip() for label in labels.split(',') if len(label.strip())]
+        labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, '').split(',')]
+        labels = ' '.join(labels).split()
 
-        request_data = {
-            "title": issue_title,
-            "body": issue_body,
-            "assignees": assignees,
-            "labels": labels,
-            "state": issue_state
-        }
+        to_empty = param.get(GITHUB_JSON_TO_EMPTY, False)
+
+        request_data = dict()
+
+        if not to_empty:
+            if issue_body:
+                request_data["body"] = issue_body
+
+            if assignees:
+                request_data["assignees"] = assignees
+
+            if labels:
+                request_data["labels"] = labels
+        else:
+            request_data = {
+                "body": issue_body,
+                "assignees": assignees,
+                "labels": labels
+            }
+
+        if issue_title:
+            request_data["title"] = issue_title
+
+        if issue_state:
+            request_data["state"] = issue_state
 
         endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
             repo_owner=repo_owner,
@@ -1581,9 +1613,9 @@ class GithubConnector(BaseConnector):
         repo_name = param[GITHUB_JSON_REPO_NAME]
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
 
-        # labels should be a comma-separated list
-        labels = param[GITHUB_JSON_LABELS]
-        labels = [label.strip() for label in labels.split(',') if len(label.strip())]
+        # labels should be comma-separated list
+        labels = [x.strip() for x in param[GITHUB_JSON_LABELS].split(',')]
+        labels = ' '.join(labels).split()
 
         request_data = {
             "labels": labels

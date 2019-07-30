@@ -42,8 +42,8 @@
             "required": false,
             "order": 3
         },
-        "oauth_access_token": {
-            "description": "Oauth access token",
+        "personal_access_token": {
+            "description": "Personal access token",
             "data_type": "password",
             "required": false,
             "order": 4
@@ -64,7 +64,7 @@
             "action": "list events",
             "identifier": "list_events",
             "description": "List events performed by a user",
-            "verbose": "Action will list maximum 300 events. Only events from past 90 days will be listed.",
+            "verbose": "Action will list maximum of 300 events. Only events from the past 90 days will be listed.",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -74,7 +74,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "order": 0
                 }
@@ -95,7 +95,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -115,7 +115,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -139,7 +139,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -342,7 +342,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -556,7 +556,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -871,7 +871,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -1109,7 +1109,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -1259,7 +1259,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -1279,7 +1279,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -1518,7 +1518,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -1684,7 +1684,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -1996,9 +1996,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -2369,7 +2366,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -2712,7 +2709,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -3096,9 +3093,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -3469,7 +3463,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -3812,7 +3806,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -4107,7 +4101,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -4294,7 +4288,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -4588,7 +4582,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -4839,7 +4833,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -5121,7 +5115,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -5491,7 +5485,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -5657,7 +5651,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -5969,9 +5963,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -6342,7 +6333,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -6685,7 +6676,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -7069,9 +7060,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -7442,7 +7430,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -7785,7 +7773,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -8080,7 +8068,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -8267,7 +8255,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -8561,7 +8549,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -8806,7 +8794,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -9088,7 +9076,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -9343,7 +9331,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -9493,7 +9481,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -9513,7 +9501,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -9752,7 +9740,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -9918,7 +9906,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -10230,9 +10218,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -10603,7 +10588,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -10946,7 +10931,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -11330,9 +11315,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -11591,7 +11573,7 @@
                         "test"
                     ],
                     "contains": [
-                        "github repo name"
+                        "github repo"
                     ]
                 },
                 {
@@ -11706,7 +11688,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -12049,7 +12031,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -12344,7 +12326,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -12531,7 +12513,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -12826,7 +12808,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -13353,7 +13335,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -13734,7 +13716,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -13836,7 +13818,7 @@
                         "Jannik Zschiesche"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -14142,9 +14124,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -14515,7 +14494,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -14802,7 +14781,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -14822,7 +14801,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -14950,7 +14929,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -15223,7 +15202,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -15389,7 +15368,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -15752,7 +15731,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -16109,7 +16088,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -16208,7 +16187,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -16416,7 +16395,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -16782,7 +16761,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -17044,7 +17023,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -17400,7 +17379,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -17566,7 +17545,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -17878,9 +17857,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -18251,7 +18227,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -18594,7 +18570,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -18978,9 +18954,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -19351,7 +19324,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -19694,7 +19667,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -19989,7 +19962,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -20176,7 +20149,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -20467,7 +20440,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -20994,7 +20967,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -21268,7 +21241,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -21454,7 +21427,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -21867,9 +21840,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -22240,7 +22210,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -22698,9 +22668,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -23071,7 +23038,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -23529,9 +23496,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ]
                 },
                 {
@@ -23909,7 +23873,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -24345,7 +24309,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -24511,7 +24475,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -24624,10 +24588,10 @@
                     "data_path": "action_result.data.*.repo.name",
                     "data_type": "string",
                     "example_values": [
-                        "test/test-repo"
+                        "test-repo"
                     ],
                     "contains": [
-                        "github repo name"
+                        "github repo"
                     ],
                     "column_name": "Repo Name",
                     "column_order": 6
@@ -24701,6 +24665,13 @@
                         "github organization name"
                     ],
                     "order": 0
+                },
+                "limit": {
+                    "description": "Maximum number of users to be fetched",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "order": 1
                 }
             },
             "output": [
@@ -24711,6 +24682,10 @@
                         "success",
                         "failed"
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.parameter.organization_name",
@@ -24805,9 +24780,9 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
-                    "column_name": "User Name",
+                    "column_name": "Username",
                     "column_order": 1
                 },
                 {
@@ -24930,30 +24905,40 @@
             "action": "remove collaborator",
             "identifier": "remove_collaborator",
             "description": "Remove user as a collaborator from repo",
-            "verbose": "If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted.",
+            "verbose": "If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted",
             "type": "generic",
             "undo": "add collaborator",
             "read_only": false,
             "parameters": {
-                "repo": {
-                    "description": "Repo name",
+                "repo_owner": {
+                    "description": "Owner of the repository",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo name"
+                        "github repo owner"
                     ],
                     "order": 0
                 },
-                "user": {
-                    "description": "User name",
+                "repo_name": {
+                    "description": "Name of the repository",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "user name"
+                        "github repo"
                     ],
                     "order": 1
+                },
+                "user": {
+                    "description": "Username",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github username"
+                    ],
+                    "order": 2
                 }
             },
             "output": [
@@ -24966,16 +24951,28 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.repo",
+                    "data_path": "action_result.parameter.repo_name",
                     "data_type": "string",
-                    "example_values": [
-                        "test/test-repo"
-                    ],
                     "contains": [
-                        "github repo name"
+                        "github repo"
                     ],
-                    "column_name": "Repo",
-                    "column_order": 0
+                    "column_name": "Repo Name",
+                    "column_order": 1,
+                    "example_values": [
+                        "testrepo"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "column_name": "Repo Owner",
+                    "column_order": 0,
+                    "example_values": [
+                        "Splunk"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.user",
@@ -24984,10 +24981,10 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "column_name": "User",
-                    "column_order": 1
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.invite_deleted",
@@ -24997,7 +24994,7 @@
                         false
                     ],
                     "column_name": "Invite Deleted",
-                    "column_order": 2
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.summary",
@@ -25034,30 +25031,40 @@
             "action": "add collaborator",
             "identifier": "add_collaborator",
             "description": "Add user as a collaborator to repo",
-            "verbose": "For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to user to join as a collaborator. If an invite is already sent to user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.",
+            "verbose": "For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to the user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to user to join as a collaborator. If an invite is already sent to the user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.",
             "type": "generic",
             "undo": "remove collaborator",
             "read_only": false,
             "parameters": {
-                "repo": {
-                    "description": "Repo name",
+                "repo_owner": {
+                    "description": "Owner of the repository",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo name"
+                        "github repo owner"
                     ],
                     "order": 0
                 },
-                "user": {
-                    "description": "User name",
+                "repo_name": {
+                    "description": "Name of the repository",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "user name"
+                        "github repo"
                     ],
                     "order": 1
+                },
+                "user": {
+                    "description": "Username",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "github username"
+                    ],
+                    "order": 2
                 },
                 "role": {
                     "description": "Role of the user (Default: Push)",
@@ -25070,14 +25077,14 @@
                         "Admin"
                     ],
                     "default": "Push",
-                    "order": 2
+                    "order": 3
                 },
                 "override": {
                     "description": "Override existing role of collaborator",
                     "data_type": "boolean",
                     "required": false,
                     "primary": false,
-                    "order": 3
+                    "order": 4
                 }
             },
             "output": [
@@ -25097,19 +25104,31 @@
                         false
                     ],
                     "column_name": "Override Role",
-                    "column_order": 3
+                    "column_order": 4
                 },
                 {
-                    "data_path": "action_result.parameter.repo",
+                    "data_path": "action_result.parameter.repo_name",
                     "data_type": "string",
-                    "example_values": [
-                        "test-organization/test-repo"
-                    ],
                     "contains": [
-                        "github repo name"
+                        "github repo"
                     ],
-                    "column_name": "Repo",
-                    "column_order": 0
+                    "column_name": "Repo Name",
+                    "column_order": 1,
+                    "example_values": [
+                        "testrepo"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.repo_owner",
+                    "data_type": "string",
+                    "contains": [
+                        "github repo owner"
+                    ],
+                    "column_name": "Repo Owner",
+                    "column_order": 0,
+                    "example_values": [
+                        "Splunk"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.role",
@@ -25120,7 +25139,7 @@
                         "Admin"
                     ],
                     "column_name": "Role",
-                    "column_order": 2
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.parameter.user",
@@ -25129,10 +25148,10 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "column_name": "User",
-                    "column_order": 1
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.collaborator_added",
@@ -25142,7 +25161,7 @@
                         false
                     ],
                     "column_name": "Collaborator Added",
-                    "column_order": 4
+                    "column_order": 5
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
@@ -25176,7 +25195,7 @@
                         false
                     ],
                     "column_name": "Invite Sent",
-                    "column_order": 5
+                    "column_order": 6
                 },
                 {
                     "data_path": "action_result.data.*.invitee.avatar_url",
@@ -25259,7 +25278,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -25425,7 +25444,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ]
                 },
                 {
@@ -25569,7 +25588,7 @@
             "action": "remove member",
             "identifier": "remove_member",
             "description": "Remove user from team",
-            "verbose": "Parameter 'organization name' is mandatory if team name is provided instead of team ID",
+            "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID",
             "type": "generic",
             "undo": "add member",
             "read_only": false,
@@ -25586,12 +25605,12 @@
                     "order": 0
                 },
                 "user": {
-                    "description": "User name",
+                    "description": "Username",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "order": 1
                 },
@@ -25650,7 +25669,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "column_name": "User",
                     "column_order": 2
@@ -25695,7 +25714,7 @@
             "action": "add member",
             "identifier": "add_member",
             "description": "Add user in a team",
-            "verbose": "Parameter 'organization name' is mandatory if team name is provided instead of team ID",
+            "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID",
             "type": "generic",
             "undo": "remove member",
             "read_only": false,
@@ -25712,12 +25731,12 @@
                     "order": 0
                 },
                 "user": {
-                    "description": "User name",
+                    "description": "Username",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "order": 1
                 },
@@ -25798,7 +25817,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "column_name": "User",
                     "column_order": 2
@@ -25878,6 +25897,13 @@
                         "github organization name"
                     ],
                     "order": 0
+                },
+                "limit": {
+                    "description": "Maximum number of teams to be fetched",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "order": 1
                 }
             },
             "output": [
@@ -25888,6 +25914,10 @@
                         "success",
                         "failed"
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.parameter.organization_name",
@@ -26046,6 +26076,13 @@
                         "github organization name"
                     ],
                     "order": 0
+                },
+                "limit": {
+                    "description": "Maximum number of repositories to be fetched",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "order": 1
                 }
             },
             "output": [
@@ -26056,6 +26093,10 @@
                         "success",
                         "failed"
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.parameter.organization_name",
@@ -26279,9 +26320,6 @@
                     "data_type": "string",
                     "example_values": [
                         "test/test-repo"
-                    ],
-                    "contains": [
-                        "github repo name"
                     ],
                     "column_name": "Repo Full Name",
                     "column_order": 2
@@ -26656,7 +26694,7 @@
                         "test"
                     ],
                     "contains": [
-                        "user name"
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 4
@@ -26978,7 +27016,15 @@
             "description": "List all organizations",
             "type": "investigate",
             "read_only": true,
-            "parameters": {},
+            "parameters": {
+                "limit": {
+                    "description": "Maximum number of organizations to be fetched",
+                    "data_type": "numeric",
+                    "required": false,
+                    "primary": false,
+                    "order": 0
+                }
+            },
             "output": [
                 {
                     "data_path": "action_result.status",
@@ -26987,6 +27033,10 @@
                         "success",
                         "failed"
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.data.*.avatar_url",
@@ -29974,7 +30024,7 @@
             "action": "update issue",
             "identifier": "update_issue",
             "description": "Update an issue for the GitHub repository",
-            "verbose": "Only users with push access can set assignees/labels for the new issues. \nAssignees/labels are silently dropped otherwise.",
+            "verbose": "Only users with push access can set assignees/labels for new issues. \nAssignees/labels are silently dropped otherwise. If the to_empty parameter is checked, then, it will empty the field values of the issue (except for the title and the state of the issue) for which the parameter values are not provided or kept empty. If the to_empty parameter is not checked, then, it will simply ignore the empty parameter values from being updated on the issue.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -30041,6 +30091,12 @@
                     "data_type": "string",
                     "required": false,
                     "order": 7
+                },
+                "to_empty": {
+                    "description": "Empty the field values of the issue for which the parameter values are not provided",
+                    "data_type": "boolean",
+                    "default": false,
+                    "order": 8
                 }
             },
             "output": [
@@ -30123,6 +30179,14 @@
                     "data_type": "string",
                     "example_values": [
                         "closed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.to_empty",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
                     ]
                 },
                 {
@@ -31427,7 +31491,7 @@
             "action": "add labels",
             "identifier": "add_labels",
             "description": "Add label(s) to an issue on the GitHub repository",
-            "verbose": "Only users with push access can set labels for the issues. \nLabels are silently dropped otherwise.",
+            "verbose": "Only users with push access can set labels for the issues",
             "type": "generic",
             "read_only": false,
             "parameters": {
