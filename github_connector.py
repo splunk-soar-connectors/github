@@ -1635,8 +1635,6 @@ class GithubConnector(BaseConnector):
             'add_labels': self._handle_add_labels
         }
 
-
-
         action = self.get_action_identifier()
         action_execution_status = phantom.APP_SUCCESS
 
