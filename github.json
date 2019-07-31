@@ -30036,7 +30036,7 @@
             "action": "update issue",
             "identifier": "update_issue",
             "description": "Update an issue for the GitHub repository",
-            "verbose": "Only users with push access can set assignees/labels for new issues. \nAssignees/labels are silently dropped otherwise. If the to_empty parameter is checked, then, it will empty the field values of the issue (except for the title and the state of the issue) for which the parameter values are not provided or kept empty. If the to_empty parameter is not checked, then, it will simply ignore the empty parameter values from being updated on the issue.",
+            "verbose": "Only users with push access can set assignees/labels for new issues. \nAssignees/labels are silently dropped otherwise. The existing labels and assignees of the issue will be replaced with the labels and assignees provided in the respective input parameters by the user. If the to_empty parameter is checked, then, it will empty the field values of the issue (except for the title and the state of the issue) for which the parameter values are not provided or kept empty. If the to_empty parameter is not checked, then, it will simply ignore the empty parameter values from being updated on the issue.",
             "type": "generic",
             "read_only": false,
             "parameters": {

@@ -1463,11 +1463,11 @@ class GithubConnector(BaseConnector):
 
         # assignees should be comma-separated
         assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
-        assignees = ' '.join(assignees).split()
+        assignees = list(filter(None, assignees))
 
         # labels should be comma-separated
         labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, '').split(',')]
-        labels = ' '.join(labels).split()
+        labels = list(filter(None, labels))
 
         request_data = {
             "title": issue_title,
@@ -1512,11 +1512,11 @@ class GithubConnector(BaseConnector):
 
         # assignees should be comma-separated
         assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
-        assignees = ' '.join(assignees).split()
+        assignees = list(filter(None, assignees))
 
         # labels should be comma-separated
         labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, '').split(',')]
-        labels = ' '.join(labels).split()
+        labels = list(filter(None, labels))
 
         to_empty = param.get(GITHUB_JSON_TO_EMPTY, False)
 
@@ -1615,7 +1615,7 @@ class GithubConnector(BaseConnector):
 
         # labels should be comma-separated list
         labels = [x.strip() for x in param[GITHUB_JSON_LABELS].split(',')]
-        labels = ' '.join(labels).split()
+        labels = list(filter(None, labels))
 
         request_data = {
             "labels": labels
