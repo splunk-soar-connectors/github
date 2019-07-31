@@ -29208,6 +29208,9 @@
                     "description": "Comma-separated list of logins (usernames) for the users to assign to this issue",
                     "data_type": "string",
                     "required": false,
+                    "contains": [
+                        "github username"
+                    ],
                     "order": 4
                 },
                 "labels": {
@@ -29230,7 +29233,8 @@
                     "data_path": "action_result.parameter.assignees",
                     "data_type": "string",
                     "example_values": [
-                        "repoowner"
+                        "repoowner",
+                        "github username"
                     ],
                     "column_name": "Assignees",
                     "column_order": 4
@@ -30097,6 +30101,9 @@
                     "description": "Comma-separated list of logins (usernames) for the users to assign to this issue",
                     "data_type": "string",
                     "required": false,
+                    "contains": [
+                        "github username"
+                    ],
                     "order": 6
                 },
                 "labels": {
@@ -30128,6 +30135,9 @@
                         "testbg11"
                     ],
                     "column_name": "Assignees",
+                    "contains": [
+                        "github username"
+                    ],
                     "column_order": 4
                 },
                 {
