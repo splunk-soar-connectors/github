@@ -29,7 +29,7 @@ GITHUB_TEST_CONNECTIVITY_FAILED_MSG = 'Test connectivity failed'
 GITHUB_TEST_CONNECTIVITY_PASSED_MSG = 'Test connectivity passed'
 GITHUB_ORGANIZATION_REQUIRED_MSG = "Parameter 'organization_name' is required " \
                                    "if team name is provided in parameter 'team'"
-GITHUB_USER_NOT_TEAM_MEMBER_MSG = 'Member with username {user_name} is not a member of Team {team} ' \
+GITHUB_USER_NOT_TEAM_MEMBER_MSG = 'Member with username "{user_name}" is not a member of Team "{team}" ' \
                                   'and all pending invitations have been deleted'
 GITHUB_INVALID_TEAM_ID = 'Team {team} not found'
 GITHUB_ALREADY_TEAM_MEMBER_MSG = 'Member with username {user_name} already a member of Team {team} with role of {role}'
