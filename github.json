@@ -29233,10 +29233,12 @@
                     "data_path": "action_result.parameter.assignees",
                     "data_type": "string",
                     "example_values": [
-                        "repoowner",
-                        "github username"
+                        "repoowner"
                     ],
                     "column_name": "Assignees",
+                    "contains": [
+                        "github username"
+                    ],
                     "column_order": 4
                 },
                 {
