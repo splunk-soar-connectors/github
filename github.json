@@ -24905,7 +24905,7 @@
             "action": "remove collaborator",
             "identifier": "remove_collaborator",
             "description": "Remove user as a collaborator from repo",
-            "verbose": "If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted",
+            "verbose": "If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted.",
             "type": "generic",
             "undo": "add collaborator",
             "read_only": false,
@@ -24916,7 +24916,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -24966,7 +24967,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 0,
@@ -25042,7 +25044,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -25122,7 +25125,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 0,
@@ -25588,7 +25592,7 @@
             "action": "remove member",
             "identifier": "remove_member",
             "description": "Remove user from team",
-            "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID",
+            "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
             "type": "generic",
             "undo": "add member",
             "read_only": false,
@@ -25714,7 +25718,7 @@
             "action": "add member",
             "identifier": "add_member",
             "description": "Add user in a team",
-            "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID",
+            "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
             "type": "generic",
             "undo": "remove member",
             "read_only": false,
@@ -27201,7 +27205,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -27252,7 +27257,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 6,
@@ -28010,7 +28016,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -28083,7 +28090,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 2,
@@ -28380,7 +28388,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -28442,7 +28451,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Name",
                     "column_order": 6,
@@ -29167,7 +29177,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -29263,7 +29274,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 7,
@@ -30034,7 +30046,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -30166,7 +30179,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 7,
@@ -31116,7 +31130,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -31193,7 +31208,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 5,
@@ -31491,7 +31507,7 @@
             "action": "add labels",
             "identifier": "add_labels",
             "description": "Add label(s) to an issue on the GitHub repository",
-            "verbose": "Only users with push access can set labels for the issues",
+            "verbose": "Only users with push access can set labels for the issues.",
             "type": "generic",
             "read_only": false,
             "parameters": {
@@ -31501,7 +31517,8 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "order": 0
                 },
@@ -31578,7 +31595,8 @@
                     "data_path": "action_result.parameter.repo_owner",
                     "data_type": "string",
                     "contains": [
-                        "github repo owner"
+                        "github repo owner",
+                        "github username"
                     ],
                     "column_name": "Repo Owner",
                     "column_order": 6,

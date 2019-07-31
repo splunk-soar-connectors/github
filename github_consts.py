@@ -23,52 +23,52 @@ GITHUB_ENDPOINT_ISSUES = '/repos/{repo_owner}/{repo_name}/issues'
 GITHUB_ENDPOINT_COMMENTS = '/repos/{repo_owner}/{repo_name}/issues/{issue_number}/comments'
 GITHUB_ENDPOINT_GET_ISSUE = '/repos/{repo_owner}/{repo_name}/issues/{issue_number}'
 GITHUB_ENDPOINT_LABELS = '/repos/{repo_owner}/{repo_name}/issues/{issue_number}/labels'
-GITHUB_INVALID_INTEGER = 'Please provide non-zero positive integer in {parameter}'
+GITHUB_INVALID_INTEGER = 'Please provide non-zero positive integer in "{parameter}"'
 GITHUB_MAKING_CONNECTION_MSG = 'Connecting to an endpoint'
 GITHUB_TEST_CONNECTIVITY_FAILED_MSG = 'Test connectivity failed'
 GITHUB_TEST_CONNECTIVITY_PASSED_MSG = 'Test connectivity passed'
 GITHUB_ORGANIZATION_REQUIRED_MSG = "Parameter 'organization_name' is required " \
                                    "if team name is provided in parameter 'team'"
-GITHUB_USER_NOT_TEAM_MEMBER_MSG = 'Member with username {user_name} is not a member of Team {team} ' \
+GITHUB_USER_NOT_TEAM_MEMBER_MSG = 'Member with username "{user_name}" is not a member of Team "{team}" ' \
                                   'and all pending invitations have been deleted'
-GITHUB_INVALID_TEAM_ID = 'Team {team} not found'
-GITHUB_ALREADY_TEAM_MEMBER_MSG = 'Member with username {user_name} already a member of Team {team} with role of {role}'
-GITHUB_ADD_MEMBER_MSG = 'Member with username {user_name} successfully added in Team {team} and assigned role of {role}'
-GITHUB_ADD_MEMBER_PENDING_MSG = 'Member with username {user_name} has been successfully sent an invitation to join ' \
-                                'Team {team} with role of {role}'
-GITHUB_MEMBER_REMOVAL_MSG = 'Member with username {user_name} successfully removed from Team {team}'
+GITHUB_INVALID_TEAM_ID = 'Team "{team}" not found'
+GITHUB_ALREADY_TEAM_MEMBER_MSG = 'Member with username "{user_name}" already a member of Team "{team}" with role of "{role}"'
+GITHUB_ADD_MEMBER_MSG = 'Member with username "{user_name}" successfully added in Team "{team}" and assigned role of "{role}"'
+GITHUB_ADD_MEMBER_PENDING_MSG = 'Member with username "{user_name}" has been successfully sent an invitation to join ' \
+                                'Team "{team}" with role of "{role}"'
+GITHUB_MEMBER_REMOVAL_MSG = 'Member with username "{user_name}" successfully removed from Team "{team}"'
 GITHUB_CONFIG_PARAMS_REQUIRED_CONNECTIVITY = "Either 'username' and 'password' or 'client_id' and 'client_secret' or " \
                                 "'oauth_access_token' are required for test connectivity"
 GITHUB_CONFIG_PARAMS_REQUIRED = "Please provide 'username' and 'password' or 'oauth_access_token' or " \
                                 "run test connectivity with 'client_id' and 'client_secret'"
 GITHUB_BASE_URL_NOT_FOUND_MSG = 'Phantom Base URL not found in System Settings. Please specify the value ' \
-                                'in System Settings.'
+                                'in System Settings'
 GITHUB_OAUTH_URL_MSG = 'Using OAuth URL:'
 GITHUB_AUTHORIZE_USER_MSG = 'Please authorize user in a separate tab using URL'
 GITHUB_CODE_RECEIVED_MSG = 'Code Received'
 GITHUB_GENERATING_ACCESS_TOKEN_MSG = 'Generating access token'
-GITHUB_ALREADY_COLLABORATOR_MSG = 'User {user_name} already a collaborator to repo {repo_full_name} ' \
-                                  'with role: {repo_role}'
-GITHUB_COLLABORATOR_ADDED_MSG = 'User {user_name} added successfully as a collaborator to repo {repo_full_name} ' \
-                                'with role {repo_role}'
-GITHUB_COLLABORATOR_ROLE_UPDATED_MSG = 'Updated role of user {user_name} as a collaborator to repo {repo_full_name} ' \
-                                       'with new role: {repo_role}'
-GITHUB_COLLABORATOR_INVITATION_SENT_MSG = 'User {user_name} sent an invitation to join as a collaborator ' \
-                                          'to repo {repo_full_name} with role: {repo_role}'
-GITHUB_COLLABORATOR_INVITATION_ALREADY_SENT_MSG = 'Invitation to user {user_name} already sent to join as a ' \
-                                                  'collaborator to repo {repo_full_name} with role: {repo_role}'
-GITHUB_COLLABORATOR_INVITATION_UPDATED_MSG = 'Invitation to user {user_name} to join as a collaborator to repo ' \
-                                             '{repo_full_name} is updated with role: {repo_role}'
+GITHUB_ALREADY_COLLABORATOR_MSG = 'User "{user_name}" already a collaborator to repo "{repo_full_name}" ' \
+                                  'with role: "{repo_role}"'
+GITHUB_COLLABORATOR_ADDED_MSG = 'User "{user_name}" added successfully as a collaborator to repo "{repo_full_name}" ' \
+                                'with role "{repo_role}"'
+GITHUB_COLLABORATOR_ROLE_UPDATED_MSG = 'Updated role of user "{user_name}" as a collaborator to repo "{repo_full_name}" ' \
+                                       'with new role: "{repo_role}"'
+GITHUB_COLLABORATOR_INVITATION_SENT_MSG = 'User "{user_name}" sent an invitation to join as a collaborator ' \
+                                          'to repo "{repo_full_name}" with role: "{repo_role}"'
+GITHUB_COLLABORATOR_INVITATION_ALREADY_SENT_MSG = 'Invitation to user "{user_name}" already sent to join as a ' \
+                                                  'collaborator to repo "{repo_full_name}" with role: "{repo_role}"'
+GITHUB_COLLABORATOR_INVITATION_UPDATED_MSG = 'Invitation to user "{user_name}" to join as a collaborator to repo ' \
+                                             '"{repo_full_name}" is updated with role: "{repo_role}"'
 GITHUB_COLLABORATOR_INVITATION_NOT_UPDATED_MSG = "Invitation already exists. Please set parameter 'override' to " \
-                                                 "update an existing invitation."
+                                                 "update an existing invitation"
 GITHUB_COLLABORATOR_ROLE_NOT_UPDATED_MSG = "User is already a collaborator. Please set " \
-                                           "parameter 'override' to update the role of user."
-GITHUB_USER_NOT_COLLABORATOR_MSG = 'User {user_name} is not a direct collaborator to repo {repo_full_name} and ' \
+                                           "parameter 'override' to update the role of user"
+GITHUB_USER_NOT_COLLABORATOR_MSG = 'User "{user_name}" is not a direct collaborator to repo "{repo_full_name}" and ' \
                                    'no pending invitations exist'
-GITHUB_COLLABORATOR_INVITATION_DELETED_MSG = 'User {user_name} is not a direct collaborator to repo {repo_full_name},' \
+GITHUB_COLLABORATOR_INVITATION_DELETED_MSG = 'User "{user_name}" is not a direct collaborator to repo "{repo_full_name}",' \
                                              ' all pending invitations deleted'
-GITHUB_COLLABORATOR_REMOVED_MSG = 'User {user_name} successfully removed as a collaborator from repo {repo_full_name}'
-GITHUB_PHANTOM_BASE_URL = 'https://127.0.0.1/rest'
+GITHUB_COLLABORATOR_REMOVED_MSG = 'User "{user_name}" successfully removed as a collaborator from repo "{repo_full_name}"'
+GITHUB_PHANTOM_BASE_URL = '{phantom_base_url}rest'
 GITHUB_API_BASE_URL = 'https://api.github.com'
 GITHUB_PARAM_PAGE = 'page'
 GITHUB_PARAM_PER_PAGE = 'per_page'

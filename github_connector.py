@@ -564,7 +564,7 @@ class GithubConnector(BaseConnector):
         URL to make rest calls
         """
 
-        ret_val, phantom_base_url = self._get_phantom_base_url(action_result)
+        ret_val, phantom_base_url = self._get_phantom_base_url_github(action_result)
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
 
@@ -581,7 +581,7 @@ class GithubConnector(BaseConnector):
                                                                 asset_name)
         return phantom.APP_SUCCESS, url_to_app_rest
 
-    def _get_phantom_base_url(self, action_result):
+    def _get_phantom_base_url_github(self, action_result):
         """ Get base url of phantom.
 
         :param action_result: object of ActionResult class
@@ -589,7 +589,7 @@ class GithubConnector(BaseConnector):
         base url of phantom
         """
 
-        url = '{}{}'.format(GITHUB_PHANTOM_BASE_URL, GITHUB_PHANTOM_SYS_INFO_URL)
+        url = '{}{}'.format(GITHUB_PHANTOM_BASE_URL.format(phantom_base_url=self._get_phantom_base_url()), GITHUB_PHANTOM_SYS_INFO_URL)
         ret_val, resp_json = self._make_rest_call(action_result=action_result, url=url, verify=False)
         if phantom.is_fail(ret_val):
             return ret_val, None
@@ -608,7 +608,7 @@ class GithubConnector(BaseConnector):
 
         asset_id = self.get_asset_id()
         rest_endpoint = GITHUB_PHANTOM_ASSET_INFO_URL.format(asset_id=asset_id)
-        url = '{}{}'.format(GITHUB_PHANTOM_BASE_URL, rest_endpoint)
+        url = '{}{}'.format(GITHUB_PHANTOM_BASE_URL.format(phantom_base_url=self._get_phantom_base_url()), rest_endpoint)
         ret_val, resp_json = self._make_rest_call(action_result=action_result, url=url, verify=False)
 
         if phantom.is_fail(ret_val):
@@ -1736,9 +1736,10 @@ if __name__ == '__main__':
         password = getpass.getpass("Password: ")
 
     if username and password:
+        login_url = BaseConnector._get_phantom_base_url() + "login"
         try:
             print "Accessing the Login page"
-            r = requests.get("https://127.0.0.1/login", verify=False)
+            r = requests.get(login_url, verify=False)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1748,10 +1749,10 @@ if __name__ == '__main__':
 
             headers = dict()
             headers['Cookie'] = 'csrftoken={0}'.format(csrftoken)
-            headers['Referer'] = 'https://127.0.0.1/login'
+            headers['Referer'] = login_url
 
             print "Logging into Platform to get the session id"
-            r2 = requests.post("https://127.0.0.1/login", verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print "Unable to get session id from the platform. Error: {0}".format(str(e))
