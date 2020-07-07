@@ -10,42 +10,38 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2019-2020 Splunk Inc.",
-    "app_version": "1.0.4",
+    "app_version": "2.0.0",
+    "python_version": "3",
     "utctime_updated": "2019-07-31T22:50:17.000000Z",
     "package_name": "phantom_github",
-    "main_module": "github_connector.pyc",
-    "min_phantom_version": "4.6.19142",
+    "main_module": "github_connector.py",
+    "min_phantom_version": "4.8.24304",
     "app_wizard_version": "1.0.0",
     "rest_handler": "github_connector._handle_rest_request",
     "configuration": {
         "username": {
             "description": "Username",
             "data_type": "string",
-            "required": false,
             "order": 0
         },
         "password": {
             "description": "Password",
             "data_type": "password",
-            "required": false,
             "order": 1
         },
         "client_id": {
             "description": "Client ID",
             "data_type": "string",
-            "required": false,
             "order": 2
         },
         "client_secret": {
             "description": "Client secret",
             "data_type": "password",
-            "required": false,
             "order": 3
         },
         "personal_access_token": {
             "description": "Personal access token",
             "data_type": "password",
-            "required": false,
             "order": 4
         }
     },
@@ -204,7 +200,7 @@
                         "github organization name"
                     ],
                     "column_name": "Organization Name",
-                    "column_order": 7
+                    "column_order": 5
                 },
                 {
                     "data_path": "action_result.data.*.org.url",
@@ -3992,7 +3988,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.mergeable",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -4495,7 +4491,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.rebaseable",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -7959,7 +7955,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.mergeable",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -8462,7 +8458,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.rebaseable",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -12217,7 +12213,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.mergeable",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -12721,7 +12717,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.rebaseable",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -24594,7 +24590,7 @@
                         "github repo"
                     ],
                     "column_name": "Repo Name",
-                    "column_order": 6
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.data.*.repo.url",
@@ -24669,8 +24665,6 @@
                 "limit": {
                     "description": "Maximum number of users to be fetched",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "order": 1
                 }
             },
@@ -25072,8 +25066,6 @@
                 "role": {
                     "description": "Role of the user (Default: Push)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "Pull",
                         "Push",
@@ -25085,8 +25077,6 @@
                 "override": {
                     "description": "Override existing role of collaborator",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
                     "order": 4
                 }
             },
@@ -25621,7 +25611,6 @@
                 "organization_name": {
                     "description": "Organization name",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "github organization name"
@@ -25747,8 +25736,6 @@
                 "role": {
                     "description": "Role of the user (Default: Member)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "Member",
                         "Maintainer"
@@ -25759,7 +25746,6 @@
                 "organization_name": {
                     "description": "Organization name",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "github organization name"
@@ -25905,8 +25891,6 @@
                 "limit": {
                     "description": "Maximum number of teams to be fetched",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "order": 1
                 }
             },
@@ -26084,8 +26068,6 @@
                 "limit": {
                     "description": "Maximum number of repositories to be fetched",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "order": 1
                 }
             },
@@ -27024,8 +27006,6 @@
                 "limit": {
                     "description": "Maximum number of organizations to be fetched",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "order": 0
                 }
             },
@@ -27223,8 +27203,6 @@
                 "limit": {
                     "description": "Maximum number of issues to be fetched",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "order": 2
                 }
             },
@@ -28044,8 +28022,6 @@
                 "limit": {
                     "description": "Maximum number of comments to be fetched",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "order": 3
                 }
             },
@@ -29201,22 +29177,20 @@
                 "issue_body": {
                     "description": "Contents of the issue",
                     "data_type": "string",
-                    "required": false,
                     "order": 3
                 },
                 "assignees": {
                     "description": "Comma-separated list of logins (usernames) for the users to assign to this issue",
                     "data_type": "string",
-                    "required": false,
                     "contains": [
                         "github username"
                     ],
-                    "order": 4
+                    "order": 4,
+                    "primary": true
                 },
                 "labels": {
                     "description": "Comma-separated list of labels to associate with this issue",
                     "data_type": "string",
-                    "required": false,
                     "order": 5
                 }
             },
@@ -30080,7 +30054,6 @@
                 "state": {
                     "description": "State of the issue",
                     "data_type": "string",
-                    "required": false,
                     "value_list": [
                         "open",
                         "closed"
@@ -30090,28 +30063,25 @@
                 "issue_title": {
                     "description": "Title of the issue",
                     "data_type": "string",
-                    "required": false,
                     "order": 4
                 },
                 "issue_body": {
                     "description": "Contents of the issue",
                     "data_type": "string",
-                    "required": false,
                     "order": 5
                 },
                 "assignees": {
                     "description": "Comma-separated list of logins (usernames) for the users to assign to this issue",
                     "data_type": "string",
-                    "required": false,
                     "contains": [
                         "github username"
                     ],
-                    "order": 6
+                    "order": 6,
+                    "primary": true
                 },
                 "labels": {
                     "description": "Comma-separated list of labels to associate with this issue",
                     "data_type": "string",
-                    "required": false,
                     "order": 7
                 },
                 "to_empty": {

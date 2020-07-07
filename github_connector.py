@@ -6,12 +6,14 @@
 
 import json
 import os
+import sys
 import time
 import pwd
 import grp
 import requests
 from django.http import HttpResponse
 from bs4 import BeautifulSoup
+from bs4 import UnicodeDammit
 from github_consts import *
 
 # Phantom App imports
@@ -110,9 +112,10 @@ def _save_app_state(state, asset_id, app_connector):
         with open(real_state_file_path, 'w+') as state_file_obj:
             state_file_obj.write(json.dumps(state))
     except Exception as e:
-        print 'Unable to save state file: {0}'.format(str(e))
+        print('Unable to save state file: {0}'.format(str(e)))
 
     return phantom.APP_SUCCESS
+
 
 def _handle_login_response(request):
     """ This function is used to get the login response of authorization request from GitHub login page.
@@ -338,6 +341,52 @@ class GithubConnector(BaseConnector):
             format(response.status_code, response.text.replace('{', '{{').replace('}', '}}'))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
+
+    def _handle_py_ver_compat_for_input_str(self, input_str):
+        """
+        This method returns the encoded|original string based on the Python version.
+        :param python_version: Python major version
+        :param input_str: Input string to be processed
+        :return: input_str (Processed input string based on following logic 'input_str - Python 3; encoded input_str - Python 2')
+        """
+
+        try:
+            if input_str and self._python_version == 2:
+                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
+        except:
+            self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
+
+        return input_str
+
+    def _get_error_message_from_exception(self, e):
+        """ This method is used to get appropriate error message from the exception.
+        :param e: Exception object
+        :return: error message
+        """
+
+        try:
+            if e.args:
+                if len(e.args) > 1:
+                    error_code = e.args[0]
+                    error_msg = e.args[1]
+                elif len(e.args) == 1:
+                    error_code = "Error code unavailable"
+                    error_msg = e.args[0]
+            else:
+                error_code = "Error code unavailable"
+                error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+        except:
+            error_code = "Error code unavailable"
+            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+
+        try:
+            error_msg = self._handle_py_ver_compat_for_input_str(error_msg)
+        except TypeError:
+            error_msg = "Error occurred while connecting to the Mimecast server. Please check the asset configuration and|or the action parameters."
+        except:
+            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+
+        return "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
 
     def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None,
                         verify=True):
@@ -1424,6 +1473,9 @@ class GithubConnector(BaseConnector):
         if (limit and not str(limit).isdigit()) or limit == 0:
             return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
 
+        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+
         endpoint = GITHUB_ENDPOINT_COMMENTS.format(
             repo_owner=repo_owner,
             repo_name=repo_name,
@@ -1454,6 +1506,9 @@ class GithubConnector(BaseConnector):
         repo_owner = param[GITHUB_JSON_REPO_OWNER]
         repo_name = param[GITHUB_JSON_REPO_NAME]
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
+
+        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
 
         endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
             repo_owner=repo_owner,
@@ -1538,6 +1593,9 @@ class GithubConnector(BaseConnector):
         issue_state = param.get(GITHUB_JSON_STATE)
         issue_body = param.get(GITHUB_JSON_ISSUE_BODY)
 
+        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+
         # assignees should be comma-separated
         assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
         assignees = list(filter(None, assignees))
@@ -1605,6 +1663,9 @@ class GithubConnector(BaseConnector):
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         comment_body = param[GITHUB_JSON_COMMENT_BODY]
 
+        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+
         request_data = {
             "body": comment_body
         }
@@ -1640,6 +1701,9 @@ class GithubConnector(BaseConnector):
         repo_owner = param[GITHUB_JSON_REPO_OWNER]
         repo_name = param[GITHUB_JSON_REPO_NAME]
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
+
+        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
 
         # labels should be comma-separated list
         labels = [x.strip() for x in param[GITHUB_JSON_LABELS].split(',')]
@@ -1698,7 +1762,7 @@ class GithubConnector(BaseConnector):
         action = self.get_action_identifier()
         action_execution_status = phantom.APP_SUCCESS
 
-        if action in action_mapping.keys():
+        if action in list(action_mapping.keys()):
             action_function = action_mapping[action]
             action_execution_status = action_function(param)
 
@@ -1716,7 +1780,13 @@ class GithubConnector(BaseConnector):
 
         config = self.get_config()
 
-        self._username = config.get(GITHUB_CONFIG_USERNAME)
+        # Fetching the Python major version
+        try:
+            self._python_version = int(sys.version_info[0])
+        except:
+            return self.set_status(phantom.APP_ERROR, "Error occurred while getting the Phantom server's Python major version.")
+
+        self._username = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_USERNAME))
         self._password = config.get(GITHUB_CONFIG_PASSWORD)
         self._client_id = config.get(GITHUB_CONFIG_CLIENT_ID)
         self._client_secret = config.get(GITHUB_CONFIG_CLIENT_SECRET)
@@ -1766,7 +1836,7 @@ if __name__ == '__main__':
     if username and password:
         login_url = BaseConnector._get_phantom_base_url() + "login"
         try:
-            print "Accessing the Login page"
+            print("Accessing the Login page")
             r = requests.get(login_url, verify=False)
             csrftoken = r.cookies['csrftoken']
 
@@ -1779,11 +1849,11 @@ if __name__ == '__main__':
             headers['Cookie'] = 'csrftoken={0}'.format(csrftoken)
             headers['Referer'] = login_url
 
-            print "Logging into Platform to get the session id"
+            print("Logging into Platform to get the session id")
             r2 = requests.post(login_url, verify=False, data=data, headers=headers)
             session_id = r2.cookies['sessionid']
         except Exception as e:
-            print "Unable to get session id from the platform. Error: {0}".format(str(e))
+            print("Unable to get session id from the platform. Error: {0}".format(str(e)))
             exit(1)
 
     with open(args.input_test_json) as f:
@@ -1799,6 +1869,6 @@ if __name__ == '__main__':
             connector._set_csrf_info(csrftoken, headers['Referer'])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
-        print json.dumps(json.loads(ret_val), indent=4)
+        print(json.dumps(json.loads(ret_val), indent=4))
 
     exit(0)
