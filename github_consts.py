@@ -68,6 +68,7 @@ GITHUB_USER_NOT_COLLABORATOR_MSG = 'User "{user_name}" is not a direct collabora
 GITHUB_COLLABORATOR_INVITATION_DELETED_MSG = 'User "{user_name}" is not a direct collaborator to repo "{repo_full_name}",' \
                                              ' all pending invitations deleted'
 GITHUB_COLLABORATOR_REMOVED_MSG = 'User "{user_name}" successfully removed as a collaborator from repo "{repo_full_name}"'
+GITHUB_LABEL_ADDED_MSG = 'Label(s) "{labels}" successfully added to the issue_number: "{issue_number}"'
 GITHUB_PHANTOM_BASE_URL = '{phantom_base_url}rest'
 GITHUB_API_BASE_URL = 'https://api.github.com'
 GITHUB_PARAM_PAGE = 'page'

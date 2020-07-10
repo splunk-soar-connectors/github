@@ -1729,7 +1729,7 @@ class GithubConnector(BaseConnector):
 
         action_result.update_data(response_json)
 
-        return action_result.set_status(phantom.APP_SUCCESS)
+        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_LABEL_ADDED_MSG.format(labels=",".join(labels), issue_number=issue_number))
 
     def handle_action(self, param):
         """ This function gets current action identifier and calls member function of its own to handle the action.

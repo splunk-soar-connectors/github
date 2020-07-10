@@ -31557,9 +31557,7 @@
                     "data_type": "string",
                     "example_values": [
                         "test,Splunk,app-testing"
-                    ],
-                    "column_name": "Labels",
-                    "column_order": 3
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -31568,7 +31566,7 @@
                         "github repo"
                     ],
                     "column_name": "Repo Name",
-                    "column_order": 5,
+                    "column_order": 4,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -31581,7 +31579,7 @@
                         "github username"
                     ],
                     "column_name": "Repo Owner",
-                    "column_order": 6,
+                    "column_order": 5,
                     "example_values": [
                         "repoowner"
                     ]
@@ -31636,7 +31634,7 @@
                         "url"
                     ],
                     "column_name": "Labels URL",
-                    "column_order": 4
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.summary",
