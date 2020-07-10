@@ -723,6 +723,22 @@ class GithubConnector(BaseConnector):
         self.send_progress('Authenticated')
         return phantom.APP_SUCCESS
 
+    def _validate_integer(self, action_result, parameter, key, allow_zero=False):
+        try:
+            if not float(parameter).is_integer():
+                return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
+
+            parameter = int(parameter)
+        except:
+            return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
+
+        if not allow_zero and parameter <= 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(key)), None
+        elif allow_zero and parameter < 0:
+            return action_result.set_status(phantom.APP_ERROR, "Please provide a valid non-negative integer value in the '{}' parameter".format(key)), None
+
+        return phantom.APP_SUCCESS, parameter
+
     def _handle_list_events(self, param):
         """ This function is used to handle list events action.
 
@@ -787,8 +803,10 @@ class GithubConnector(BaseConnector):
         organization_name = param[GITHUB_JSON_ORGANIZATION]
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL,
                               GITHUB_LIST_USERS_ENDPOINT.format(organization_name=organization_name))
@@ -1287,8 +1305,10 @@ class GithubConnector(BaseConnector):
 
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_TEAMS_ENDPOINT.
                               format(org_name=param[GITHUB_JSON_ORGANIZATION]))
@@ -1369,8 +1389,10 @@ class GithubConnector(BaseConnector):
 
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_REPOS_ENDPOINT
                               .format(org_name=param[GITHUB_JSON_ORGANIZATION]))
@@ -1405,8 +1427,10 @@ class GithubConnector(BaseConnector):
 
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_ORGANIZATIONS_ENDPOINT)
 
@@ -1435,8 +1459,10 @@ class GithubConnector(BaseConnector):
         repo_name = param[GITHUB_JSON_REPO_NAME]
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         endpoint = GITHUB_ENDPOINT_ISSUES.format(
             repo_owner=repo_owner,
@@ -1470,11 +1496,14 @@ class GithubConnector(BaseConnector):
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
-        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         endpoint = GITHUB_ENDPOINT_COMMENTS.format(
             repo_owner=repo_owner,
@@ -1507,8 +1536,9 @@ class GithubConnector(BaseConnector):
         repo_name = param[GITHUB_JSON_REPO_NAME]
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
 
-        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
             repo_owner=repo_owner,
@@ -1593,8 +1623,9 @@ class GithubConnector(BaseConnector):
         issue_state = param.get(GITHUB_JSON_STATE)
         issue_body = param.get(GITHUB_JSON_ISSUE_BODY)
 
-        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         # assignees should be comma-separated
         assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
@@ -1663,8 +1694,9 @@ class GithubConnector(BaseConnector):
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         comment_body = param[GITHUB_JSON_COMMENT_BODY]
 
-        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         request_data = {
             "body": comment_body
@@ -1702,8 +1734,9 @@ class GithubConnector(BaseConnector):
         repo_name = param[GITHUB_JSON_REPO_NAME]
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
 
-        if (issue_number and not str(issue_number).isdigit()) or issue_number == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='issue_number'))
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         # labels should be comma-separated list
         labels = [x.strip() for x in param[GITHUB_JSON_LABELS].split(',')]
