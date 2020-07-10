@@ -17,6 +17,9 @@
     "main_module": "github_connector.py",
     "min_phantom_version": "4.8.24304",
     "app_wizard_version": "1.0.0",
+    "latest_tested_versions": [
+        "v1 2020-07-08"
+    ],
     "rest_handler": "github_connector._handle_rest_request",
     "configuration": {
         "username": {
