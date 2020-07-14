@@ -733,7 +733,7 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
 
         if not allow_zero and parameter <= 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(key)), None
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter=key)), None
         elif allow_zero and parameter < 0:
             return action_result.set_status(phantom.APP_ERROR, "Please provide a valid non-negative integer value in the '{}' parameter".format(key)), None
 
