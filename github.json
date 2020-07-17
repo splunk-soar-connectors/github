@@ -156,18 +156,14 @@
                     "data_type": "string",
                     "example_values": [
                         "2018-07-19T06:26:57Z"
-                    ],
-                    "column_name": "Created At",
-                    "column_order": 3
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.id",
                     "data_type": "string",
                     "example_values": [
                         "7987124418"
-                    ],
-                    "column_name": "Event ID",
-                    "column_order": 0
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.org.avatar_url",
@@ -181,10 +177,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.org.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.org.id",
@@ -201,9 +194,7 @@
                     ],
                     "contains": [
                         "github organization name"
-                    ],
-                    "column_name": "Organization Name",
-                    "column_order": 5
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.org.url",
@@ -24572,9 +24563,7 @@
                     "example_values": [
                         true,
                         false
-                    ],
-                    "column_name": "Public",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.repo.id",
@@ -24591,9 +24580,7 @@
                     ],
                     "contains": [
                         "github repo"
-                    ],
-                    "column_name": "Repo Name",
-                    "column_order": 4
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.repo.url",
@@ -24610,9 +24597,7 @@
                     "data_type": "string",
                     "example_values": [
                         "CreateEvent"
-                    ],
-                    "column_name": "Event Type",
-                    "column_order": 1
+                    ]
                 },
                 {
                     "data_path": "action_result.summary.total_events",
@@ -24644,7 +24629,10 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 12,
+                "height": 5,
+                "view": "github_view.display_view"
             },
             "versions": "EQ(*)"
         },
@@ -27228,8 +27216,6 @@
                     "contains": [
                         "github repo"
                     ],
-                    "column_name": "Repo Name",
-                    "column_order": 5,
                     "example_values": [
                         "testrepo"
                     ]
@@ -27241,8 +27227,6 @@
                         "github repo owner",
                         "github username"
                     ],
-                    "column_name": "Repo Owner",
-                    "column_order": 6,
                     "example_values": [
                         "Splunk"
                     ]
@@ -27329,9 +27313,7 @@
                     ],
                     "contains": [
                         "github username"
-                    ],
-                    "column_name": "Assignee",
-                    "column_order": 4
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.assignee.node_id",
@@ -27593,9 +27575,7 @@
                     "data_type": "string",
                     "example_values": [
                         "Test issue body right here"
-                    ],
-                    "column_name": "Issue Body",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.closed_at",
@@ -27735,9 +27715,7 @@
                     ],
                     "contains": [
                         "github issue id"
-                    ],
-                    "column_name": "Issue Number",
-                    "column_order": 0
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.repository_url",
@@ -27754,18 +27732,14 @@
                     "data_type": "string",
                     "example_values": [
                         "open"
-                    ],
-                    "column_name": "Issue State",
-                    "column_order": 3
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.title",
                     "data_type": "string",
                     "example_values": [
                         "Test issue title here"
-                    ],
-                    "column_name": "Issue Title",
-                    "column_order": 1
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.updated_at",
@@ -27980,7 +27954,10 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 12,
+                "height": 5,
+                "view": "github_view.display_view"
             },
             "versions": "EQ(*)"
         },
@@ -28043,8 +28020,6 @@
                     "contains": [
                         "github issue id"
                     ],
-                    "column_name": "Issue Number",
-                    "column_order": 0,
                     "example_values": [
                         1
                     ]
@@ -30109,11 +30084,9 @@
                     "example_values": [
                         "testbg11"
                     ],
-                    "column_name": "Assignees",
                     "contains": [
                         "github username"
-                    ],
-                    "column_order": 4
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.issue_body",
@@ -30144,9 +30117,7 @@
                     "data_type": "string",
                     "example_values": [
                         "demo_update"
-                    ],
-                    "column_name": "Labels",
-                    "column_order": 5
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -30154,8 +30125,6 @@
                     "contains": [
                         "github repo"
                     ],
-                    "column_name": "Repo Name",
-                    "column_order": 6,
                     "example_values": [
                         "Testing1"
                     ]
@@ -30167,8 +30136,6 @@
                         "github repo owner",
                         "github username"
                     ],
-                    "column_name": "Repo Owner",
-                    "column_order": 7,
                     "example_values": [
                         "testbg11"
                     ]
@@ -30532,9 +30499,7 @@
                     "data_type": "string",
                     "example_values": [
                         "test update body"
-                    ],
-                    "column_name": "Issue Body",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.closed_at",
@@ -30843,9 +30808,7 @@
                     ],
                     "example_values": [
                         1
-                    ],
-                    "column_name": "Issue Number",
-                    "column_order": 0
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.repository_url",
@@ -30862,18 +30825,14 @@
                     "data_type": "string",
                     "example_values": [
                         "closed"
-                    ],
-                    "column_name": "Issue State",
-                    "column_order": 3
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.title",
                     "data_type": "string",
                     "example_values": [
                         "update test title"
-                    ],
-                    "column_name": "Issue Title",
-                    "column_order": 1
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.updated_at",
@@ -31098,7 +31057,10 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 12,
+                "height": 5,
+                "view": "github_view.display_view"
             },
             "versions": "EQ(*)"
         },

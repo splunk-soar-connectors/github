@@ -65,6 +65,21 @@ For Basic Authentication and Personal Access Token method of authentication, you
 <br>
 For OAuth authentication method, Click on <b>TEST CONNECTIVITY</b> button, a window will pop up and display a URL. Navigate to this URL in a separate browser tab. This new tab will redirect to GitHub login page. Log in using your GitHub account. After logging in, review the requested permissions, provide the organization access from listed organizations and click <b>Authorize &lt;your-user-name&gt;</b> button. Finally, close that tab. The test connectivity window should show the success message.
 
+<h2>State file permissions</h2>
+    <p>
+    Please check the permissions for the state file as mentioned below.
+    <h4>State file path</h4>
+    <ul>
+        <li>For Non-NRI instance: /opt/phantom/local_data/app_states/&lt;appid&gt;/&lt;asset_id&gt;_state.json</li>
+        <li>For NRI instance: /&lt;PHANTOM_HOME_DIRECTORY&gt;/local_data/app_states/&lt;appid&gt;/&lt;asset_id&gt;_state.json</li>
+    </ul>
+    <h4>State file permissions</h4>
+    <ul>
+        <li>File rights: rw-rw-r-- (664) (The phantom user should have read and write access for the state file)</li>
+        <li>File owner: Appropriate phantom user</li>
+    </ul>
+    </p>
+
 <h2>Note</h2>
 <ul>
     <li>All the asset configuration parameters are optional, but you need to provide the configuration parameters based on the authentication method you want to use. Otherwise, the actions will return an error.</li>

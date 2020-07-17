@@ -284,8 +284,9 @@ class GithubConnector(BaseConnector):
         try:
             resp_json = response.json()
         except Exception as e:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}"
-                                                   .format(str(e))), None)
+            error_code, error_msg = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Code: {0}. Error: {1}"
+                                                   .format(error_code, error_msg)), None)
 
         if 200 <= response.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
@@ -386,7 +387,7 @@ class GithubConnector(BaseConnector):
         except:
             error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
-        return "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+        return error_code, error_msg
 
     def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None,
                         verify=True):
@@ -414,8 +415,9 @@ class GithubConnector(BaseConnector):
         try:
             request_response = request_func(url, auth=auth, data=data, headers=headers, verify=verify, params=params)
         except Exception as e:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".
-                                                   format(str(e))), resp_json)
+            error_code, error_msg = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Code: {0}. Details: {1}".
+                                                   format(error_code, error_msg)), resp_json)
 
         return self._process_response(request_response, action_result)
 
@@ -486,7 +488,7 @@ class GithubConnector(BaseConnector):
         """
 
         action_result = self.add_action_result(ActionResult(dict(param)))
-        self._state = {}
+        app_state = {}
         # If none of the config parameters are present, return error
         if not(self._username and self._password)\
            and not(self._client_id and self._client_secret)\
@@ -528,7 +530,7 @@ class GithubConnector(BaseConnector):
 
         if self._client_id and self._client_secret:
             # If client_id and client_secret is provided, go for interactive login
-            ret_val = self._handle_interactive_login(action_result=action_result)
+            ret_val = self._handle_interactive_login(app_state=app_state, action_result=action_result)
 
             if phantom.is_fail(ret_val):
                 self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
@@ -549,7 +551,7 @@ class GithubConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_ERROR, status_message='Authentication failed')
 
-    def _handle_interactive_login(self, action_result):
+    def _handle_interactive_login(self, app_state, action_result):
         """ This function is used to handle the interactive login during test connectivity
         while client_id and client_secret is provided.
 
@@ -563,7 +565,7 @@ class GithubConnector(BaseConnector):
 
         # Append /result to create redirect_uri
         redirect_uri = '{0}/result'.format(app_rest_url)
-        self._state['redirect_uri'] = redirect_uri
+        app_state['redirect_uri'] = redirect_uri
 
         self.save_progress(GITHUB_OAUTH_URL_MSG)
         self.save_progress(redirect_uri)
@@ -573,11 +575,11 @@ class GithubConnector(BaseConnector):
         # Authorization URL used to make request for getting code which is used to generate access token
         authorization_url = GITHUB_AUTHORIZE_URL.format(client_id=self._client_id, scope=GITHUB_SCOPE, state=asset_id)
 
-        self._state['authorization_url'] = authorization_url
+        app_state['authorization_url'] = authorization_url
 
         # URL which would be shown to the user
         url_for_authorize_request = '{0}/start_oauth?asset_id={1}&'.format(app_rest_url, asset_id)
-        _save_app_state(self._state, asset_id, self)
+        _save_app_state(app_state, asset_id, self)
 
         self.save_progress(GITHUB_AUTHORIZE_USER_MSG)
         self.save_progress(url_for_authorize_request)
@@ -629,7 +631,23 @@ class GithubConnector(BaseConnector):
 
         self._state = response
         self._access_token = response[GITHUB_ACCESS_TOKEN]
+
+        self.save_state(self._state)
         _save_app_state(self._state, asset_id, self)
+
+        self._state = self.load_state()
+
+        # Scenario -
+        #
+        # If the corresponding state file doesn't have correct owner, owner group or permissions,
+        # the newely generated token is not being saved to state file and automatic workflow for token has been stopped.
+        # So we have to check that token from response and token which are saved to state file after successful generation of new token are same or not.
+
+        if self._access_token != self._state.get(GITHUB_ACCESS_TOKEN):
+            message = "Error occurred while saving the newly generated access token (in place of the expired token) in the state file."
+            message += " Please check the owner, owner group, and the permissions of the state file. The Phantom "
+            message += "user should have the correct access rights and ownership for the corresponding state file (refer to readme file for more information)."
+            return action_result.set_status(phantom.APP_ERROR, message)
 
         return phantom.APP_SUCCESS
 
@@ -711,7 +729,7 @@ class GithubConnector(BaseConnector):
         # wait-time while request is being granted for 105 seconds
         for _ in range(0, 35):
             self.send_progress('Waiting...')
-            self._state = _load_app_state(self.get_asset_id(), self)
+            # self._state = _load_app_state(self.get_asset_id(), self)
             # If file is generated
             if os.path.isfile(auth_status_file_path):
                 os.unlink(auth_status_file_path)
@@ -1821,7 +1839,7 @@ class GithubConnector(BaseConnector):
 
         self._username = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_USERNAME))
         self._password = config.get(GITHUB_CONFIG_PASSWORD)
-        self._client_id = config.get(GITHUB_CONFIG_CLIENT_ID)
+        self._client_id = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_CLIENT_ID))
         self._client_secret = config.get(GITHUB_CONFIG_CLIENT_SECRET)
         self._oauth_token = config.get(GITHUB_CONFIG_AUTH_TOKEN)
 
