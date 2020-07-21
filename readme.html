@@ -29,7 +29,7 @@ To use this method navigate to <a href="https://www.github.com">GitHub</a> in a 
     <li>Select the following checkboxes:<br>
         <ul>
             <li>repo</li>
-            <li>admin:org</li>
+            <li>admin: org</li>
             <li>user</li>
         </ul>
     </li>
@@ -53,7 +53,7 @@ To use this method navigate to <a href="https://www.github.com">GitHub</a> in a 
 <br>
 While creating the asset for this authentication method, provide the Client ID and Client Secret generated during previous steps in <b>client_id</b> and <b>client_secret</b> field of asset configuration and click on Save.
 <br>
-A new field called <b>POST incoming for GitHub to this location</b> will appear in the <b>Asset Settings</b> tab. Take the URL found in this field and place it in the <b>Authorization callback URL</b> field of your registered app on GitHub page. To this URL, add <b>/result</b> at the end. After doing so the URL should look something like:
+A new field called <b>POST incoming for GitHub to this location</b> will appear in the <b>Asset Settings</b> tab. Take the URL found in this field and place it in the <b>Authorization callback URL</b> field of your registered app on the GitHub page. To this URL, add <b>/result</b> at the end. After doing so the URL should look something like:
 <pre>
 https://&lt;phantom_host&gt;/rest/handler/github_5553a13b-ca44-4d03-ac48-293fce874001/&lt;asset_name&gt;/result
 </pre>
@@ -61,9 +61,10 @@ https://&lt;phantom_host&gt;/rest/handler/github_5553a13b-ca44-4d03-ac48-293fce8
 Once again, click save.
 
 <h2>Method to run test connectivity</h2>
-For Basic Authentication and Personal Access Token method of authentication, you just need to click the <b>TEST CONNECTIVITY</b> button.
+For the Basic Authentication and Personal Access Token method of authentication, you just need to click the <b>TEST CONNECTIVITY</b> button.
 <br>
-For OAuth authentication method, Click on <b>TEST CONNECTIVITY</b> button, a window will pop up and display a URL. Navigate to this URL in a separate browser tab. This new tab will redirect to GitHub login page. Log in using your GitHub account. After logging in, review the requested permissions, provide the organization access from listed organizations and click <b>Authorize &lt;your-user-name&gt;</b> button. Finally, close that tab. The test connectivity window should show the success message.
+For the OAuth authentication method, Click on the <b>TEST CONNECTIVITY</b> button, a window will pop up and display a URL. Navigate to this URL in a separate browser tab. This new tab will redirect to the GitHub login page. Log in using your GitHub account. After logging in, review the requested permissions, provide the organization access from listed organizations,
+ and click <b>Authorize &lt;your-user-name&gt;</b> button. Finally, close that tab. The test connectivity window should show a success message.
 
 <h2>State file permissions</h2>
     <p>

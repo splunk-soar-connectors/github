@@ -18,7 +18,7 @@
     "min_phantom_version": "4.8.24304",
     "app_wizard_version": "1.0.0",
     "latest_tested_versions": [
-        "v1 2020-07-08"
+        "v1 2020-07-20"
     ],
     "rest_handler": "github_connector._handle_rest_request",
     "configuration": {
@@ -63,7 +63,7 @@
             "action": "list events",
             "identifier": "list_events",
             "description": "List events performed by a user",
-            "verbose": "Action will list maximum of 300 events. Only events from the past 90 days will be listed.",
+            "verbose": "Action will list a maximum of 300 events. Only events from the past 90 days will be listed.",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -119,10 +119,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.actor.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.actor.id",
@@ -303,10 +300,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.alert.dismisser.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.alert.dismisser.html_url",
@@ -450,10 +444,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.base_ref",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.before",
@@ -517,10 +508,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.blocked_user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.blocked_user.html_url",
@@ -633,52 +621,31 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.body.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.color.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.description.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.due_on.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.name.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.name.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.note.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.permission.from",
@@ -689,10 +656,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.privacy.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.repository.permissions.from.admin",
@@ -720,24 +684,15 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.changes.title.from",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.app.created_at",
-                    "data_type": "string",
-                    "example_values": [
-                        "2018-04-25 20:42:10"
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.app.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.app.external_url",
@@ -832,10 +787,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.app.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.app.owner.html_url",
@@ -972,10 +924,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.app.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.app.external_url",
@@ -1070,10 +1019,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.app.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.app.owner.html_url",
@@ -1479,10 +1425,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.assignee.html_url",
@@ -1645,10 +1588,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.assignees.*.html_url",
@@ -2230,9 +2170,6 @@
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.base.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -2327,10 +2264,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.base.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.base.repo.owner.html_url",
@@ -2670,10 +2604,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.base.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.base.user.html_url",
@@ -3327,9 +3258,6 @@
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.head.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -3424,10 +3352,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.head.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.head.repo.owner.html_url",
@@ -3767,10 +3692,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.head.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.head.user.html_url",
@@ -4062,10 +3984,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.merged_by.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.merged_by.html_url",
@@ -4249,10 +4168,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.milestone.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.milestone.creator.html_url",
@@ -4543,10 +4459,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.requested_reviewers.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.requested_reviewers.*.html_url",
@@ -4734,10 +4647,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.requested_teams.*.organization.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.requested_teams.*.organization.events_url",
@@ -5076,10 +4986,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.check_suite.pull_requests.*.user.html_url",
@@ -5230,10 +5137,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.external_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.head_sha",
@@ -5446,10 +5350,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.assignee.html_url",
@@ -5612,10 +5513,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.assignees.*.html_url",
@@ -6197,9 +6095,6 @@
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.base.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -6294,10 +6189,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.base.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.base.repo.owner.html_url",
@@ -6637,10 +6529,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.base.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.base.user.html_url",
@@ -7294,9 +7183,6 @@
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.head.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -7391,10 +7277,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.head.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.head.repo.owner.html_url",
@@ -7734,10 +7617,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.head.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.head.user.html_url",
@@ -8029,10 +7909,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.merged_by.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.merged_by.html_url",
@@ -8216,10 +8093,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.milestone.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.milestone.creator.html_url",
@@ -8510,10 +8384,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.requested_reviewers.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.requested_reviewers.*.html_url",
@@ -8695,10 +8566,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.requested_teams.*.organization.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.requested_teams.*.organization.events_url",
@@ -9037,10 +8905,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_run.pull_requests.*.user.html_url",
@@ -9194,10 +9059,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.app.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.app.external_url",
@@ -9292,10 +9154,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.app.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.app.owner.html_url",
@@ -9701,10 +9560,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.assignee.html_url",
@@ -9867,10 +9723,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.assignees.*.html_url",
@@ -10452,9 +10305,6 @@
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.base.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -10549,10 +10399,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.base.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.base.repo.owner.html_url",
@@ -10892,10 +10739,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.base.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.base.user.html_url",
@@ -11549,9 +11393,6 @@
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.head.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -11649,10 +11490,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.head.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.head.repo.owner.html_url",
@@ -11992,10 +11830,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.head.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.head.user.html_url",
@@ -12287,10 +12122,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.merged_by.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.merged_by.html_url",
@@ -12474,10 +12306,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.milestone.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.milestone.creator.html_url",
@@ -12592,8 +12421,7 @@
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.milestone.description",
                     "data_type": "string",
                     "example_values": [
-                        "https://test.com/roadmap?version=3.4#checker",
-                        ""
+                        "https://test.com/roadmap?version=3.4#checker"
                     ],
                     "contains": [
                         "url"
@@ -12769,10 +12597,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.requested_reviewers.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.requested_reviewers.*.html_url",
@@ -12954,10 +12779,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.requested_teams.*.organization.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.requested_teams.*.organization.events_url",
@@ -13296,10 +13118,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.check_suite.pull_requests.*.user.html_url",
@@ -13548,10 +13367,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.comment.line",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.comment.node_id",
@@ -13677,10 +13493,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.comment.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.comment.user.html_url",
@@ -14052,10 +13865,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.forkee.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.forkee.downloads_url",
@@ -14358,9 +14168,6 @@
                 {
                     "data_path": "action_result.data.*.payload.forkee.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -14455,10 +14262,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.forkee.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.forkee.owner.html_url",
@@ -14890,10 +14694,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.installation.account.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.installation.account.html_url",
@@ -15163,10 +14964,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.assignee.html_url",
@@ -15329,10 +15127,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.assignees.*.html_url",
@@ -15692,10 +15487,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.milestone.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.milestone.creator.html_url",
@@ -16049,10 +15841,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.issue.user.html_url",
@@ -16206,10 +15995,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.marketplace_purchase.free_trial_ends_on",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.marketplace_purchase.next_billing_date",
@@ -16356,10 +16142,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.member.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.member.html_url",
@@ -16634,10 +16417,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pages.*.summary",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pages.*.title",
@@ -16722,10 +16502,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.project.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.project.creator.html_url",
@@ -16984,10 +16761,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.project_card.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.project_card.creator.html_url",
@@ -17340,10 +17114,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.assignee.html_url",
@@ -17506,10 +17277,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.assignees.*.html_url",
@@ -18091,9 +17859,6 @@
                 {
                     "data_path": "action_result.data.*.payload.pull_request.base.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -18188,10 +17953,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.base.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.base.repo.owner.html_url",
@@ -18531,10 +18293,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.base.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.base.user.html_url",
@@ -19188,9 +18947,6 @@
                 {
                     "data_path": "action_result.data.*.payload.pull_request.head.repo.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -19285,10 +19041,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.head.repo.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.head.repo.owner.html_url",
@@ -19628,10 +19381,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.head.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.head.user.html_url",
@@ -19923,10 +19673,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.merged_by.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.merged_by.html_url",
@@ -20110,10 +19857,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.milestone.creator.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.milestone.creator.html_url",
@@ -20401,10 +20145,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.requested_reviewers.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.requested_reviewers.*.html_url",
@@ -20586,10 +20327,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.requested_teams.*.organization.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.requested_teams.*.organization.events_url",
@@ -20928,10 +20666,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.pull_request.user.html_url",
@@ -21110,10 +20845,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.release.assets.*.label",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.release.assets.*.name",
@@ -21174,7 +20906,7 @@
                     "data_path": "action_result.data.*.payload.release.assets.*.uploader.followers_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.github.com/users/matt-test/followers"
+                        "https://api.github.com/users/test/followers"
                     ],
                     "contains": [
                         "url"
@@ -21202,10 +20934,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.release.assets.*.uploader.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.release.assets.*.uploader.html_url",
@@ -21388,10 +21117,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.release.author.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.release.author.html_url",
@@ -21768,10 +21494,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.downloads_url",
@@ -21998,10 +21721,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.language",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.languages_url",
@@ -22074,9 +21794,6 @@
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -22171,10 +21888,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_added.*.owner.html_url",
@@ -22596,10 +22310,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.downloads_url",
@@ -22826,10 +22537,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.language",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.languages_url",
@@ -22902,9 +22610,6 @@
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -22999,10 +22704,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repositories_removed.*.owner.html_url",
@@ -23424,10 +23126,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repository.description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repository.downloads_url",
@@ -23654,10 +23353,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repository.language",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repository.languages_url",
@@ -23737,9 +23433,6 @@
                 {
                     "data_path": "action_result.data.*.payload.repository.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -23834,10 +23527,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.repository.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.repository.owner.html_url",
@@ -24158,10 +23848,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.review.body",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.review.commit_id",
@@ -24270,10 +23957,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.review.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.review.user.html_url",
@@ -24436,10 +24120,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.payload.sender.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.payload.sender.html_url",
@@ -24734,10 +24415,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.html_url",
@@ -24889,7 +24567,7 @@
         {
             "action": "remove collaborator",
             "identifier": "remove_collaborator",
-            "description": "Remove user as a collaborator from repo",
+            "description": "Remove user as a collaborator from the repo",
             "verbose": "If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted.",
             "type": "generic",
             "undo": "add collaborator",
@@ -25018,7 +24696,7 @@
             "action": "add collaborator",
             "identifier": "add_collaborator",
             "description": "Add user as a collaborator to repo",
-            "verbose": "For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to the user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to user to join as a collaborator. If an invite is already sent to the user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.",
+            "verbose": "For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to the user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to the user to join as a collaborator. If an invite is already sent to the user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.",
             "type": "generic",
             "undo": "remove collaborator",
             "read_only": false,
@@ -25234,10 +24912,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.invitee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.invitee.html_url",
@@ -25400,10 +25075,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.inviter.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.inviter.html_url",
@@ -25572,7 +25244,7 @@
         {
             "action": "remove member",
             "identifier": "remove_member",
-            "description": "Remove user from team",
+            "description": "Remove user from the team",
             "verbose": "Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
             "type": "generic",
             "undo": "add member",
@@ -26381,9 +26053,6 @@
                 {
                     "data_path": "action_result.data.*.homepage",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -26469,10 +26138,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.language",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.languages_url",
@@ -26545,9 +26211,6 @@
                 {
                     "data_path": "action_result.data.*.mirror_url",
                     "data_type": "string",
-                    "example_values": [
-                        ""
-                    ],
                     "contains": [
                         "url"
                     ]
@@ -26642,10 +26305,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.owner.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.owner.html_url",
@@ -27283,10 +26943,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignee.html_url",
@@ -27449,10 +27106,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.html_url",
@@ -27810,10 +27464,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -28179,10 +27830,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -28466,10 +28114,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignee.html_url",
@@ -28634,10 +28279,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.html_url",
@@ -28959,10 +28601,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -29092,10 +28731,7 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -29187,11 +28823,9 @@
                     "example_values": [
                         "repoowner"
                     ],
-                    "column_name": "Assignees",
                     "contains": [
                         "github username"
-                    ],
-                    "column_order": 4
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.issue_body",
@@ -29212,9 +28846,7 @@
                     "data_type": "string",
                     "example_values": [
                         "test,multi-label,non-urgent"
-                    ],
-                    "column_name": "Labels",
-                    "column_order": 5
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.repo_name",
@@ -29222,8 +28854,6 @@
                     "contains": [
                         "github repo"
                     ],
-                    "column_name": "Repo Name",
-                    "column_order": 6,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -29235,8 +28865,6 @@
                         "github repo owner",
                         "github username"
                     ],
-                    "column_name": "Repo Owner",
-                    "column_order": 7,
                     "example_values": [
                         "repoowner"
                     ]
@@ -29293,10 +28921,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignee.html_url",
@@ -29459,10 +29084,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.html_url",
@@ -29585,9 +29207,7 @@
                     "data_type": "string",
                     "example_values": [
                         "This is what the body looks like when testing from the app"
-                    ],
-                    "column_name": "Issue Body",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.closed_at",
@@ -29731,9 +29351,7 @@
                     ],
                     "contains": [
                         "github issue id"
-                    ],
-                    "column_name": "Issue Number",
-                    "column_order": 0
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.repository_url",
@@ -29750,18 +29368,14 @@
                     "data_type": "string",
                     "example_values": [
                         "open"
-                    ],
-                    "column_name": "Issue State",
-                    "column_order": 3
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.title",
                     "data_type": "string",
                     "example_values": [
                         "I am testing from the app"
-                    ],
-                    "column_name": "Issue Title",
-                    "column_order": 1
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.updated_at",
@@ -29832,10 +29446,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -29986,7 +29597,10 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 12,
+                "height": 5,
+                "view": "github_view.display_view"
             },
             "versions": "EQ(*)"
         },
@@ -30207,10 +29821,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignee.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignee.html_url",
@@ -30373,10 +29984,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.assignees.*.html_url",
@@ -30560,10 +30168,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.closed_by.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.closed_by.html_url",
@@ -30903,10 +30508,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -31292,10 +30894,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.user.gravatar_id",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -31607,10 +31206,7 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "summary.total_objects",

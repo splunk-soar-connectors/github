@@ -117,32 +117,34 @@
                     </a>
                 </td>
             </tr>
-            <tr>
-                <td>Issue Number</td>
-                <td>
-                    <a class="no-word-wrap"href="javascript:;" onclick="context_menu(this, [{'contains': ['github issue id'], 'value':'{{ result.param.issue_number }}' }], 0, {{ container.id }}, null, false);">
-                        {{ result.param.issue_number }}
-                        &nbsp;
-                        <span class="fa fa-caret-down" style="font-size: smaller;"></span><br>
-                    </a>
-                </td>
-            </tr>
+            {% if result.param.issue_number %}
+                <tr>
+                    <td>Issue Number</td>
+                    <td>
+                        <a class="no-word-wrap"href="javascript:;" onclick="context_menu(this, [{'contains': ['github issue id'], 'value':'{{ result.param.issue_number }}' }], 0, {{ container.id }}, null, false);">
+                            {{ result.param.issue_number }}
+                            &nbsp;
+                            <span class="fa fa-caret-down" style="font-size: smaller;"></span><br>
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
             {% if result.param.state %}
                 <tr>
                     <td>State</td>
-                    <td>result.param.state</td>
+                    <td>{{ result.param.state }}</td>
                 </tr>
             {% endif %}
             {% if result.param.issue_title %}
                 <tr>
                     <td>Issue Title</td>
-                    <td>result.param.issue_title</td>
+                    <td>{{ result.param.issue_title }}</td>
                 </tr>
             {% endif %}
             {% if result.param.issue_body %}
                 <tr>
                     <td>Issue Body</td>
-                    <td>result.param.issue_body</td>
+                    <td>{{ result.param.issue_body }}</td>
                 </tr>
             {% endif %}
             {% if result.param.assignees %}
@@ -160,13 +162,13 @@
             {% if result.param.labels %}
                 <tr>
                     <td>Labels</td>
-                    <td>result.param.labels</td>
+                    <td>{{ result.param.labels }}</td>
                 </tr>
             {% endif %}
             {% if result.param.to_empty %}
                 <tr>
                     <td>To Empty</td>
-                    <td>result.param.to_empty</td>
+                    <td>{{ result.param.to_empty }}</td>
                 </tr>
             {% endif %}
         </table>

@@ -1,4 +1,4 @@
-# File: github_connector.py
+# File: github_view.py
 # Copyright (c) 2019-2020 Splunk Inc.
 #
 # SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
@@ -48,5 +48,5 @@ def display_view(provides, all_app_runs, context):
     if provides == 'list issues':
         return 'github_list_issues.html'
 
-    if provides == 'update issue':
+    if provides in ['update issue', 'create issue']:
         return 'github_update_issue.html'
