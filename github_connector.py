@@ -345,7 +345,7 @@ class GithubConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
-    def _handle_py_ver_compat_for_input_str(self, input_str):
+    def _handle_py_ver_compat_for_input_str(self, input_str, always_encode=False):
         """
         This method returns the encoded|original string based on the Python version.
         :param input_str: Input string to be processed
@@ -353,7 +353,7 @@ class GithubConnector(BaseConnector):
         """
 
         try:
-            if input_str and self._python_version == 2:
+            if input_str and (self._python_version == 2 or always_encode):
                 input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
         except:
             self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
@@ -441,7 +441,7 @@ class GithubConnector(BaseConnector):
         if self._username and self._password:
             ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, data=data,
                                                      params=params, verify=verify, method=method,
-                                                     auth=(self._username, self._password))
+                                                     auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password))
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
@@ -505,7 +505,7 @@ class GithubConnector(BaseConnector):
         if self._username and self._password:
             # make rest call
             ret_val, _ = self._make_rest_call(url=url, action_result=action_result,
-                                              auth=(self._username, self._password))
+                                              auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password))
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
@@ -642,7 +642,7 @@ class GithubConnector(BaseConnector):
         # Scenario -
         #
         # If the corresponding state file doesn't have correct owner, owner group or permissions,
-        # the newely generated token is not being saved to state file and automatic workflow for token has been stopped.
+        # the newly generated token is not being saved to state file and automatic workflow for token has been stopped.
         # So we have to check that token from response and token which are saved to state file after successful generation of new token are same or not.
 
         if self._access_token != self._state.get("token", {}).get(GITHUB_ACCESS_TOKEN):
