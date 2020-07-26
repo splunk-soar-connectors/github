@@ -1,17 +1,19 @@
 # File: github_connector.py
-# Copyright (c) 2019 Splunk Inc.
+# Copyright (c) 2019-2020 Splunk Inc.
 #
 # SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
 # without a valid written license from Splunk Inc. is PROHIBITED.
 
 import json
 import os
+import sys
 import time
 import pwd
 import grp
 import requests
 from django.http import HttpResponse
 from bs4 import BeautifulSoup
+from bs4 import UnicodeDammit
 from github_consts import *
 
 # Phantom App imports
@@ -30,11 +32,13 @@ def _handle_login_redirect(request, key):
 
     asset_id = request.GET.get('asset_id')
     if not asset_id:
-        return HttpResponse('ERROR: Asset ID not found in URL')
+        return HttpResponse('ERROR: Asset ID not found in URL', content_type="text/plain", status=400)
     state = _load_app_state(asset_id)
+    if not state:
+        return HttpResponse('ERROR: Invalid asset_id', content_type="text/plain", status=400)
     url = state.get(key)
     if not url:
-        return HttpResponse('App state is invalid, {key} not found.'.format(key=key))
+        return HttpResponse('App state is invalid, {key} not found.'.format(key=key), content_type="text/plain", status=400)
     response = HttpResponse(status=302)
     response['Location'] = url
     return response
@@ -48,11 +52,23 @@ def _load_app_state(asset_id, app_connector=None):
     :return: state: Current state file as a dictionary
     """
 
-    dirpath = os.path.split(__file__)[0]
-    state_file = '{0}/{1}_state.json'.format(dirpath, asset_id)
+    asset_id = str(asset_id)
+    if not asset_id or not asset_id.isalnum():
+        if app_connector:
+            app_connector.debug_print('In _load_app_state: Invalid asset_id')
+        return {}
+
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    state_file = '{0}/{1}_state.json'.format(app_dir, asset_id)
+    real_state_file_path = os.path.realpath(state_file)
+    if not os.path.dirname(real_state_file_path) == app_dir:
+        if app_connector:
+            app_connector.debug_print('In _load_app_state: Invalid asset_id')
+        return {}
+
     state = {}
     try:
-        with open(state_file, 'r') as state_file_obj:
+        with open(real_state_file_path, 'r') as state_file_obj:
             state_file_data = state_file_obj.read()
             state = json.loads(state_file_data)
     except Exception as e:
@@ -61,11 +77,12 @@ def _load_app_state(asset_id, app_connector=None):
 
     if app_connector:
         app_connector.debug_print('Loaded state: ', state)
+
     return state
 
 
 def _save_app_state(state, asset_id, app_connector):
-    """ This functions is used to save current state in file.
+    """ This function is used to save current state in file.
 
     :param state: Dictionary which contains data to write in state file
     :param asset_id: asset_id
@@ -73,17 +90,29 @@ def _save_app_state(state, asset_id, app_connector):
     :return: status: phantom.APP_SUCCESS
     """
 
-    dirpath = os.path.split(__file__)[0]
-    state_file = '{0}/{1}_state.json'.format(dirpath, asset_id)
+    asset_id = str(asset_id)
+    if not asset_id or not asset_id.isalnum():
+        if app_connector:
+            app_connector.debug_print('In _save_app_state: Invalid asset_id')
+        return {}
+
+    app_dir = os.path.split(__file__)[0]
+    state_file = '{0}/{1}_state.json'.format(app_dir, asset_id)
+
+    real_state_file_path = os.path.realpath(state_file)
+    if not os.path.dirname(real_state_file_path) == app_dir:
+        if app_connector:
+            app_connector.debug_print('In _save_app_state: Invalid asset_id')
+        return {}
 
     if app_connector:
         app_connector.debug_print('Saving state: ', state)
 
     try:
-        with open(state_file, 'w+') as state_file_obj:
+        with open(real_state_file_path, 'w+') as state_file_obj:
             state_file_obj.write(json.dumps(state))
     except Exception as e:
-        print 'Unable to save state file: {0}'.format(str(e))
+        print('Unable to save state file: {0}'.format(str(e)))
 
     return phantom.APP_SUCCESS
 
@@ -97,7 +126,7 @@ def _handle_login_response(request):
 
     asset_id = request.GET.get('state')
     if not asset_id:
-        return HttpResponse('ERROR: Asset ID not found in URL\n{}'.format(json.dumps(request.GET)))
+        return HttpResponse('ERROR: Asset ID not found in URL\n{}'.format(json.dumps(request.GET)), content_type="text/plain", status=400)
 
     # Check for error in URL
     error = request.GET.get('error')
@@ -108,19 +137,19 @@ def _handle_login_response(request):
         message = 'Error: {0}'.format(error)
         if error_description:
             message = '{0} Details: {1}'.format(message, error_description)
-        return HttpResponse('Server returned {0}'.format(message))
+        return HttpResponse('Server returned {0}'.format(message), content_type="text/plain", status=400)
 
     code = request.GET.get('code')
 
     # If code is not available
     if not code:
-        return HttpResponse('Error while authenticating\n{0}'.format(json.dumps(request.GET)))
+        return HttpResponse('Error while authenticating\n{0}'.format(json.dumps(request.GET)), content_type="text/plain", status=400)
 
     state = _load_app_state(asset_id)
     state['code'] = code
     _save_app_state(state, asset_id, None)
 
-    return HttpResponse('Code received. Please close this window, the action will continue to get new token.')
+    return HttpResponse('Code received. Please close this window, the action will continue to get new token.', content_type="text/plain")
 
 
 def _handle_rest_request(request, path_parts):
@@ -132,7 +161,7 @@ def _handle_rest_request(request, path_parts):
     """
 
     if len(path_parts) < 2:
-        return HttpResponse('error: True, message: Invalid REST endpoint request')
+        return HttpResponse('error: True, message: Invalid REST endpoint request', content_type="text/plain", status=404)
 
     call_type = path_parts[1]
 
@@ -144,10 +173,12 @@ def _handle_rest_request(request, path_parts):
     if call_type == 'result':
         return_val = _handle_login_response(request)
         asset_id = request.GET.get('state')
-        if asset_id:
-            # Create file and provide permissions
+        if asset_id and asset_id.isalnum():
             app_dir = os.path.dirname(os.path.abspath(__file__))
             auth_status_file_path = '{0}/{1}_{2}'.format(app_dir, asset_id, GITHUB_TC_FILE)
+            real_auth_status_file_path = os.path.realpath(auth_status_file_path)
+            if not os.path.dirname(real_auth_status_file_path) == app_dir:
+                return HttpResponse("Error: Invalid asset_id", content_type="text/plain", status=400)
             open(auth_status_file_path, 'w').close()
             try:
                 uid = pwd.getpwnam('apache').pw_uid
@@ -158,7 +189,7 @@ def _handle_rest_request(request, path_parts):
                 pass
 
         return return_val
-    return HttpResponse('error: Invalid endpoint')
+    return HttpResponse('error: Invalid endpoint', content_type="text/plain", status=404)
 
 
 def _get_dir_name_from_app_name(app_name):
@@ -194,8 +225,7 @@ class GithubConnector(BaseConnector):
         self._oauth_token = None
         self._access_token = None
 
-    @staticmethod
-    def _process_empty_response(response, action_result):
+    def _process_empty_response(self, response, action_result):
         """ This function is used to process empty response.
 
         :param response: Response data
@@ -210,8 +240,7 @@ class GithubConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header"),
                       None)
 
-    @staticmethod
-    def _process_html_response(response, action_result):
+    def _process_html_response(self, response, action_result):
         """ This function is used to process html response.
 
         :param response: Response data
@@ -224,14 +253,19 @@ class GithubConnector(BaseConnector):
 
         try:
             soup = BeautifulSoup(response.text, "html.parser")
-            error_text = soup.text.encode('utf-8')
+
+            # Remove the script, style, footer and navigation part from the HTML message
+            for element in soup(["script", "style", "footer", "nav"]):
+                element.extract()
+
+            error_text = soup.text
             split_lines = error_text.split('\n')
             split_lines = [x.strip() for x in split_lines if x.strip()]
             error_text = '\n'.join(split_lines)
         except:
             error_text = "Cannot parse error details"
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
+        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, self._handle_py_ver_compat_for_input_str(error_text))
 
         message = message.replace('{', '{{').replace('}', '}}')
 
@@ -240,8 +274,7 @@ class GithubConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
-    @staticmethod
-    def _process_json_response(response, action_result):
+    def _process_json_response(self, response, action_result):
         """ This function is used to process json response.
 
         :param response: Response data
@@ -253,8 +286,9 @@ class GithubConnector(BaseConnector):
         try:
             resp_json = response.json()
         except Exception as e:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}"
-                                                   .format(str(e))), None)
+            error_code, error_msg = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Code: {0}. Error: {1}"
+                                                   .format(error_code, error_msg)), None)
 
         if 200 <= response.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
@@ -263,11 +297,11 @@ class GithubConnector(BaseConnector):
 
         if resp_json.get('message'):
             message = "Error from server. Status Code: {0} Data from server: {1}".format(response.status_code,
-                                                                                         resp_json['message'])
+                                                                                         self._handle_py_ver_compat_for_input_str(resp_json['message']))
 
         if not message:
             message = "Error from server. Status Code: {0} Data from server: {1}"\
-                .format(response.status_code, response.text.replace('{', '{{').replace('}', '}}'))
+                .format(response.status_code, self._handle_py_ver_compat_for_input_str(response.text.replace('{', '{{').replace('}', '}}')))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -307,9 +341,54 @@ class GithubConnector(BaseConnector):
 
         # everything else is actually an error at this point
         message = "Can't process response from server. Status Code: {0} Data from server: {1}".\
-            format(response.status_code, response.text.replace('{', '{{').replace('}', '}}'))
+            format(response.status_code, self._handle_py_ver_compat_for_input_str(response.text.replace('{', '{{').replace('}', '}}')))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
+
+    def _handle_py_ver_compat_for_input_str(self, input_str, always_encode=False):
+        """
+        This method returns the encoded|original string based on the Python version.
+        :param input_str: Input string to be processed
+        :return: input_str (Processed input string based on following logic 'input_str - Python 3; encoded input_str - Python 2')
+        """
+
+        try:
+            if input_str and (self._python_version == 2 or always_encode):
+                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
+        except:
+            self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
+
+        return input_str
+
+    def _get_error_message_from_exception(self, e):
+        """ This method is used to get appropriate error message from the exception.
+        :param e: Exception object
+        :return: error message
+        """
+
+        try:
+            if e.args:
+                if len(e.args) > 1:
+                    error_code = e.args[0]
+                    error_msg = e.args[1]
+                elif len(e.args) == 1:
+                    error_code = "Error code unavailable"
+                    error_msg = e.args[0]
+            else:
+                error_code = "Error code unavailable"
+                error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+        except:
+            error_code = "Error code unavailable"
+            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+
+        try:
+            error_msg = self._handle_py_ver_compat_for_input_str(error_msg)
+        except TypeError:
+            error_msg = "Error occurred while connecting to the GitHub server. Please check the asset configuration and|or the action parameters."
+        except:
+            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+
+        return error_code, error_msg
 
     def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None,
                         verify=True):
@@ -337,14 +416,15 @@ class GithubConnector(BaseConnector):
         try:
             request_response = request_func(url, auth=auth, data=data, headers=headers, verify=verify, params=params)
         except Exception as e:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".
-                                                   format(str(e))), resp_json)
+            error_code, error_msg = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Code: {0}. Details: {1}".
+                                                   format(error_code, error_msg)), resp_json)
 
         return self._process_response(request_response, action_result)
 
     def _handle_update_request(self, url, action_result, headers=None, data=None, params=None, verify=True,
                                method='get'):
-        """ This method is used to call maker_rest_call using different authentication methods.
+        """ This method is used to call make_rest_call using different authentication methods.
 
         :param url: REST URL that needs to be called
         :param action_result: Object of ActionResult class
@@ -361,7 +441,7 @@ class GithubConnector(BaseConnector):
         if self._username and self._password:
             ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, data=data,
                                                      params=params, verify=verify, method=method,
-                                                     auth=(self._username, self._password))
+                                                     auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password))
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
@@ -409,7 +489,7 @@ class GithubConnector(BaseConnector):
         """
 
         action_result = self.add_action_result(ActionResult(dict(param)))
-        self._state = {}
+        app_state = {}
         # If none of the config parameters are present, return error
         if not(self._username and self._password)\
            and not(self._client_id and self._client_secret)\
@@ -425,7 +505,7 @@ class GithubConnector(BaseConnector):
         if self._username and self._password:
             # make rest call
             ret_val, _ = self._make_rest_call(url=url, action_result=action_result,
-                                              auth=(self._username, self._password))
+                                              auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password))
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
@@ -451,7 +531,7 @@ class GithubConnector(BaseConnector):
 
         if self._client_id and self._client_secret:
             # If client_id and client_secret is provided, go for interactive login
-            ret_val = self._handle_interactive_login(action_result=action_result)
+            ret_val = self._handle_interactive_login(app_state=app_state, action_result=action_result)
 
             if phantom.is_fail(ret_val):
                 self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
@@ -472,7 +552,7 @@ class GithubConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_ERROR, status_message='Authentication failed')
 
-    def _handle_interactive_login(self, action_result):
+    def _handle_interactive_login(self, app_state, action_result):
         """ This function is used to handle the interactive login during test connectivity
         while client_id and client_secret is provided.
 
@@ -486,7 +566,7 @@ class GithubConnector(BaseConnector):
 
         # Append /result to create redirect_uri
         redirect_uri = '{0}/result'.format(app_rest_url)
-        self._state['redirect_uri'] = redirect_uri
+        app_state['redirect_uri'] = redirect_uri
 
         self.save_progress(GITHUB_OAUTH_URL_MSG)
         self.save_progress(redirect_uri)
@@ -496,11 +576,11 @@ class GithubConnector(BaseConnector):
         # Authorization URL used to make request for getting code which is used to generate access token
         authorization_url = GITHUB_AUTHORIZE_URL.format(client_id=self._client_id, scope=GITHUB_SCOPE, state=asset_id)
 
-        self._state['authorization_url'] = authorization_url
+        app_state['authorization_url'] = authorization_url
 
         # URL which would be shown to the user
         url_for_authorize_request = '{0}/start_oauth?asset_id={1}&'.format(app_rest_url, asset_id)
-        _save_app_state(self._state, asset_id, self)
+        _save_app_state(app_state, asset_id, self)
 
         self.save_progress(GITHUB_AUTHORIZE_USER_MSG)
         self.save_progress(url_for_authorize_request)
@@ -525,6 +605,7 @@ class GithubConnector(BaseConnector):
 
         current_code = self._state['code']
         self.save_state(self._state)
+        _save_app_state(self._state, asset_id, self)
 
         self.save_progress(GITHUB_GENERATING_ACCESS_TOKEN_MSG)
 
@@ -550,9 +631,25 @@ class GithubConnector(BaseConnector):
 
             return action_result.set_status(phantom.APP_ERROR, status_message='Error while generating access_token')
 
-        self._state = response
+        self._state["token"] = response
         self._access_token = response[GITHUB_ACCESS_TOKEN]
+
+        self.save_state(self._state)
         _save_app_state(self._state, asset_id, self)
+
+        self._state = self.load_state()
+
+        # Scenario -
+        #
+        # If the corresponding state file doesn't have correct owner, owner group or permissions,
+        # the newly generated token is not being saved to state file and automatic workflow for token has been stopped.
+        # So we have to check that token from response and token which are saved to state file after successful generation of new token are same or not.
+
+        if self._access_token != self._state.get("token", {}).get(GITHUB_ACCESS_TOKEN):
+            message = "Error occurred while saving the newly generated access token (in place of the expired token) in the state file."
+            message += " Please check the owner, owner group, and the permissions of the state file. The Phantom "
+            message += "user should have the correct access rights and ownership for the corresponding state file (refer to readme file for more information)."
+            return action_result.set_status(phantom.APP_ERROR, message)
 
         return phantom.APP_SUCCESS
 
@@ -597,7 +694,7 @@ class GithubConnector(BaseConnector):
         phantom_base_url = resp_json.get('base_url')
         if not phantom_base_url:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_BASE_URL_NOT_FOUND_MSG), None
-        return phantom.APP_SUCCESS, phantom_base_url
+        return phantom.APP_SUCCESS, phantom_base_url.rstrip("/")
 
     def _get_asset_name(self, action_result):
         """ Get name of the asset using Phantom URL.
@@ -634,7 +731,6 @@ class GithubConnector(BaseConnector):
         # wait-time while request is being granted for 105 seconds
         for _ in range(0, 35):
             self.send_progress('Waiting...')
-            self._state = _load_app_state(self.get_asset_id(), self)
             # If file is generated
             if os.path.isfile(auth_status_file_path):
                 os.unlink(auth_status_file_path)
@@ -645,6 +741,22 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, status_message='Timeout. Please try again later.')
         self.send_progress('Authenticated')
         return phantom.APP_SUCCESS
+
+    def _validate_integer(self, action_result, parameter, key, allow_zero=False):
+        try:
+            if not float(parameter).is_integer():
+                return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
+
+            parameter = int(parameter)
+        except:
+            return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
+
+        if not allow_zero and parameter <= 0:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter=key)), None
+        elif allow_zero and parameter < 0:
+            return action_result.set_status(phantom.APP_ERROR, "Please provide a valid non-negative integer value in the '{}' parameter".format(key)), None
+
+        return phantom.APP_SUCCESS, parameter
 
     def _handle_list_events(self, param):
         """ This function is used to handle list events action.
@@ -659,7 +771,7 @@ class GithubConnector(BaseConnector):
         if not(self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        username = param[GITHUB_CONFIG_USERNAME]
+        username = self._handle_py_ver_compat_for_input_str(param[GITHUB_CONFIG_USERNAME])
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_EVENTS_ENDPOINT.format(username=username))
         per_page = GITHUB_PAGINATION_MAX_SIZE
@@ -707,11 +819,13 @@ class GithubConnector(BaseConnector):
         if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        organization_name = param[GITHUB_JSON_ORGANIZATION]
+        organization_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL,
                               GITHUB_LIST_USERS_ENDPOINT.format(organization_name=organization_name))
@@ -744,10 +858,10 @@ class GithubConnector(BaseConnector):
         if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         repo = '{0}/{1}'.format(repo_owner, repo_name)
-        user = param[GITHUB_JSON_USER]
+        user = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_USER])
 
         # 2. Check if the user not a collaborator to the repo
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo))
@@ -785,7 +899,7 @@ class GithubConnector(BaseConnector):
                                                              method=GITHUB_REQUEST_DELETE)
 
                     if phantom.is_fail(ret_val):
-                        return None
+                        return action_result.get_status()
 
                     invite_deleted = True
 
@@ -826,10 +940,10 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         override = param.get(GITHUB_JSON_OVERRIDE, False)
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         repo = '{0}/{1}'.format(repo_owner, repo_name)
-        user = param[GITHUB_JSON_USER]
+        user = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_USER])
 
         # Default role is 'push' if repo role is not provided or incorrect repo role is provided by the user
         role = param.get(GITHUB_JSON_ROLE, GITHUB_REPO_ROLE_PUSH).lower()
@@ -1010,9 +1124,9 @@ class GithubConnector(BaseConnector):
         if not(self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        team = param[GITHUB_JSON_TEAM]
-        user = param[GITHUB_JSON_USER]
-        organization_name = param.get(GITHUB_JSON_ORGANIZATION)
+        team = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_TEAM])
+        user = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_USER])
+        organization_name = self._handle_py_ver_compat_for_input_str(param.get(GITHUB_JSON_ORGANIZATION))
 
         # 1. For input team check whether it is Team name or Team ID and if Team Name fetch Team ID from it
         ret_val, team_id = self._verify_and_get_team_id(team=team, action_result=action_result,
@@ -1140,11 +1254,11 @@ class GithubConnector(BaseConnector):
         if not(self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        team = param[GITHUB_JSON_TEAM]
-        user = param[GITHUB_JSON_USER]
-        organization_name = param.get(GITHUB_JSON_ORGANIZATION)
+        team = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_TEAM])
+        user = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_USER])
+        organization_name = self._handle_py_ver_compat_for_input_str(param.get(GITHUB_JSON_ORGANIZATION))
         # Default role is 'member' if role is not provided or incorrect role is provided by the user
-        role = param.get(GITHUB_JSON_ROLE, GITHUB_ROLE_MEMBER)
+        role = self._handle_py_ver_compat_for_input_str(param.get(GITHUB_JSON_ROLE, GITHUB_ROLE_MEMBER))
 
         # 1. For input team check whether it is Team name or Team ID and if Team Name fetch Team ID from it
         ret_val, team_id = self._verify_and_get_team_id(team=team, action_result=action_result, org_name=organization_name)
@@ -1210,11 +1324,13 @@ class GithubConnector(BaseConnector):
 
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_TEAMS_ENDPOINT.
-                              format(org_name=param[GITHUB_JSON_ORGANIZATION]))
+                              format(org_name=self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])))
 
         list_teams = self._get_list_response(url, action_result, limit=limit)
 
@@ -1292,11 +1408,13 @@ class GithubConnector(BaseConnector):
 
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_REPOS_ENDPOINT
-                              .format(org_name=param[GITHUB_JSON_ORGANIZATION]))
+                              .format(org_name=self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])))
 
         repo_list = self._get_list_response(url, action_result, limit=limit)
 
@@ -1328,8 +1446,10 @@ class GithubConnector(BaseConnector):
 
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_ORGANIZATIONS_ENDPOINT)
 
@@ -1354,12 +1474,14 @@ class GithubConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         endpoint = GITHUB_ENDPOINT_ISSUES.format(
             repo_owner=repo_owner,
@@ -1388,13 +1510,19 @@ class GithubConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         limit = param.get('limit')
 
-        if (limit and not str(limit).isdigit()) or limit == 0:
-            return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter='limit'))
+        if limit is not None:
+            ret_val, limit = self._validate_integer(action_result, limit, "limit")
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         endpoint = GITHUB_ENDPOINT_COMMENTS.format(
             repo_owner=repo_owner,
@@ -1423,9 +1551,13 @@ class GithubConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
+
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
             repo_owner=repo_owner,
@@ -1455,8 +1587,8 @@ class GithubConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_title = param[GITHUB_JSON_ISSUE_TITLE]
 
         issue_body = param.get(GITHUB_JSON_ISSUE_BODY, '')
@@ -1503,12 +1635,16 @@ class GithubConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         issue_title = param.get(GITHUB_JSON_ISSUE_TITLE)
         issue_state = param.get(GITHUB_JSON_STATE)
         issue_body = param.get(GITHUB_JSON_ISSUE_BODY)
+
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         # assignees should be comma-separated
         assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
@@ -1572,10 +1708,14 @@ class GithubConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
         comment_body = param[GITHUB_JSON_COMMENT_BODY]
+
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         request_data = {
             "body": comment_body
@@ -1609,12 +1749,16 @@ class GithubConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        repo_owner = param[GITHUB_JSON_REPO_OWNER]
-        repo_name = param[GITHUB_JSON_REPO_NAME]
+        repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
+        repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
 
+        ret_val, issue_number = self._validate_integer(action_result, issue_number, "issue number")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
         # labels should be comma-separated list
-        labels = [x.strip() for x in param[GITHUB_JSON_LABELS].split(',')]
+        labels = [x.strip() for x in self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_LABELS]).split(',')]
         labels = list(filter(None, labels))
 
         request_data = {
@@ -1637,7 +1781,7 @@ class GithubConnector(BaseConnector):
 
         action_result.update_data(response_json)
 
-        return action_result.set_status(phantom.APP_SUCCESS)
+        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_LABEL_ADDED_MSG.format(labels=",".join(labels), issue_number=issue_number))
 
     def handle_action(self, param):
         """ This function gets current action identifier and calls member function of its own to handle the action.
@@ -1670,7 +1814,7 @@ class GithubConnector(BaseConnector):
         action = self.get_action_identifier()
         action_execution_status = phantom.APP_SUCCESS
 
-        if action in action_mapping.keys():
+        if action in list(action_mapping.keys()):
             action_function = action_mapping[action]
             action_execution_status = action_function(param)
 
@@ -1688,13 +1832,19 @@ class GithubConnector(BaseConnector):
 
         config = self.get_config()
 
-        self._username = config.get(GITHUB_CONFIG_USERNAME)
+        # Fetching the Python major version
+        try:
+            self._python_version = int(sys.version_info[0])
+        except:
+            return self.set_status(phantom.APP_ERROR, "Error occurred while getting the Phantom server's Python major version.")
+
+        self._username = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_USERNAME))
         self._password = config.get(GITHUB_CONFIG_PASSWORD)
-        self._client_id = config.get(GITHUB_CONFIG_CLIENT_ID)
+        self._client_id = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_CLIENT_ID))
         self._client_secret = config.get(GITHUB_CONFIG_CLIENT_SECRET)
         self._oauth_token = config.get(GITHUB_CONFIG_AUTH_TOKEN)
 
-        self._access_token = self._state.get(GITHUB_ACCESS_TOKEN)
+        self._access_token = self._state.get("token", {}).get(GITHUB_ACCESS_TOKEN)
         return phantom.APP_SUCCESS
 
     def finalize(self):
@@ -1707,6 +1857,7 @@ class GithubConnector(BaseConnector):
         """
 
         self.save_state(self._state)
+        _save_app_state(self._state, self.get_asset_id(), self)
         return phantom.APP_SUCCESS
 
 
@@ -1738,7 +1889,7 @@ if __name__ == '__main__':
     if username and password:
         login_url = BaseConnector._get_phantom_base_url() + "login"
         try:
-            print "Accessing the Login page"
+            print("Accessing the Login page")
             r = requests.get(login_url, verify=False)
             csrftoken = r.cookies['csrftoken']
 
@@ -1751,11 +1902,11 @@ if __name__ == '__main__':
             headers['Cookie'] = 'csrftoken={0}'.format(csrftoken)
             headers['Referer'] = login_url
 
-            print "Logging into Platform to get the session id"
+            print("Logging into Platform to get the session id")
             r2 = requests.post(login_url, verify=False, data=data, headers=headers)
             session_id = r2.cookies['sessionid']
         except Exception as e:
-            print "Unable to get session id from the platform. Error: {0}".format(str(e))
+            print("Unable to get session id from the platform. Error: {0}".format(str(e)))
             exit(1)
 
     with open(args.input_test_json) as f:
@@ -1771,6 +1922,6 @@ if __name__ == '__main__':
             connector._set_csrf_info(csrftoken, headers['Referer'])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
-        print json.dumps(json.loads(ret_val), indent=4)
+        print(json.dumps(json.loads(ret_val), indent=4))
 
     exit(0)
