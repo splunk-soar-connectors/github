@@ -9,13 +9,13 @@
     "product_name": "GitHub",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2019-2020 Splunk Inc.",
-    "app_version": "2.0.1",
+    "license": "Copyright (c) 2019-2021 Splunk Inc.",
+    "app_version": "2.0.4",
     "python_version": "3",
-    "utctime_updated": "2020-07-26T23:16:16.000000Z",
+    "utctime_updated": "2021-04-14T17:40:36.000000Z",
     "package_name": "phantom_github",
     "main_module": "github_connector.py",
-    "min_phantom_version": "4.8.24304",
+    "min_phantom_version": "4.9.39220",
     "app_wizard_version": "1.0.0",
     "latest_tested_versions": [
         "v1 2020-07-20"
@@ -28056,7 +28056,7 @@
                         "github repo owner",
                         "github username"
                     ],
-                    "column_name": "Repo Name",
+                    "column_name": "Repo Owner",
                     "column_order": 6,
                     "example_values": [
                         "repoowner"
