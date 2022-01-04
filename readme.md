@@ -23,7 +23,7 @@ This app supports three types of authentication:
 ### Basic authentication
 
 To use basic authentication, provide the username and password of your GitHub account in
-**username** and **password** fields of asset configuration. Click save and run test connectivity.  
+**username** and **password** fields of asset configuration. Click save and run test connectivity.
 
 ### Using the personal access token
 
@@ -35,7 +35,7 @@ credentials.
 3.  In the left sidebar, click **Personal access tokens**
 4.  Click **Generate new token**
 5.  Provide any descriptive name to the token
-6.  Select the following checkboxes:  
+6.  Select the following checkboxes:
     -   repo
     -   admin: org
     -   user
@@ -60,10 +60,10 @@ credentials.
 8.  Click on Register application
 9.  Get **Client ID** and **Client Secret**
 
-  
+
 While creating the asset for this authentication method, provide the Client ID and Client Secret
 generated during previous steps in **client_id** and **client_secret** field of asset configuration
-and click on Save.  
+and click on Save.
 A new field called **POST incoming for GitHub to this location** will appear in the **Asset
 Settings** tab. Take the URL found in this field and place it in the **Authorization callback URL**
 field of your registered app on the GitHub page. To this URL, add **/result** at the end. After
@@ -76,7 +76,7 @@ Once again, click save.
 ## Method to run test connectivity
 
 For the Basic Authentication and Personal Access Token method of authentication, you just need to
-click the **TEST CONNECTIVITY** button.  
+click the **TEST CONNECTIVITY** button.
 For the OAuth authentication method, Click on the **TEST CONNECTIVITY** button, a window will pop up
 and display a URL. Navigate to this URL in a separate browser tab. This new tab will redirect to the
 GitHub login page. Log in using your GitHub account. After logging in, review the requested
