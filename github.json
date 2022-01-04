@@ -12,6 +12,7 @@
     "license": "Copyright (c) 2019-2022 Splunk Inc.",
     "app_version": "2.0.6",
     "python_version": "3",
+    "fips_compliant": true,
     "utctime_updated": "2021-04-28T23:08:45.000000Z",
     "package_name": "phantom_github",
     "main_module": "github_connector.py",
