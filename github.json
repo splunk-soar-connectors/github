@@ -27686,7 +27686,7 @@
                         "github repo"
                     ],
                     "column_name": "Repo Name",
-                    "column_order": 1,
+                    "column_order": 0,
                     "example_values": [
                         "TestingAPI"
                     ]
@@ -27699,7 +27699,7 @@
                         "github username"
                     ],
                     "column_name": "Repo Owner",
-                    "column_order": 2,
+                    "column_order": 1,
                     "example_values": [
                         "repoowner"
                     ]
@@ -27718,7 +27718,7 @@
                         "I am writing a comment to this issue"
                     ],
                     "column_name": "Comment Body",
-                    "column_order": 4
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.created_at",
@@ -27859,7 +27859,7 @@
                         "github username"
                     ],
                     "column_name": "User",
-                    "column_order": 3
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.user.node_id",
