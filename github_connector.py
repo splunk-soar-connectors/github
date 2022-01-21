@@ -1,25 +1,32 @@
 # File: github_connector.py
-# Copyright (c) 2019-2021 Splunk Inc.
 #
-# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
-# without a valid written license from Splunk Inc. is PROHIBITED.
-
+# Copyright (c) 2019-2022 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+import grp
 import json
 import os
+import pwd
 import sys
 import time
-import pwd
-import grp
-import requests
-from django.http import HttpResponse
-from bs4 import BeautifulSoup
-from bs4 import UnicodeDammit
-from github_consts import *
 
-# Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
+import requests
+from bs4 import BeautifulSoup, UnicodeDammit
+from django.http import HttpResponse
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from github_consts import *
 
 
 def _handle_login_redirect(request, key):
@@ -297,7 +304,7 @@ class GithubConnector(BaseConnector):
 
         if resp_json.get('message'):
             message = "Error from server. Status Code: {0} Data from server: {1}".format(response.status_code,
-                                                                                         self._handle_py_ver_compat_for_input_str(resp_json['message']))
+                self._handle_py_ver_compat_for_input_str(resp_json['message']))
 
         if not message:
             message = "Error from server. Status Code: {0} Data from server: {1}"\
@@ -384,7 +391,8 @@ class GithubConnector(BaseConnector):
         try:
             error_msg = self._handle_py_ver_compat_for_input_str(error_msg)
         except TypeError:
-            error_msg = "Error occurred while connecting to the GitHub server. Please check the asset configuration and|or the action parameters."
+            error_msg = "Error occurred while connecting to the GitHub server. " \
+                "Please check the asset configuration and|or the action parameters."
         except:
             error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
@@ -441,7 +449,8 @@ class GithubConnector(BaseConnector):
         if self._username and self._password:
             ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, data=data,
                                                      params=params, verify=verify, method=method,
-                                                     auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password))
+                                                     auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True),
+                                                     self._password))
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
@@ -505,7 +514,8 @@ class GithubConnector(BaseConnector):
         if self._username and self._password:
             # make rest call
             ret_val, _ = self._make_rest_call(url=url, action_result=action_result,
-                                              auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password))
+                                              auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True),
+                                              self._password))
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
@@ -643,12 +653,14 @@ class GithubConnector(BaseConnector):
         #
         # If the corresponding state file doesn't have correct owner, owner group or permissions,
         # the newly generated token is not being saved to state file and automatic workflow for token has been stopped.
-        # So we have to check that token from response and token which are saved to state file after successful generation of new token are same or not.
+        # So we have to check that token from response and token which are saved to state file
+        # after successful generation of new token are same or not.
 
         if self._access_token != self._state.get("token", {}).get(GITHUB_ACCESS_TOKEN):
             message = "Error occurred while saving the newly generated access token (in place of the expired token) in the state file."
             message += " Please check the owner, owner group, and the permissions of the state file. The Phantom "
-            message += "user should have the correct access rights and ownership for the corresponding state file (refer to readme file for more information)."
+            message += "user should have the correct access rights and ownership "
+            message += "for the corresponding state file (refer to readme file for more information)."
             return action_result.set_status(phantom.APP_ERROR, message)
 
         return phantom.APP_SUCCESS
@@ -745,7 +757,8 @@ class GithubConnector(BaseConnector):
     def _validate_integer(self, action_result, parameter, key, allow_zero=False):
         try:
             if not float(parameter).is_integer():
-                return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
+                return action_result.set_status(phantom.APP_ERROR,
+                    "Please provide a valid integer value in the '{}' parameter".format(key)), None
 
             parameter = int(parameter)
         except:
@@ -754,7 +767,8 @@ class GithubConnector(BaseConnector):
         if not allow_zero and parameter <= 0:
             return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter=key)), None
         elif allow_zero and parameter < 0:
-            return action_result.set_status(phantom.APP_ERROR, "Please provide a valid non-negative integer value in the '{}' parameter".format(key)), None
+            return action_result.set_status(phantom.APP_ERROR,
+                "Please provide a valid non-negative integer value in the '{}' parameter".format(key)), None
 
         return phantom.APP_SUCCESS, parameter
 
@@ -1616,7 +1630,8 @@ class GithubConnector(BaseConnector):
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
+            method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -1689,7 +1704,8 @@ class GithubConnector(BaseConnector):
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_PATCH, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
+            method=GITHUB_REQUEST_PATCH, data=json.dumps(request_data))
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -1730,7 +1746,8 @@ class GithubConnector(BaseConnector):
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
+            method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -1774,7 +1791,8 @@ class GithubConnector(BaseConnector):
         url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
+            method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -1863,8 +1881,9 @@ class GithubConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
