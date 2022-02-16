@@ -13,9 +13,9 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 GITHUB_CONFIG_USERNAME = 'username'
-GITHUB_CONFIG_PASSWORD = 'password'
+GITHUB_CONFIG_PASSWORD = 'password'  # pragma: allowlist secret
 GITHUB_CONFIG_CLIENT_ID = 'client_id'
-GITHUB_CONFIG_CLIENT_SECRET = 'client_secret'
+GITHUB_CONFIG_CLIENT_SECRET = 'client_secret'  # pragma: allowlist secret
 GITHUB_CONFIG_AUTH_TOKEN = 'personal_access_token'
 GITHUB_ACCESS_TOKEN = 'access_token'
 GITHUB_JSON_REPO_OWNER = 'repo_owner'
