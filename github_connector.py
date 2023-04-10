@@ -1,6 +1,6 @@
 # File: github_connector.py
 #
-# Copyright (c) 2019-2022 Splunk Inc.
+# Copyright (c) 2019-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -293,9 +293,9 @@ class GithubConnector(BaseConnector):
         try:
             resp_json = response.json()
         except Exception as e:
-            error_code, error_msg = self._get_error_message_from_exception(e)
+            error_code, error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Code: {0}. Error: {1}"
-                                                   .format(error_code, error_msg)), None)
+                                                   .format(error_code, error_message)), None)
 
         if 200 <= response.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
@@ -377,26 +377,26 @@ class GithubConnector(BaseConnector):
             if e.args:
                 if len(e.args) > 1:
                     error_code = e.args[0]
-                    error_msg = e.args[1]
+                    error_message = e.args[1]
                 elif len(e.args) == 1:
                     error_code = "Error code unavailable"
-                    error_msg = e.args[0]
+                    error_message = e.args[0]
             else:
                 error_code = "Error code unavailable"
-                error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+                error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
         except:
             error_code = "Error code unavailable"
-            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+            error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
         try:
-            error_msg = self._handle_py_ver_compat_for_input_str(error_msg)
+            error_message = self._handle_py_ver_compat_for_input_str(error_message)
         except TypeError:
-            error_msg = "Error occurred while connecting to the GitHub server. " \
+            error_message = "Error occurred while connecting to the GitHub server. " \
                 "Please check the asset configuration and|or the action parameters."
         except:
-            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+            error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
-        return error_code, error_msg
+        return error_code, error_message
 
     def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None,
                         verify=True):
@@ -424,9 +424,9 @@ class GithubConnector(BaseConnector):
         try:
             request_response = request_func(url, auth=auth, data=data, headers=headers, verify=verify, params=params)
         except Exception as e:
-            error_code, error_msg = self._get_error_message_from_exception(e)
+            error_code, error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Code: {0}. Details: {1}".
-                                                   format(error_code, error_msg)), resp_json)
+                                                   format(error_code, error_message)), resp_json)
 
         return self._process_response(request_response, action_result)
 
