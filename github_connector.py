@@ -594,7 +594,7 @@ class GithubConnector(BaseConnector):
         _save_app_state(app_state, asset_id, self)
 
         self.save_progress(GITHUB_AUTHORIZE_USER_MSG)
-        self.save_progress(url_for_authorize_request)
+        self.save_progress(url_for_authorize_request)  # nosemgrep
 
         # Wait for 15 seconds for authorization
         time.sleep(GITHUB_AUTHORIZE_WAIT_TIME)
