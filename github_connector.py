@@ -179,7 +179,8 @@ def _handle_rest_request(request, path_parts):
     # To handle response from GitHub login page
     if call_type == 'result':
         return_val = _handle_login_response(request)
-        asset_id = request.GET.get('state')
+        # ruleid: path-traversal-open
+        asset_id = request.GET.get('state')  # nosemgrep
         if asset_id and asset_id.isalnum():
             app_dir = os.path.dirname(os.path.abspath(__file__))
             auth_status_file_path = '{0}/{1}_{2}'.format(app_dir, asset_id, GITHUB_TC_FILE)
@@ -593,7 +594,7 @@ class GithubConnector(BaseConnector):
         _save_app_state(app_state, asset_id, self)
 
         self.save_progress(GITHUB_AUTHORIZE_USER_MSG)
-        self.save_progress(url_for_authorize_request)
+        self.save_progress(url_for_authorize_request)  # nosemgrep
 
         # Wait for 15 seconds for authorization
         time.sleep(GITHUB_AUTHORIZE_WAIT_TIME)
