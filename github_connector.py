@@ -1,6 +1,6 @@
 # File: github_connector.py
 #
-# Copyright (c) 2019-2022 Splunk Inc.
+# Copyright (c) 2019-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -179,7 +179,8 @@ def _handle_rest_request(request, path_parts):
     # To handle response from GitHub login page
     if call_type == 'result':
         return_val = _handle_login_response(request)
-        asset_id = request.GET.get('state')
+        # ruleid: path-traversal-open
+        asset_id = request.GET.get('state')  # nosemgrep
         if asset_id and asset_id.isalnum():
             app_dir = os.path.dirname(os.path.abspath(__file__))
             auth_status_file_path = '{0}/{1}_{2}'.format(app_dir, asset_id, GITHUB_TC_FILE)
@@ -293,9 +294,9 @@ class GithubConnector(BaseConnector):
         try:
             resp_json = response.json()
         except Exception as e:
-            error_code, error_msg = self._get_error_message_from_exception(e)
+            error_code, error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Code: {0}. Error: {1}"
-                                                   .format(error_code, error_msg)), None)
+                                                   .format(error_code, error_message)), None)
 
         if 200 <= response.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
@@ -377,26 +378,26 @@ class GithubConnector(BaseConnector):
             if e.args:
                 if len(e.args) > 1:
                     error_code = e.args[0]
-                    error_msg = e.args[1]
+                    error_message = e.args[1]
                 elif len(e.args) == 1:
                     error_code = "Error code unavailable"
-                    error_msg = e.args[0]
+                    error_message = e.args[0]
             else:
                 error_code = "Error code unavailable"
-                error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+                error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
         except:
             error_code = "Error code unavailable"
-            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+            error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
         try:
-            error_msg = self._handle_py_ver_compat_for_input_str(error_msg)
+            error_message = self._handle_py_ver_compat_for_input_str(error_message)
         except TypeError:
-            error_msg = "Error occurred while connecting to the GitHub server. " \
+            error_message = "Error occurred while connecting to the GitHub server. " \
                 "Please check the asset configuration and|or the action parameters."
         except:
-            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
+            error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
-        return error_code, error_msg
+        return error_code, error_message
 
     def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None,
                         verify=True):
@@ -424,9 +425,9 @@ class GithubConnector(BaseConnector):
         try:
             request_response = request_func(url, auth=auth, data=data, headers=headers, verify=verify, params=params)
         except Exception as e:
-            error_code, error_msg = self._get_error_message_from_exception(e)
+            error_code, error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Code: {0}. Details: {1}".
-                                                   format(error_code, error_msg)), resp_json)
+                                                   format(error_code, error_message)), resp_json)
 
         return self._process_response(request_response, action_result)
 
@@ -593,7 +594,7 @@ class GithubConnector(BaseConnector):
         _save_app_state(app_state, asset_id, self)
 
         self.save_progress(GITHUB_AUTHORIZE_USER_MSG)
-        self.save_progress(url_for_authorize_request)
+        self.save_progress(url_for_authorize_request)  # nosemgrep
 
         # Wait for 15 seconds for authorization
         time.sleep(GITHUB_AUTHORIZE_WAIT_TIME)
@@ -1892,12 +1893,14 @@ if __name__ == '__main__':
     argparser.add_argument('input_test_json', help='Input Test JSON file')
     argparser.add_argument('-u', '--username', help='username', required=False)
     argparser.add_argument('-p', '--password', help='password', required=False)
+    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
 
     username = args.username
     password = args.password
+    verify = args.verify
 
     if username is not None and password is None:
 
@@ -1909,7 +1912,7 @@ if __name__ == '__main__':
         login_url = BaseConnector._get_phantom_base_url() + "login"
         try:
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, verify=verify, timeout=DEFAULT_TIMEOUT)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1922,11 +1925,11 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=DEFAULT_TIMEOUT)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: {0}".format(str(e)))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -1943,4 +1946,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)

@@ -1,6 +1,6 @@
 # File: github_consts.py
 #
-# Copyright (c) 2019-2022 Splunk Inc.
+# Copyright (c) 2019-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 GITHUB_CONFIG_USERNAME = 'username'
-GITHUB_CONFIG_PASSWORD = 'password'
+GITHUB_CONFIG_PASSWORD = 'password'  # pragma: allowlist secret
 GITHUB_CONFIG_CLIENT_ID = 'client_id'
-GITHUB_CONFIG_CLIENT_SECRET = 'client_secret'
+GITHUB_CONFIG_CLIENT_SECRET = 'client_secret'  # pragma: allowlist secret
 GITHUB_CONFIG_AUTH_TOKEN = 'personal_access_token'
 GITHUB_ACCESS_TOKEN = 'access_token'
 GITHUB_JSON_REPO_OWNER = 'repo_owner'
@@ -131,3 +131,4 @@ GITHUB_SCOPE = 'admin:org, user'
 GITHUB_PAGINATION_MAX_SIZE = 100
 GITHUB_TC_STATUS_SLEEP = 3
 GITHUB_AUTHORIZE_WAIT_TIME = 15
+DEFAULT_TIMEOUT = 30  # seconds
