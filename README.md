@@ -2,7 +2,7 @@
 # GitHub
 
 Publisher: Splunk  
-Connector Version: 2.1.0  
+Connector Version: 2.1.1  
 Product Vendor: Microsoft  
 Product Name: GitHub  
 Product Version Supported (regex): ".\*"  
