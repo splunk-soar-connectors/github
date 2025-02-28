@@ -9,14 +9,14 @@
     "product_name": "GitHub",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2019-2023 Splunk Inc.",
+    "license": "Copyright (c) 2019-2025 Splunk Inc.",
     "app_version": "2.1.1",
     "python_version": "3",
     "fips_compliant": true,
     "utctime_updated": "2021-04-28T23:08:45.000000Z",
     "package_name": "phantom_github",
     "main_module": "github_connector.py",
-    "min_phantom_version": "5.5.0",
+    "min_phantom_version": "6.3.0",
     "app_wizard_version": "1.0.0",
     "latest_tested_versions": [
         "v1 2023-04-10"
@@ -31231,16 +31231,7 @@
         }
     ],
     "pip_dependencies": {
-        "wheel": [
-            {
-                "module": "beautifulsoup4",
-                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
-            },
-            {
-                "module": "soupsieve",
-                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
-            }
-        ]
+        "wheel": []
     },
     "pip39_dependencies": {
         "wheel": [
