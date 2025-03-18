@@ -1,6 +1,6 @@
 # File: github_connector.py
 #
-# Copyright (c) 2019-2023 Splunk Inc.
+# Copyright (c) 2019-2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,29 +30,29 @@ from github_consts import *
 
 
 def _handle_login_redirect(request, key):
-    """ This function is used to redirect login request to GitHub login page.
+    """This function is used to redirect login request to GitHub login page.
 
     :param request: Data given to REST endpoint
     :param key: Key to search in state file
     :return: response authorization_url/admin_consent_url
     """
 
-    asset_id = request.GET.get('asset_id')
+    asset_id = request.GET.get("asset_id")
     if not asset_id:
-        return HttpResponse('ERROR: Asset ID not found in URL', content_type="text/plain", status=400)
+        return HttpResponse("ERROR: Asset ID not found in URL", content_type="text/plain", status=400)
     state = _load_app_state(asset_id)
     if not state:
-        return HttpResponse('ERROR: Invalid asset_id', content_type="text/plain", status=400)
+        return HttpResponse("ERROR: Invalid asset_id", content_type="text/plain", status=400)
     url = state.get(key)
     if not url:
-        return HttpResponse('App state is invalid, {key} not found.'.format(key=key), content_type="text/plain", status=400)
+        return HttpResponse(f"App state is invalid, {key} not found.", content_type="text/plain", status=400)
     response = HttpResponse(status=302)
-    response['Location'] = url
+    response["Location"] = url
     return response
 
 
 def _load_app_state(asset_id, app_connector=None):
-    """ This function is used to load the current state file.
+    """This function is used to load the current state file.
 
     :param asset_id: asset_id
     :param app_connector: Object of app_connector class
@@ -62,34 +62,34 @@ def _load_app_state(asset_id, app_connector=None):
     asset_id = str(asset_id)
     if not asset_id or not asset_id.isalnum():
         if app_connector:
-            app_connector.debug_print('In _load_app_state: Invalid asset_id')
+            app_connector.debug_print("In _load_app_state: Invalid asset_id")
         return {}
 
     app_dir = os.path.dirname(os.path.abspath(__file__))
-    state_file = '{0}/{1}_state.json'.format(app_dir, asset_id)
+    state_file = f"{app_dir}/{asset_id}_state.json"
     real_state_file_path = os.path.abspath(state_file)
     if not os.path.dirname(real_state_file_path) == app_dir:
         if app_connector:
-            app_connector.debug_print('In _load_app_state: Invalid asset_id')
+            app_connector.debug_print("In _load_app_state: Invalid asset_id")
         return {}
 
     state = {}
     try:
-        with open(real_state_file_path, 'r') as state_file_obj:
+        with open(real_state_file_path) as state_file_obj:
             state_file_data = state_file_obj.read()
             state = json.loads(state_file_data)
     except Exception as e:
         if app_connector:
-            app_connector.debug_print('In _load_app_state: Exception: {0}'.format(str(e)))
+            app_connector.debug_print(f"In _load_app_state: Exception: {e!s}")
 
     if app_connector:
-        app_connector.debug_print('Loaded state: ', state)
+        app_connector.debug_print("Loaded state: ", state)
 
     return state
 
 
 def _save_app_state(state, asset_id, app_connector):
-    """ This function is used to save current state in file.
+    """This function is used to save current state in file.
 
     :param state: Dictionary which contains data to write in state file
     :param asset_id: asset_id
@@ -100,67 +100,67 @@ def _save_app_state(state, asset_id, app_connector):
     asset_id = str(asset_id)
     if not asset_id or not asset_id.isalnum():
         if app_connector:
-            app_connector.debug_print('In _save_app_state: Invalid asset_id')
+            app_connector.debug_print("In _save_app_state: Invalid asset_id")
         return {}
 
     app_dir = os.path.split(__file__)[0]
-    state_file = '{0}/{1}_state.json'.format(app_dir, asset_id)
+    state_file = f"{app_dir}/{asset_id}_state.json"
 
     real_state_file_path = os.path.abspath(state_file)
     if not os.path.dirname(real_state_file_path) == app_dir:
         if app_connector:
-            app_connector.debug_print('In _save_app_state: Invalid asset_id')
+            app_connector.debug_print("In _save_app_state: Invalid asset_id")
         return {}
 
     if app_connector:
-        app_connector.debug_print('Saving state: ', state)
+        app_connector.debug_print("Saving state: ", state)
 
     try:
-        with open(real_state_file_path, 'w+') as state_file_obj:
+        with open(real_state_file_path, "w+") as state_file_obj:
             state_file_obj.write(json.dumps(state))
     except Exception as e:
-        print('Unable to save state file: {0}'.format(str(e)))
+        print(f"Unable to save state file: {e!s}")
 
     return phantom.APP_SUCCESS
 
 
 def _handle_login_response(request):
-    """ This function is used to get the login response of authorization request from GitHub login page.
+    """This function is used to get the login response of authorization request from GitHub login page.
 
     :param request: Data given to REST endpoint
     :return: HttpResponse. The response displayed on authorization URL page
     """
 
-    asset_id = request.GET.get('state')
+    asset_id = request.GET.get("state")
     if not asset_id:
-        return HttpResponse('ERROR: Asset ID not found in URL\n{}'.format(json.dumps(request.GET)), content_type="text/plain", status=400)
+        return HttpResponse(f"ERROR: Asset ID not found in URL\n{json.dumps(request.GET)}", content_type="text/plain", status=400)
 
     # Check for error in URL
-    error = request.GET.get('error')
-    error_description = request.GET.get('error_description')
+    error = request.GET.get("error")
+    error_description = request.GET.get("error_description")
 
     # If there is an error in response
     if error:
-        message = 'Error: {0}'.format(error)
+        message = f"Error: {error}"
         if error_description:
-            message = '{0} Details: {1}'.format(message, error_description)
-        return HttpResponse('Server returned {0}'.format(message), content_type="text/plain", status=400)
+            message = f"{message} Details: {error_description}"
+        return HttpResponse(f"Server returned {message}", content_type="text/plain", status=400)
 
-    code = request.GET.get('code')
+    code = request.GET.get("code")
 
     # If code is not available
     if not code:
-        return HttpResponse('Error while authenticating\n{0}'.format(json.dumps(request.GET)), content_type="text/plain", status=400)
+        return HttpResponse(f"Error while authenticating\n{json.dumps(request.GET)}", content_type="text/plain", status=400)
 
     state = _load_app_state(asset_id)
-    state['code'] = code
+    state["code"] = code
     _save_app_state(state, asset_id, None)
 
-    return HttpResponse('Code received. Please close this window, the action will continue to get new token.', content_type="text/plain")
+    return HttpResponse("Code received. Please close this window, the action will continue to get new token.", content_type="text/plain")
 
 
 def _handle_rest_request(request, path_parts):
-    """ Handle requests for authorization.
+    """Handle requests for authorization.
 
     :param request: Data given to REST endpoint
     :param path_parts: Parts of the URL passed
@@ -168,49 +168,49 @@ def _handle_rest_request(request, path_parts):
     """
 
     if len(path_parts) < 2:
-        return HttpResponse('error: True, message: Invalid REST endpoint request', content_type="text/plain", status=404)
+        return HttpResponse("error: True, message: Invalid REST endpoint request", content_type="text/plain", status=404)
 
     call_type = path_parts[1]
 
     # To handle authorize request in test connectivity action
-    if call_type == 'start_oauth':
-        return _handle_login_redirect(request, 'authorization_url')
+    if call_type == "start_oauth":
+        return _handle_login_redirect(request, "authorization_url")
 
     # To handle response from GitHub login page
-    if call_type == 'result':
+    if call_type == "result":
         return_val = _handle_login_response(request)
         # ruleid: path-traversal-open
-        asset_id = request.GET.get('state')  # nosemgrep
+        asset_id = request.GET.get("state")  # nosemgrep
         if asset_id and asset_id.isalnum():
             app_dir = os.path.dirname(os.path.abspath(__file__))
-            auth_status_file_path = '{0}/{1}_{2}'.format(app_dir, asset_id, GITHUB_TC_FILE)
+            auth_status_file_path = f"{app_dir}/{asset_id}_{GITHUB_TC_FILE}"
             real_auth_status_file_path = os.path.abspath(auth_status_file_path)
             if not os.path.dirname(real_auth_status_file_path) == app_dir:
                 return HttpResponse("Error: Invalid asset_id", content_type="text/plain", status=400)
-            open(auth_status_file_path, 'w').close()
+            open(auth_status_file_path, "w").close()
             try:
-                uid = pwd.getpwnam('apache').pw_uid
-                gid = grp.getgrnam('phantom').gr_gid
+                uid = pwd.getpwnam("apache").pw_uid
+                gid = grp.getgrnam("phantom").gr_gid
                 os.chown(auth_status_file_path, uid, gid)
-                os.chmod(auth_status_file_path, '0664')
+                os.chmod(auth_status_file_path, "0664")
             except:
                 pass
 
         return return_val
-    return HttpResponse('error: Invalid endpoint', content_type="text/plain", status=404)
+    return HttpResponse("error: Invalid endpoint", content_type="text/plain", status=404)
 
 
 def _get_dir_name_from_app_name(app_name):
-    """ Get name of the directory for the app.
+    """Get name of the directory for the app.
 
     :param app_name: Name of the application for which directory name is required
     :return: app_name: Name of the directory for the application
     """
 
-    app_name = ''.join([x for x in app_name if x.isalnum()])
+    app_name = "".join([x for x in app_name if x.isalnum()])
     app_name = app_name.lower()
     if not app_name:
-        app_name = 'app_for_phantom'
+        app_name = "app_for_phantom"
     return app_name
 
 
@@ -220,10 +220,8 @@ class RetVal(tuple):
 
 
 class GithubConnector(BaseConnector):
-
     def __init__(self):
-
-        super(GithubConnector, self).__init__()
+        super().__init__()
 
         self._state = None
         self._username = None
@@ -234,7 +232,7 @@ class GithubConnector(BaseConnector):
         self._access_token = None
 
     def _process_empty_response(self, response, action_result):
-        """ This function is used to process empty response.
+        """This function is used to process empty response.
 
         :param response: Response data
         :param action_result: Object of Action Result
@@ -245,11 +243,10 @@ class GithubConnector(BaseConnector):
         if response.status_code in [200, 204]:
             return RetVal(phantom.APP_SUCCESS, {})
 
-        return RetVal(action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header"),
-                      None)
+        return RetVal(action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header"), None)
 
     def _process_html_response(self, response, action_result):
-        """ This function is used to process html response.
+        """This function is used to process html response.
 
         :param response: Response data
         :param action_result: Object of Action Result
@@ -267,23 +264,23 @@ class GithubConnector(BaseConnector):
                 element.extract()
 
             error_text = soup.text
-            split_lines = error_text.split('\n')
+            split_lines = error_text.split("\n")
             split_lines = [x.strip() for x in split_lines if x.strip()]
-            error_text = '\n'.join(split_lines)
+            error_text = "\n".join(split_lines)
         except:
             error_text = "Cannot parse error details"
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, self._handle_py_ver_compat_for_input_str(error_text))
+        message = f"Status Code: {status_code}. Data from server:\n{self._handle_py_ver_compat_for_input_str(error_text)}\n"
 
-        message = message.replace('{', '{{').replace('}', '}}')
+        message = message.replace("{", "{{").replace("}", "}}")
 
         if len(message) > 500:
-            message = 'Error while connecting to the server. Please check the asset credentials.'
+            message = "Error while connecting to the server. Please check the asset credentials."
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_json_response(self, response, action_result):
-        """ This function is used to process json response.
+        """This function is used to process json response.
 
         :param response: Response data
         :param action_result: Object of Action Result
@@ -295,26 +292,29 @@ class GithubConnector(BaseConnector):
             resp_json = response.json()
         except Exception as e:
             error_code, error_message = self._get_error_message_from_exception(e)
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse JSON response. Code: {0}. Error: {1}"
-                                                   .format(error_code, error_message)), None)
+            return RetVal(
+                action_result.set_status(phantom.APP_ERROR, f"Unable to parse JSON response. Code: {error_code}. Error: {error_message}"), None
+            )
 
         if 200 <= response.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
 
         message = None
 
-        if resp_json.get('message'):
-            message = "Error from server. Status Code: {0} Data from server: {1}".format(response.status_code,
-                self._handle_py_ver_compat_for_input_str(resp_json['message']))
+        if resp_json.get("message"):
+            message = "Error from server. Status Code: {} Data from server: {}".format(
+                response.status_code, self._handle_py_ver_compat_for_input_str(resp_json["message"])
+            )
 
         if not message:
-            message = "Error from server. Status Code: {0} Data from server: {1}"\
-                .format(response.status_code, self._handle_py_ver_compat_for_input_str(response.text.replace('{', '{{').replace('}', '}}')))
+            message = "Error from server. Status Code: {} Data from server: {}".format(
+                response.status_code, self._handle_py_ver_compat_for_input_str(response.text.replace("{", "{{").replace("}", "}}"))
+            )
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_response(self, response, action_result):
-        """ This function is used to process html response.
+        """This function is used to process html response.
 
         :param response: Response data
         :param action_result: Object of Action Result
@@ -322,25 +322,25 @@ class GithubConnector(BaseConnector):
         """
 
         # store the r_text in debug data, it will get dumped in the logs if the action fails
-        if hasattr(action_result, 'add_debug_data'):
-            action_result.add_debug_data({'r_status_code': response.status_code})
-            action_result.add_debug_data({'r_text': response.text})
-            action_result.add_debug_data({'r_headers': response.headers})
+        if hasattr(action_result, "add_debug_data"):
+            action_result.add_debug_data({"r_status_code": response.status_code})
+            action_result.add_debug_data({"r_text": response.text})
+            action_result.add_debug_data({"r_headers": response.headers})
 
         # Process each 'Content-Type' of response separately
 
         # Process a json response
-        if 'json' in response.headers.get('Content-Type', ''):
+        if "json" in response.headers.get("Content-Type", ""):
             return self._process_json_response(response, action_result)
 
-        if 'text/javascript' in response.headers.get('Content-Type', ''):
+        if "text/javascript" in response.headers.get("Content-Type", ""):
             return self._process_json_response(response, action_result)
 
         # Process an HTML response, Do this no matter what the API talks.
         # There is a high chance of a PROXY in between phantom and the rest of
         # world, in case of errors, PROXY's return HTML, this function parses
         # the error and adds it to the action_result.
-        if 'html' in response.headers.get('Content-Type', ''):
+        if "html" in response.headers.get("Content-Type", ""):
             return self._process_html_response(response, action_result)
 
         # if no content-type is to be parsed, handle an empty response
@@ -348,8 +348,9 @@ class GithubConnector(BaseConnector):
             return self._process_empty_response(response, action_result)
 
         # everything else is actually an error at this point
-        message = "Can't process response from server. Status Code: {0} Data from server: {1}".\
-            format(response.status_code, self._handle_py_ver_compat_for_input_str(response.text.replace('{', '{{').replace('}', '}}')))
+        message = "Can't process response from server. Status Code: {} Data from server: {}".format(
+            response.status_code, self._handle_py_ver_compat_for_input_str(response.text.replace("{", "{{").replace("}", "}}"))
+        )
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -362,14 +363,14 @@ class GithubConnector(BaseConnector):
 
         try:
             if input_str and (self._python_version == 2 or always_encode):
-                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
+                input_str = UnicodeDammit(input_str).unicode_markup.encode("utf-8")
         except:
             self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
 
         return input_str
 
     def _get_error_message_from_exception(self, e):
-        """ This method is used to get appropriate error message from the exception.
+        """This method is used to get appropriate error message from the exception.
         :param e: Exception object
         :return: error message
         """
@@ -392,16 +393,16 @@ class GithubConnector(BaseConnector):
         try:
             error_message = self._handle_py_ver_compat_for_input_str(error_message)
         except TypeError:
-            error_message = "Error occurred while connecting to the GitHub server. " \
-                "Please check the asset configuration and|or the action parameters."
+            error_message = (
+                "Error occurred while connecting to the GitHub server. Please check the asset configuration and|or the action parameters."
+            )
         except:
             error_message = "Unknown error occurred. Please check the asset configuration and|or action parameters."
 
         return error_code, error_message
 
-    def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None,
-                        verify=True):
-        """ This function is used to make the REST call.
+    def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None, verify=True):
+        """This function is used to make the REST call.
 
         :param url: REST URL that needs to be called
         :param action_result: Object of ActionResult class
@@ -420,20 +421,21 @@ class GithubConnector(BaseConnector):
         try:
             request_func = getattr(requests, method)
         except AttributeError:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid method: {0}".format(method)), resp_json)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, f"Invalid method: {method}"), resp_json)
 
         try:
             request_response = request_func(url, auth=auth, data=data, headers=headers, verify=verify, params=params)
         except Exception as e:
             error_code, error_message = self._get_error_message_from_exception(e)
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Code: {0}. Details: {1}".
-                                                   format(error_code, error_message)), resp_json)
+            return RetVal(
+                action_result.set_status(phantom.APP_ERROR, f"Error Connecting to server. Code: {error_code}. Details: {error_message}"),
+                resp_json,
+            )
 
         return self._process_response(request_response, action_result)
 
-    def _handle_update_request(self, url, action_result, headers=None, data=None, params=None, verify=True,
-                               method='get'):
-        """ This method is used to call make_rest_call using different authentication methods.
+    def _handle_update_request(self, url, action_result, headers=None, data=None, params=None, verify=True, method="get"):
+        """This method is used to call make_rest_call using different authentication methods.
 
         :param url: REST URL that needs to be called
         :param action_result: Object of ActionResult class
@@ -448,29 +450,41 @@ class GithubConnector(BaseConnector):
 
         # If username and password are provided, call using basic auth
         if self._username and self._password:
-            ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, data=data,
-                                                     params=params, verify=verify, method=method,
-                                                     auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True),
-                                                     self._password))
+            ret_val, response = self._make_rest_call(
+                url=url,
+                action_result=action_result,
+                headers=headers,
+                data=data,
+                params=params,
+                verify=verify,
+                method=method,
+                auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password),
+            )
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
-                if '401' not in action_result.get_message() or not (self._oauth_token or self._access_token):
+                if "401" not in action_result.get_message() or not (self._oauth_token or self._access_token):
                     return action_result.get_status(), None
             else:
                 return phantom.APP_SUCCESS, response
 
         # If personal access token is provided
         if self._oauth_token:
-
             # Personal access token is passed as a password and username is not required
-            ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, data=data,
-                                                     params=params, verify=verify, method=method,
-                                                     auth=(None, self._oauth_token))
+            ret_val, response = self._make_rest_call(
+                url=url,
+                action_result=action_result,
+                headers=headers,
+                data=data,
+                params=params,
+                verify=verify,
+                method=method,
+                auth=(None, self._oauth_token),
+            )
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
-                if '401' not in action_result.get_message() or not self._access_token:
+                if "401" not in action_result.get_message() or not self._access_token:
                     return action_result.get_status(), None
             else:
                 return phantom.APP_SUCCESS, response
@@ -479,20 +493,21 @@ class GithubConnector(BaseConnector):
             if not headers:
                 headers = {}
             # Pass access token in headers
-            headers.update({'Authorization': 'Bearer {0}'.format(self._access_token)})
+            headers.update({"Authorization": f"Bearer {self._access_token}"})
 
-            ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, data=data,
-                                                     params=params, verify=verify, method=method)
+            ret_val, response = self._make_rest_call(
+                url=url, action_result=action_result, headers=headers, data=data, params=params, verify=verify, method=method
+            )
 
             if phantom.is_fail(ret_val):
                 return action_result.get_status(), None
 
             return phantom.APP_SUCCESS, response
 
-        return action_result.set_status(phantom.APP_ERROR, status_message='Authentication failed'), None
+        return action_result.set_status(phantom.APP_ERROR, status_message="Authentication failed"), None
 
     def _handle_test_connectivity(self, param):
-        """ This function is used to handle the test connectivity action.
+        """This function is used to handle the test connectivity action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
@@ -501,27 +516,25 @@ class GithubConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         app_state = {}
         # If none of the config parameters are present, return error
-        if not(self._username and self._password)\
-           and not(self._client_id and self._client_secret)\
-           and not self._oauth_token:
+        if not (self._username and self._password) and not (self._client_id and self._client_secret) and not self._oauth_token:
             self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
-            return action_result.set_status(phantom.APP_ERROR,
-                                            status_message=GITHUB_CONFIG_PARAMS_REQUIRED_CONNECTIVITY)
+            return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED_CONNECTIVITY)
 
         self.save_progress(GITHUB_MAKING_CONNECTION_MSG)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_CURRENT_USER_ENDPOINT)
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_CURRENT_USER_ENDPOINT}"
 
         if self._username and self._password:
             # make rest call
-            ret_val, _ = self._make_rest_call(url=url, action_result=action_result,
-                                              auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True),
-                                              self._password))
+            ret_val, _ = self._make_rest_call(
+                url=url,
+                action_result=action_result,
+                auth=(self._handle_py_ver_compat_for_input_str(self._username, always_encode=True), self._password),
+            )
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
-                if '401' not in action_result.get_message() or \
-                        not (self._oauth_token or (self._client_id and self._client_secret)):
+                if "401" not in action_result.get_message() or not (self._oauth_token or (self._client_id and self._client_secret)):
                     self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
                     return action_result.get_status()
             else:
@@ -533,7 +546,7 @@ class GithubConnector(BaseConnector):
 
             if phantom.is_fail(ret_val):
                 # If error is not 401 or other config parameters are not provided, return error
-                if '401' not in action_result.get_message() or not (self._client_id and self._client_secret):
+                if "401" not in action_result.get_message() or not (self._client_id and self._client_secret):
                     self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
                     return action_result.get_status()
             else:
@@ -549,9 +562,7 @@ class GithubConnector(BaseConnector):
                 return action_result.get_status()
 
             # Call using access_token
-            request_headers = {
-                'Authorization': 'Bearer {}'.format(self._access_token)
-            }
+            request_headers = {"Authorization": f"Bearer {self._access_token}"}
             ret_val, _ = self._make_rest_call(url=url, action_result=action_result, headers=request_headers)
 
             if phantom.is_fail(ret_val):
@@ -561,10 +572,10 @@ class GithubConnector(BaseConnector):
             self.save_progress(GITHUB_TEST_CONNECTIVITY_PASSED_MSG)
             return action_result.set_status(phantom.APP_SUCCESS)
 
-        return action_result.set_status(phantom.APP_ERROR, status_message='Authentication failed')
+        return action_result.set_status(phantom.APP_ERROR, status_message="Authentication failed")
 
     def _handle_interactive_login(self, app_state, action_result):
-        """ This function is used to handle the interactive login during test connectivity
+        """This function is used to handle the interactive login during test connectivity
         while client_id and client_secret is provided.
 
         :param action_result: Object of ActionResult class
@@ -576,8 +587,8 @@ class GithubConnector(BaseConnector):
             return action_result.get_status()
 
         # Append /result to create redirect_uri
-        redirect_uri = '{0}/result'.format(app_rest_url)
-        app_state['redirect_uri'] = redirect_uri
+        redirect_uri = f"{app_rest_url}/result"
+        app_state["redirect_uri"] = redirect_uri
 
         self.save_progress(GITHUB_OAUTH_URL_MSG)
         self.save_progress(redirect_uri)
@@ -587,10 +598,10 @@ class GithubConnector(BaseConnector):
         # Authorization URL used to make request for getting code which is used to generate access token
         authorization_url = GITHUB_AUTHORIZE_URL.format(client_id=self._client_id, scope=GITHUB_SCOPE, state=asset_id)
 
-        app_state['authorization_url'] = authorization_url
+        app_state["authorization_url"] = authorization_url
 
         # URL which would be shown to the user
-        url_for_authorize_request = '{0}/start_oauth?asset_id={1}&'.format(app_rest_url, asset_id)
+        url_for_authorize_request = f"{app_rest_url}/start_oauth?asset_id={asset_id}&"
         _save_app_state(app_state, asset_id, self)
 
         self.save_progress(GITHUB_AUTHORIZE_USER_MSG)
@@ -603,7 +614,7 @@ class GithubConnector(BaseConnector):
         status = self._wait(action_result=action_result)
 
         # Empty message to override last message of waiting
-        self.send_progress('')
+        self.send_progress("")
         if phantom.is_fail(status):
             return action_result.get_status()
 
@@ -611,36 +622,33 @@ class GithubConnector(BaseConnector):
         self._state = _load_app_state(asset_id, self)
 
         # if code is not available in the state file
-        if not self._state or not self._state.get('code'):
+        if not self._state or not self._state.get("code"):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
 
-        current_code = self._state['code']
+        current_code = self._state["code"]
         self.save_state(self._state)
         _save_app_state(self._state, asset_id, self)
 
         self.save_progress(GITHUB_GENERATING_ACCESS_TOKEN_MSG)
 
         # Generate access_token using code
-        request_data = {
-            'client_id': self._client_id,
-            'client_secret': self._client_secret,
-            'code': current_code
-        }
+        request_data = {"client_id": self._client_id, "client_secret": self._client_secret, "code": current_code}
 
-        request_headers = {'Accept': 'application/json'}
+        request_headers = {"Accept": "application/json"}
 
-        ret_val, response = self._make_rest_call(url=GITHUB_ACCESS_TOKEN_URL, action_result=action_result,
-                                                 method='post', data=request_data, headers=request_headers)
+        ret_val, response = self._make_rest_call(
+            url=GITHUB_ACCESS_TOKEN_URL, action_result=action_result, method="post", data=request_data, headers=request_headers
+        )
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         # If there is any error while generating access_token, API returns 200 with error and error_description fields
         if not response.get(GITHUB_ACCESS_TOKEN):
-            if response.get('error_description'):
-                return action_result.set_status(phantom.APP_ERROR, status_message=response['error_description'])
+            if response.get("error_description"):
+                return action_result.set_status(phantom.APP_ERROR, status_message=response["error_description"])
 
-            return action_result.set_status(phantom.APP_ERROR, status_message='Error while generating access_token')
+            return action_result.set_status(phantom.APP_ERROR, status_message="Error while generating access_token")
 
         self._state["token"] = response
         self._access_token = response[GITHUB_ACCESS_TOKEN]
@@ -667,7 +675,7 @@ class GithubConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def _get_app_rest_url(self, action_result):
-        """ Get URL for making rest calls.
+        """Get URL for making rest calls.
 
         :param action_result: object of ActionResult class
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
@@ -682,35 +690,34 @@ class GithubConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
 
-        self.save_progress('Using Phantom base URL as: {0}'.format(phantom_base_url))
+        self.save_progress(f"Using Phantom base URL as: {phantom_base_url}")
         app_json = self.get_app_json()
-        app_name = app_json['name']
+        app_name = app_json["name"]
 
         app_dir_name = _get_dir_name_from_app_name(app_name)
-        url_to_app_rest = '{0}/rest/handler/{1}_{2}/{3}'.format(phantom_base_url, app_dir_name, app_json['appid'],
-                                                                asset_name)
+        url_to_app_rest = "{}/rest/handler/{}_{}/{}".format(phantom_base_url, app_dir_name, app_json["appid"], asset_name)
         return phantom.APP_SUCCESS, url_to_app_rest
 
     def _get_phantom_base_url_github(self, action_result):
-        """ Get base url of phantom.
+        """Get base url of phantom.
 
         :param action_result: object of ActionResult class
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
         base url of phantom
         """
 
-        url = '{}{}'.format(GITHUB_PHANTOM_BASE_URL.format(phantom_base_url=self._get_phantom_base_url()), GITHUB_PHANTOM_SYS_INFO_URL)
+        url = f"{GITHUB_PHANTOM_BASE_URL.format(phantom_base_url=self._get_phantom_base_url())}{GITHUB_PHANTOM_SYS_INFO_URL}"
         ret_val, resp_json = self._make_rest_call(action_result=action_result, url=url, verify=False)
         if phantom.is_fail(ret_val):
             return ret_val, None
 
-        phantom_base_url = resp_json.get('base_url')
+        phantom_base_url = resp_json.get("base_url")
         if not phantom_base_url:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_BASE_URL_NOT_FOUND_MSG), None
         return phantom.APP_SUCCESS, phantom_base_url.rstrip("/")
 
     def _get_asset_name(self, action_result):
-        """ Get name of the asset using Phantom URL.
+        """Get name of the asset using Phantom URL.
 
         :param action_result: object of ActionResult class
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message), asset name
@@ -718,20 +725,19 @@ class GithubConnector(BaseConnector):
 
         asset_id = self.get_asset_id()
         rest_endpoint = GITHUB_PHANTOM_ASSET_INFO_URL.format(asset_id=asset_id)
-        url = '{}{}'.format(GITHUB_PHANTOM_BASE_URL.format(phantom_base_url=self._get_phantom_base_url()), rest_endpoint)
+        url = f"{GITHUB_PHANTOM_BASE_URL.format(phantom_base_url=self._get_phantom_base_url())}{rest_endpoint}"
         ret_val, resp_json = self._make_rest_call(action_result=action_result, url=url, verify=False)
 
         if phantom.is_fail(ret_val):
             return ret_val, None
 
-        asset_name = resp_json.get('name')
+        asset_name = resp_json.get("name")
         if not asset_name:
-            return action_result.set_status(phantom.APP_ERROR, status_message='Asset Name for id: {0} not found.'
-                                            .format(asset_id)), None
+            return action_result.set_status(phantom.APP_ERROR, status_message=f"Asset Name for id: {asset_id} not found."), None
         return phantom.APP_SUCCESS, asset_name
 
     def _wait(self, action_result):
-        """ This function is used to hold the action till user login for 105 seconds.
+        """This function is used to hold the action till user login for 105 seconds.
 
         :param action_result: Object of ActionResult class
         :return: status (success/failed)
@@ -739,64 +745,61 @@ class GithubConnector(BaseConnector):
 
         app_dir = os.path.dirname(os.path.abspath(__file__))
         # file to check whether the request has been granted or not
-        auth_status_file_path = '{0}/{1}_{2}'.format(app_dir, self.get_asset_id(), GITHUB_TC_FILE)
+        auth_status_file_path = f"{app_dir}/{self.get_asset_id()}_{GITHUB_TC_FILE}"
 
         # wait-time while request is being granted for 105 seconds
         for _ in range(0, 35):
-            self.send_progress('Waiting...')
+            self.send_progress("Waiting...")
             # If file is generated
             if os.path.isfile(auth_status_file_path):
                 os.unlink(auth_status_file_path)
                 break
             time.sleep(GITHUB_TC_STATUS_SLEEP)
         else:
-            self.send_progress('')
-            return action_result.set_status(phantom.APP_ERROR, status_message='Timeout. Please try again later.')
-        self.send_progress('Authenticated')
+            self.send_progress("")
+            return action_result.set_status(phantom.APP_ERROR, status_message="Timeout. Please try again later.")
+        self.send_progress("Authenticated")
         return phantom.APP_SUCCESS
 
     def _validate_integer(self, action_result, parameter, key, allow_zero=False):
         try:
             if not float(parameter).is_integer():
-                return action_result.set_status(phantom.APP_ERROR,
-                    "Please provide a valid integer value in the '{}' parameter".format(key)), None
+                return action_result.set_status(phantom.APP_ERROR, f"Please provide a valid integer value in the '{key}' parameter"), None
 
             parameter = int(parameter)
         except:
-            return action_result.set_status(phantom.APP_ERROR, "Please provide a valid integer value in the '{}' parameter".format(key)), None
+            return action_result.set_status(phantom.APP_ERROR, f"Please provide a valid integer value in the '{key}' parameter"), None
 
         if not allow_zero and parameter <= 0:
             return action_result.set_status(phantom.APP_ERROR, GITHUB_INVALID_INTEGER.format(parameter=key)), None
         elif allow_zero and parameter < 0:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Please provide a valid non-negative integer value in the '{}' parameter".format(key)), None
+            return action_result.set_status(
+                phantom.APP_ERROR, f"Please provide a valid non-negative integer value in the '{key}' parameter"
+            ), None
 
         return phantom.APP_SUCCESS, parameter
 
     def _handle_list_events(self, param):
-        """ This function is used to handle list events action.
+        """This function is used to handle list events action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         username = self._handle_py_ver_compat_for_input_str(param[GITHUB_CONFIG_USERNAME])
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_EVENTS_ENDPOINT.format(username=username))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_EVENTS_ENDPOINT.format(username=username)}"
         per_page = GITHUB_PAGINATION_MAX_SIZE
         page = 1
 
         while True:
-            request_params = {
-                'per_page': per_page,
-                'page': page
-            }
+            request_params = {"per_page": per_page, "page": page}
             ret_val, response = self._handle_update_request(url=url, action_result=action_result, params=request_params)
 
             if phantom.is_fail(ret_val):
@@ -817,33 +820,32 @@ class GithubConnector(BaseConnector):
                 break
 
         summary = action_result.update_summary({})
-        summary['total_events'] = action_result.get_data_size()
+        summary["total_events"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_users(self, param):
-        """ This function is used to handle list users action.
+        """This function is used to handle list users action.
 
         :param param: Dictionary of input parameters
         :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         organization_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])
-        limit = param.get('limit')
+        limit = param.get("limit")
 
         if limit is not None:
             ret_val, limit = self._validate_integer(action_result, limit, "limit")
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL,
-                              GITHUB_LIST_USERS_ENDPOINT.format(organization_name=organization_name))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_USERS_ENDPOINT.format(organization_name=organization_name)}"
 
         user_list = self._get_list_response(url=url, action_result=action_result, limit=limit)
 
@@ -856,18 +858,18 @@ class GithubConnector(BaseConnector):
             action_result.add_data(user)
 
         summary = action_result.update_summary({})
-        summary['total_users'] = action_result.get_data_size()
+        summary["total_users"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_remove_collaborator(self, param):
-        """ This function is used to handle the remove collaborator action.
+        """This function is used to handle the remove collaborator action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         if not (self._username and self._password) and not self._oauth_token and not self._access_token:
@@ -875,11 +877,11 @@ class GithubConnector(BaseConnector):
 
         repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
         repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
-        repo = '{0}/{1}'.format(repo_owner, repo_name)
+        repo = f"{repo_owner}/{repo_name}"
         user = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_USER])
 
         # 2. Check if the user not a collaborator to the repo
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo)}"
         params = {GITHUB_PARAM_AFFILIATION: GITHUB_PARAM_AFFILIATION_DIRECT}
         list_collaborators_direct = self._get_list_response(url, action_result, params)
 
@@ -894,8 +896,7 @@ class GithubConnector(BaseConnector):
         else:
             # Check if user is not a direct collaborator, if any pending invitations exist,
             # delete the pending invitations
-            url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT.
-                                  format(repo_full_name=repo))
+            url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT.format(repo_full_name=repo)}"
             list_collaborators_pending_invitations = self._get_list_response(url, action_result)
 
             # If None is returned, action is failed.
@@ -907,11 +908,14 @@ class GithubConnector(BaseConnector):
             for invitation in list_collaborators_pending_invitations:
                 # Delete all pending invitations to the user being removed as a collaborator
                 if user.lower() == invitation.get(GITHUB_JSON_INVITEE).get(GITHUB_JSON_LOGIN).lower():
-                    url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT.
-                                          format(repo_full_name=repo, invitation_id=invitation.get(GITHUB_JSON_ID)))
+                    url = "{}{}".format(
+                        GITHUB_API_BASE_URL,
+                        GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT.format(
+                            repo_full_name=repo, invitation_id=invitation.get(GITHUB_JSON_ID)
+                        ),
+                    )
 
-                    ret_val, _ = self._handle_update_request(url=url, action_result=action_result,
-                                                             method=GITHUB_REQUEST_DELETE)
+                    ret_val, _ = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_DELETE)
 
                     if phantom.is_fail(ret_val):
                         return action_result.get_status()
@@ -920,44 +924,41 @@ class GithubConnector(BaseConnector):
 
             action_result.add_data({GITHUB_JSON_INVITE_DELETED: invite_deleted})
             if invite_deleted:
-                return action_result.set_status(phantom.APP_SUCCESS, GITHUB_COLLABORATOR_INVITATION_DELETED_MSG.
-                                                format(user_name=user, repo_full_name=repo))
+                return action_result.set_status(
+                    phantom.APP_SUCCESS, GITHUB_COLLABORATOR_INVITATION_DELETED_MSG.format(user_name=user, repo_full_name=repo)
+                )
 
-            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_USER_NOT_COLLABORATOR_MSG.
-                                            format(user_name=user, repo_full_name=repo))
+            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_USER_NOT_COLLABORATOR_MSG.format(user_name=user, repo_full_name=repo))
 
         # 3. Endpoint for remove user as a collaborator to the provided repo
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT.
-                              format(repo_full_name=repo, user_name=user))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT.format(repo_full_name=repo, user_name=user)}"
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-                                                             method=GITHUB_REQUEST_DELETE)
+        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_DELETE)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data({GITHUB_JSON_INVITE_DELETED: False})
-        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_COLLABORATOR_REMOVED_MSG.
-                                        format(repo_full_name=repo, user_name=user))
+        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_COLLABORATOR_REMOVED_MSG.format(repo_full_name=repo, user_name=user))
 
     def _handle_add_collaborator(self, param):
-        """ This function is used to handle the add collaborator action.
+        """This function is used to handle the add collaborator action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         override = param.get(GITHUB_JSON_OVERRIDE, False)
         repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
         repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
-        repo = '{0}/{1}'.format(repo_owner, repo_name)
+        repo = f"{repo_owner}/{repo_name}"
         user = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_USER])
 
         # Default role is 'push' if repo role is not provided or incorrect repo role is provided by the user
@@ -969,7 +970,7 @@ class GithubConnector(BaseConnector):
         role_mapping_dict[GITHUB_REPO_ROLE_ADMIN] = GITHUB_REPO_ROLE_ADMIN
 
         # 2. Check if the user already a direct collaborator to the repo
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo)}"
         params = {GITHUB_PARAM_AFFILIATION: GITHUB_PARAM_AFFILIATION_DIRECT}
         list_collaborators_direct = self._get_list_response(url, action_result, params)
 
@@ -986,8 +987,9 @@ class GithubConnector(BaseConnector):
                 # If user is a collaborator with same rights, return success
                 if self._if_role_same(collaborator, role):
                     action_result.add_data({GITHUB_JSON_INVITE_SENT: False, GITHUB_JSON_COLLABORATOR_ADDED: False})
-                    return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ALREADY_COLLABORATOR_MSG.
-                                                    format(user_name=user, repo_full_name=repo, repo_role=role))
+                    return action_result.set_status(
+                        phantom.APP_SUCCESS, GITHUB_ALREADY_COLLABORATOR_MSG.format(user_name=user, repo_full_name=repo, repo_role=role)
+                    )
                 # User is collaborator with different role
                 else:
                     collaborator_exist_diff_role = True
@@ -996,8 +998,7 @@ class GithubConnector(BaseConnector):
         # Check pending invitations
         else:
             # Check if the invite is already sent to the member to join repo as a collaborator with same role
-            url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT.
-                                  format(repo_full_name=repo))
+            url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT.format(repo_full_name=repo)}"
             list_collaborators_pending_invitations = self._get_list_response(url, action_result)
 
             # If None is returned, action is failed.
@@ -1011,61 +1012,68 @@ class GithubConnector(BaseConnector):
                 # No need to check if repo of invite is same or not as the API call is done
                 # for pending invitations of the same repo
                 if user.lower() == invitation.get(GITHUB_JSON_INVITEE).get(GITHUB_JSON_LOGIN).lower():
-
                     if role_mapping_dict[role].lower() == invitation.get(GITHUB_JSON_PERMISSIONS).lower():
                         # Do nothing as invitation for same role already exist
                         action_result.add_data({GITHUB_JSON_INVITE_SENT: False, GITHUB_JSON_COLLABORATOR_ADDED: False})
-                        return action_result.set_status(phantom.APP_SUCCESS,
-                                                        GITHUB_COLLABORATOR_INVITATION_ALREADY_SENT_MSG.
-                                                        format(user_name=user, repo_full_name=repo, repo_role=role))
+                        return action_result.set_status(
+                            phantom.APP_SUCCESS,
+                            GITHUB_COLLABORATOR_INVITATION_ALREADY_SENT_MSG.format(user_name=user, repo_full_name=repo, repo_role=role),
+                        )
 
                     # Update the invitation if role is different and parameter override is True
                     if override:
-                        url = '{0}{1}'.format(GITHUB_API_BASE_URL,
-                                              GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT.
-                                              format(repo_full_name=repo, invitation_id=invitation.get(GITHUB_JSON_ID)))
+                        url = "{}{}".format(
+                            GITHUB_API_BASE_URL,
+                            GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT.format(
+                                repo_full_name=repo, invitation_id=invitation.get(GITHUB_JSON_ID)
+                            ),
+                        )
 
                         request_data = dict()
                         request_data[GITHUB_JSON_PERMISSIONS] = role_mapping_dict[role]
 
-                        ret_val, _ = self._handle_update_request(url=url, action_result=action_result,
-                                                                 data=json.dumps(request_data),
-                                                                 method=GITHUB_REQUEST_PATCH)
+                        ret_val, _ = self._handle_update_request(
+                            url=url, action_result=action_result, data=json.dumps(request_data), method=GITHUB_REQUEST_PATCH
+                        )
 
                         if phantom.is_fail(ret_val):
                             return action_result.get_status()
 
-                        action_result.add_data({GITHUB_JSON_INVITE_SENT: True,
-                                                GITHUB_JSON_COLLABORATOR_ADDED: False})
-                        return action_result.set_status(phantom.APP_SUCCESS,
-                                                        GITHUB_COLLABORATOR_INVITATION_UPDATED_MSG.
-                                                        format(user_name=user, repo_full_name=repo, repo_role=role))
+                        action_result.add_data({GITHUB_JSON_INVITE_SENT: True, GITHUB_JSON_COLLABORATOR_ADDED: False})
+                        return action_result.set_status(
+                            phantom.APP_SUCCESS,
+                            GITHUB_COLLABORATOR_INVITATION_UPDATED_MSG.format(user_name=user, repo_full_name=repo, repo_role=role),
+                        )
 
                     # If override is False, return error
                     action_result.add_data({GITHUB_JSON_INVITE_SENT: False, GITHUB_JSON_COLLABORATOR_ADDED: False})
-                    return action_result.set_status(phantom.APP_ERROR,
-                                                    status_message=GITHUB_COLLABORATOR_INVITATION_NOT_UPDATED_MSG.
-                                                    format(user_name=user, repo_full_name=repo, repo_role=role))
+                    return action_result.set_status(
+                        phantom.APP_ERROR,
+                        status_message=GITHUB_COLLABORATOR_INVITATION_NOT_UPDATED_MSG.format(
+                            user_name=user, repo_full_name=repo, repo_role=role
+                        ),
+                    )
 
         # If user is collaborator with different role
         if collaborator_exist_diff_role:
             # If override is True
             if override:
-                success_message = GITHUB_COLLABORATOR_ROLE_UPDATED_MSG.format(user_name=user, repo_full_name=repo,
-                                                                              repo_role=role)
+                success_message = GITHUB_COLLABORATOR_ROLE_UPDATED_MSG.format(user_name=user, repo_full_name=repo, repo_role=role)
                 return self._add_collaborator(repo, user, role, success_message, action_result)
 
             # If override is False, return error
             action_result.add_data({GITHUB_JSON_INVITE_SENT: False, GITHUB_JSON_COLLABORATOR_ADDED: False})
-            return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_COLLABORATOR_ROLE_NOT_UPDATED_MSG.
-                                            format(user_name=user, repo_full_name=repo, repo_role=role))
+            return action_result.set_status(
+                phantom.APP_ERROR,
+                status_message=GITHUB_COLLABORATOR_ROLE_NOT_UPDATED_MSG.format(user_name=user, repo_full_name=repo, repo_role=role),
+            )
 
         # User is not a direct collaborator and no pending invitations exists
         success_message = GITHUB_COLLABORATOR_ADDED_MSG.format(user_name=user, repo_full_name=repo, repo_role=role)
         return self._add_collaborator(repo, user, role, success_message, action_result)
 
     def _add_collaborator(self, repo, user, role, success_message, action_result):
-        """ This function is used to add user as a collaborator to the repo or update role of existing collaborator.
+        """This function is used to add user as a collaborator to the repo or update role of existing collaborator.
 
         :param repo: Repo full name
         :param user: User to be added as a collaborator
@@ -1075,15 +1083,15 @@ class GithubConnector(BaseConnector):
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT.
-                              format(repo_full_name=repo, user_name=user))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT.format(repo_full_name=repo, user_name=user)}"
 
         request_data = dict()
         request_data[GITHUB_JSON_REPO_ROLE] = role
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-                                                             data=json.dumps(request_data), method=GITHUB_REQUEST_PUT)
+        ret_val, response_json = self._handle_update_request(
+            url=url, action_result=action_result, data=json.dumps(request_data), method=GITHUB_REQUEST_PUT
+        )
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -1093,8 +1101,9 @@ class GithubConnector(BaseConnector):
             response_json[GITHUB_JSON_COLLABORATOR_ADDED] = False
             action_result.add_data(response_json)
 
-            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_COLLABORATOR_INVITATION_SENT_MSG.
-                                            format(user_name=user, repo_full_name=repo, repo_role=role))
+            return action_result.set_status(
+                phantom.APP_SUCCESS, GITHUB_COLLABORATOR_INVITATION_SENT_MSG.format(user_name=user, repo_full_name=repo, repo_role=role)
+            )
 
         if response_json:
             response_json = {}
@@ -1106,7 +1115,7 @@ class GithubConnector(BaseConnector):
 
     @staticmethod
     def _if_role_same(collaborator, role):
-        """ This function is used to check if existing collaborator role is same as provided new collaborator role.
+        """This function is used to check if existing collaborator role is same as provided new collaborator role.
 
         :param collaborator: Existing direct collaborator object
         :param role: New role of collaborator
@@ -1117,8 +1126,7 @@ class GithubConnector(BaseConnector):
         collaborator_admin_permission = collaborator[GITHUB_JSON_PERMISSIONS][GITHUB_REPO_ROLE_ADMIN]
 
         if role == GITHUB_REPO_ROLE_PULL:
-            return collaborator_pull_permission and not collaborator_push_permission and \
-                   not collaborator_admin_permission
+            return collaborator_pull_permission and not collaborator_push_permission and not collaborator_admin_permission
         elif role == GITHUB_REPO_ROLE_PUSH:
             return collaborator_pull_permission and collaborator_push_permission and not collaborator_admin_permission
         elif role == GITHUB_REPO_ROLE_ADMIN:
@@ -1127,16 +1135,16 @@ class GithubConnector(BaseConnector):
         return False
 
     def _handle_remove_member(self, param):
-        """ This function is used to handle the remove member action.
+        """This function is used to handle the remove member action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         team = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_TEAM])
@@ -1144,8 +1152,7 @@ class GithubConnector(BaseConnector):
         organization_name = self._handle_py_ver_compat_for_input_str(param.get(GITHUB_JSON_ORGANIZATION))
 
         # 1. For input team check whether it is Team name or Team ID and if Team Name fetch Team ID from it
-        ret_val, team_id = self._verify_and_get_team_id(team=team, action_result=action_result,
-                                                        org_name=organization_name)
+        ret_val, team_id = self._verify_and_get_team_id(team=team, action_result=action_result, org_name=organization_name)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -1155,7 +1162,7 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_INVALID_TEAM_ID.format(team=team))
 
         # 3. Verify if user already removed from given team
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_GET_MEMBERS_ENDPOINT.format(team_id=team_id))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_GET_MEMBERS_ENDPOINT.format(team_id=team_id)}"
 
         list_teams_members = self._get_list_response(url, action_result)
 
@@ -1169,8 +1176,7 @@ class GithubConnector(BaseConnector):
                 break
         else:
             # Check if user is not a direct member, remove all pending invitations to user for joining the team
-            url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_MEMBERS_PENDING_INVITATIONS_ENDPOINT.
-                                  format(team_id=team_id))
+            url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_MEMBERS_PENDING_INVITATIONS_ENDPOINT.format(team_id=team_id)}"
             list_members_pending_invitations = self._get_list_response(url, action_result)
 
             # If None is returned, action is failed.
@@ -1185,8 +1191,7 @@ class GithubConnector(BaseConnector):
                     if phantom.is_fail(invite_deleted):
                         return action_result.get_status()
 
-            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_USER_NOT_TEAM_MEMBER_MSG.format(team=team,
-                                                                                                        user_name=user))
+            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_USER_NOT_TEAM_MEMBER_MSG.format(team=team, user_name=user))
 
         # 4. At this point, it is verified that given user is a member of given team
         # and hence, removing the user from team
@@ -1195,11 +1200,10 @@ class GithubConnector(BaseConnector):
         if phantom.is_fail(member_deleted):
             return action_result.get_status()
 
-        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_MEMBER_REMOVAL_MSG.format(user_name=user,
-                                                                                              team=team))
+        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_MEMBER_REMOVAL_MSG.format(user_name=user, team=team))
 
     def _remove_member_or_pending_invitation(self, team_id, user, action_result):
-        """ This function is used to remove member from team or remove pending invitation to join the team.
+        """This function is used to remove member from team or remove pending invitation to join the team.
 
         :param team_id: Team ID
         :param user: User to be removed from team
@@ -1207,8 +1211,7 @@ class GithubConnector(BaseConnector):
         :return: True if member or pending invitation is successfully removed
         """
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.format(team_id=team_id,
-                                                                                            user_name=user))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.format(team_id=team_id, user_name=user)}"
 
         # make rest call
         ret_val, _ = self._handle_update_request(url=url, action_result=action_result, method=GITHUB_REQUEST_DELETE)
@@ -1219,7 +1222,7 @@ class GithubConnector(BaseConnector):
         return True
 
     def _verify_and_get_team_id(self, team, action_result, org_name=None):
-        """ This function is used to get the team_id if team_name is provided.
+        """This function is used to get the team_id if team_name is provided.
 
         :param team: Team ID or Team name
         :param action_result: Object of ActionResult class
@@ -1236,10 +1239,9 @@ class GithubConnector(BaseConnector):
             # Exception while converting to valid integer implies that provided input is Team name and not Team ID
             # Further verifying that if Team name mentioned, Organization name is required
             if not org_name:
-                return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_ORGANIZATION_REQUIRED_MSG), \
-                       None
+                return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_ORGANIZATION_REQUIRED_MSG), None
 
-            url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_TEAMS_ENDPOINT.format(org_name=org_name))
+            url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_TEAMS_ENDPOINT.format(org_name=org_name)}"
 
             list_teams = self._get_list_response(url, action_result)
 
@@ -1257,16 +1259,16 @@ class GithubConnector(BaseConnector):
         return phantom.APP_SUCCESS, team_id
 
     def _handle_add_member(self, param):
-        """ This function is used to handle the add member action.
+        """This function is used to handle the add member action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         team = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_TEAM])
@@ -1286,7 +1288,7 @@ class GithubConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_INVALID_TEAM_ID.format(team=team))
 
         # 3. Verify if user already a member of team with same role
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_GET_MEMBERS_ENDPOINT.format(team_id=team_id))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_GET_MEMBERS_ENDPOINT.format(team_id=team_id)}"
         params = {GITHUB_JSON_ROLE: role.lower()}
         list_teams_members = self._get_list_response(url, action_result, params)
 
@@ -1297,55 +1299,51 @@ class GithubConnector(BaseConnector):
 
         for member in list_teams_members:
             if member.get(GITHUB_JSON_LOGIN).lower() == user.lower():
-                return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ALREADY_TEAM_MEMBER_MSG.
-                                                format(user_name=user, team=team, role=role))
+                return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ALREADY_TEAM_MEMBER_MSG.format(user_name=user, team=team, role=role))
 
         # 4. If given user is not a member of given team, it will be created with mentioned rights
         # or if user already present with different rights, rights will be updated for the same user
         # and rights will be kept unchanged if found same
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.
-                              format(team_id=team_id, user_name=user))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.format(team_id=team_id, user_name=user)}"
 
         request_data = dict()
         request_data[GITHUB_JSON_ROLE] = role.lower()
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-                                                             data=json.dumps(request_data), method=GITHUB_REQUEST_PUT)
+        ret_val, response_json = self._handle_update_request(
+            url=url, action_result=action_result, data=json.dumps(request_data), method=GITHUB_REQUEST_PUT
+        )
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(response_json)
         if GITHUB_MEMBERSHIP_ACTIVE == response_json.get(GITHUB_JSON_STATE):
-            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ADD_MEMBER_MSG.format(user_name=user, team=team,
-                                                                                              role=role))
+            return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ADD_MEMBER_MSG.format(user_name=user, team=team, role=role))
 
-        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ADD_MEMBER_PENDING_MSG.format(user_name=user,
-                                                                                                  team=team, role=role))
+        return action_result.set_status(phantom.APP_SUCCESS, GITHUB_ADD_MEMBER_PENDING_MSG.format(user_name=user, team=team, role=role))
 
     def _handle_list_teams(self, param):
-        """ This function is used to handle the list teams action.
+        """This function is used to handle the list teams action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        limit = param.get('limit')
+        limit = param.get("limit")
 
         if limit is not None:
             ret_val, limit = self._validate_integer(action_result, limit, "limit")
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_TEAMS_ENDPOINT.
-                              format(org_name=self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_TEAMS_ENDPOINT.format(org_name=self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION]))}"
 
         list_teams = self._get_list_response(url, action_result, limit=limit)
 
@@ -1358,12 +1356,12 @@ class GithubConnector(BaseConnector):
             action_result.add_data(team)
 
         summary = action_result.update_summary({})
-        summary['total_teams'] = action_result.get_data_size()
+        summary["total_teams"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _get_list_response(self, url, action_result, additional_params=None, limit=None):
-        """ This function is used to fetch list response based on API URL to be fetched and pagination.
+        """This function is used to fetch list response based on API URL to be fetched and pagination.
 
         :rtype: list
         :param url: endpoint URL
@@ -1409,27 +1407,26 @@ class GithubConnector(BaseConnector):
         return response_items_list
 
     def _handle_list_repos(self, param):
-        """ This function is used to handle the list repos action.
+        """This function is used to handle the list repos action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        limit = param.get('limit')
+        limit = param.get("limit")
 
         if limit is not None:
             ret_val, limit = self._validate_integer(action_result, limit, "limit")
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_REPOS_ENDPOINT
-                              .format(org_name=self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])))
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_REPOS_ENDPOINT.format(org_name=self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION]))}"
 
         repo_list = self._get_list_response(url, action_result, limit=limit)
 
@@ -1442,31 +1439,31 @@ class GithubConnector(BaseConnector):
             action_result.add_data(repo)
 
         summary = action_result.update_summary({})
-        summary['total_repos'] = action_result.get_data_size()
+        summary["total_repos"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_organizations(self, param):
-        """ This function is used to handle the list organizations action.
+        """This function is used to handle the list organizations action.
 
         :param param: Dictionary of input parameters
         :return: Status(phantom.APP_SUCCESS/phantom.APP_ERROR)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not(self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
-        limit = param.get('limit')
+        limit = param.get("limit")
 
         if limit is not None:
             ret_val, limit = self._validate_integer(action_result, limit, "limit")
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, GITHUB_LIST_ORGANIZATIONS_ENDPOINT)
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_LIST_ORGANIZATIONS_ENDPOINT}"
 
         org_list = self._get_list_response(url, action_result, limit=limit)
 
@@ -1479,31 +1476,27 @@ class GithubConnector(BaseConnector):
             action_result.add_data(org)
 
         summary = action_result.update_summary({})
-        summary['total_organizations'] = action_result.get_data_size()
+        summary["total_organizations"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_issues(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
         repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
-        limit = param.get('limit')
+        limit = param.get("limit")
 
         if limit is not None:
             ret_val, limit = self._validate_integer(action_result, limit, "limit")
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-        endpoint = GITHUB_ENDPOINT_ISSUES.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name
-        )
+        endpoint = GITHUB_ENDPOINT_ISSUES.format(repo_owner=repo_owner, repo_name=repo_name)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         issues_list = self._get_list_response(url, action_result, limit=limit)
 
@@ -1514,13 +1507,12 @@ class GithubConnector(BaseConnector):
             action_result.add_data(issue)
 
         summary = action_result.update_summary({})
-        summary['total_issues'] = action_result.get_data_size()
+        summary["total_issues"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_comments(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -1528,7 +1520,7 @@ class GithubConnector(BaseConnector):
         repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
         repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_number = param[GITHUB_JSON_ISSUE_NUMBER]
-        limit = param.get('limit')
+        limit = param.get("limit")
 
         if limit is not None:
             ret_val, limit = self._validate_integer(action_result, limit, "limit")
@@ -1539,13 +1531,9 @@ class GithubConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        endpoint = GITHUB_ENDPOINT_COMMENTS.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name,
-            issue_number=issue_number
-        )
+        endpoint = GITHUB_ENDPOINT_COMMENTS.format(repo_owner=repo_owner, repo_name=repo_name, issue_number=issue_number)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         comments_list = self._get_list_response(url, action_result, limit=limit)
 
@@ -1556,13 +1544,12 @@ class GithubConnector(BaseConnector):
             action_result.add_data(comment)
 
         summary = action_result.update_summary({})
-        summary['total_comments'] = action_result.get_data_size()
+        summary["total_comments"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_issue(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -1574,31 +1561,26 @@ class GithubConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name,
-            issue_number=issue_number
-        )
+        endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(repo_owner=repo_owner, repo_name=repo_name, issue_number=issue_number)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         # make rest call
         ret_val, response_json = self._handle_update_request(url=url, action_result=action_result)
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(response_json)
 
         summary = action_result.update_summary({})
-        summary['issue_number'] = response_json.get('number')
-        summary['issue_url'] = response_json.get('html_url')
+        summary["issue_number"] = response_json.get("number")
+        summary["issue_url"] = response_json.get("html_url")
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_create_issue(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -1606,48 +1588,40 @@ class GithubConnector(BaseConnector):
         repo_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_NAME])
         issue_title = param[GITHUB_JSON_ISSUE_TITLE]
 
-        issue_body = param.get(GITHUB_JSON_ISSUE_BODY, '')
+        issue_body = param.get(GITHUB_JSON_ISSUE_BODY, "")
 
         # assignees should be comma-separated
-        assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
+        assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, "").split(",")]
         assignees = list(filter(None, assignees))
 
         # labels should be comma-separated
-        labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, '').split(',')]
+        labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, "").split(",")]
         labels = list(filter(None, labels))
 
-        request_data = {
-            "title": issue_title,
-            "body": issue_body,
-            "assignees": assignees,
-            "labels": labels
-        }
+        request_data = {"title": issue_title, "body": issue_body, "assignees": assignees, "labels": labels}
 
-        endpoint = GITHUB_ENDPOINT_ISSUES.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name
-        )
+        endpoint = GITHUB_ENDPOINT_ISSUES.format(repo_owner=repo_owner, repo_name=repo_name)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-            method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(
+            url=url, action_result=action_result, method=GITHUB_REQUEST_POST, data=json.dumps(request_data)
+        )
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(response_json)
 
         summary = action_result.update_summary({})
-        summary['issue_number'] = response_json.get('number')
-        summary['issue_url'] = response_json.get('html_url')
+        summary["issue_number"] = response_json.get("number")
+        summary["issue_url"] = response_json.get("html_url")
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_issue(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -1663,11 +1637,11 @@ class GithubConnector(BaseConnector):
             return action_result.get_status()
 
         # assignees should be comma-separated
-        assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, '').split(',')]
+        assignees = [x.strip() for x in param.get(GITHUB_JSON_ASSIGNEES, "").split(",")]
         assignees = list(filter(None, assignees))
 
         # labels should be comma-separated
-        labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, '').split(',')]
+        labels = [x.strip() for x in param.get(GITHUB_JSON_LABELS, "").split(",")]
         labels = list(filter(None, labels))
 
         to_empty = param.get(GITHUB_JSON_TO_EMPTY, False)
@@ -1684,11 +1658,7 @@ class GithubConnector(BaseConnector):
             if labels:
                 request_data["labels"] = labels
         else:
-            request_data = {
-                "body": issue_body,
-                "assignees": assignees,
-                "labels": labels
-            }
+            request_data = {"body": issue_body, "assignees": assignees, "labels": labels}
 
         if issue_title:
             request_data["title"] = issue_title
@@ -1696,32 +1666,28 @@ class GithubConnector(BaseConnector):
         if issue_state:
             request_data["state"] = issue_state
 
-        endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name,
-            issue_number=issue_number
-        )
+        endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(repo_owner=repo_owner, repo_name=repo_name, issue_number=issue_number)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-            method=GITHUB_REQUEST_PATCH, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(
+            url=url, action_result=action_result, method=GITHUB_REQUEST_PATCH, data=json.dumps(request_data)
+        )
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(response_json)
 
         summary = action_result.update_summary({})
-        summary['issue_number'] = response_json.get('number')
-        summary['issue_url'] = response_json.get('html_url')
+        summary["issue_number"] = response_json.get("number")
+        summary["issue_url"] = response_json.get("html_url")
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_create_comment(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -1734,36 +1700,30 @@ class GithubConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        request_data = {
-            "body": comment_body
-        }
+        request_data = {"body": comment_body}
 
-        endpoint = GITHUB_ENDPOINT_COMMENTS.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name,
-            issue_number=issue_number
-        )
+        endpoint = GITHUB_ENDPOINT_COMMENTS.format(repo_owner=repo_owner, repo_name=repo_name, issue_number=issue_number)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-            method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(
+            url=url, action_result=action_result, method=GITHUB_REQUEST_POST, data=json.dumps(request_data)
+        )
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(response_json)
 
         summary = action_result.update_summary({})
-        summary['comment_id'] = response_json.get('id')
-        summary['comment_url'] = response_json.get('html_url')
+        summary["comment_id"] = response_json.get("id")
+        summary["comment_url"] = response_json.get("html_url")
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_add_labels(self, param):
-
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -1776,26 +1736,21 @@ class GithubConnector(BaseConnector):
             return action_result.get_status()
 
         # labels should be comma-separated list
-        labels = [x.strip() for x in self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_LABELS]).split(',')]
+        labels = [x.strip() for x in self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_LABELS]).split(",")]
         labels = list(filter(None, labels))
 
-        request_data = {
-            "labels": labels
-        }
+        request_data = {"labels": labels}
 
-        endpoint = GITHUB_ENDPOINT_LABELS.format(
-            repo_owner=repo_owner,
-            repo_name=repo_name,
-            issue_number=issue_number
-        )
+        endpoint = GITHUB_ENDPOINT_LABELS.format(repo_owner=repo_owner, repo_name=repo_name, issue_number=issue_number)
 
-        url = '{0}{1}'.format(GITHUB_API_BASE_URL, endpoint)
+        url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
         # make rest call
-        ret_val, response_json = self._handle_update_request(url=url, action_result=action_result,
-            method=GITHUB_REQUEST_POST, data=json.dumps(request_data))
+        ret_val, response_json = self._handle_update_request(
+            url=url, action_result=action_result, method=GITHUB_REQUEST_POST, data=json.dumps(request_data)
+        )
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.update_data(response_json)
@@ -1803,7 +1758,7 @@ class GithubConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS, GITHUB_LABEL_ADDED_MSG.format(labels=",".join(labels), issue_number=issue_number))
 
     def handle_action(self, param):
-        """ This function gets current action identifier and calls member function of its own to handle the action.
+        """This function gets current action identifier and calls member function of its own to handle the action.
 
         :param param: dictionary which contains information about the actions to be executed
         :return: status(success/failure)
@@ -1811,23 +1766,23 @@ class GithubConnector(BaseConnector):
         self.debug_print("action_id", self.get_action_identifier())
 
         action_mapping = {
-            'test_connectivity': self._handle_test_connectivity,
-            'remove_collaborator': self._handle_remove_collaborator,
-            'add_collaborator': self._handle_add_collaborator,
-            'remove_member': self._handle_remove_member,
-            'add_member': self._handle_add_member,
-            'list_events': self._handle_list_events,
-            'list_users': self._handle_list_users,
-            'list_teams': self._handle_list_teams,
-            'list_repos': self._handle_list_repos,
-            'list_organizations': self._handle_list_organizations,
-            'list_issues': self._handle_list_issues,
-            'list_comments': self._handle_list_comments,
-            'get_issue': self._handle_get_issue,
-            'create_issue': self._handle_create_issue,
-            'update_issue': self._handle_update_issue,
-            'create_comment': self._handle_create_comment,
-            'add_labels': self._handle_add_labels
+            "test_connectivity": self._handle_test_connectivity,
+            "remove_collaborator": self._handle_remove_collaborator,
+            "add_collaborator": self._handle_add_collaborator,
+            "remove_member": self._handle_remove_member,
+            "add_member": self._handle_add_member,
+            "list_events": self._handle_list_events,
+            "list_users": self._handle_list_users,
+            "list_teams": self._handle_list_teams,
+            "list_repos": self._handle_list_repos,
+            "list_organizations": self._handle_list_organizations,
+            "list_issues": self._handle_list_issues,
+            "list_comments": self._handle_list_comments,
+            "get_issue": self._handle_get_issue,
+            "create_issue": self._handle_create_issue,
+            "update_issue": self._handle_update_issue,
+            "create_comment": self._handle_create_comment,
+            "add_labels": self._handle_add_labels,
         }
 
         action = self.get_action_identifier()
@@ -1840,7 +1795,7 @@ class GithubConnector(BaseConnector):
         return action_execution_status
 
     def initialize(self):
-        """ This is an optional function that can be implemented by the AppConnector derived class. Since the
+        """This is an optional function that can be implemented by the AppConnector derived class. Since the
         configuration dictionary is already validated by the time this function is called, it's a good place to do any
         extra initialization of any internal modules. This function MUST return a value of either phantom.APP_SUCCESS or
         phantom.APP_ERROR. If this function returns phantom.APP_ERROR, then AppConnector::handle_action will not get
@@ -1867,7 +1822,7 @@ class GithubConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def finalize(self):
-        """ This function gets called once all the param dictionary elements are looped over and no more handle_action
+        """This function gets called once all the param dictionary elements are looped over and no more handle_action
         calls are left to be made. It gives the AppConnector a chance to loop through all the results that were
         accumulated by multiple handle_action function calls and create any summary if required. Another usage is
         cleanup, disconnect from remote devices etc.
@@ -1880,8 +1835,7 @@ class GithubConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     import argparse
 
     import pudb
@@ -1890,10 +1844,10 @@ if __name__ == '__main__':
 
     argparser = argparse.ArgumentParser()
 
-    argparser.add_argument('input_test_json', help='Input Test JSON file')
-    argparser.add_argument('-u', '--username', help='username', required=False)
-    argparser.add_argument('-p', '--password', help='password', required=False)
-    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
+    argparser.add_argument("input_test_json", help="Input Test JSON file")
+    argparser.add_argument("-u", "--username", help="username", required=False)
+    argparser.add_argument("-p", "--password", help="password", required=False)
+    argparser.add_argument("-v", "--verify", action="store_true", help="verify", required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -1903,9 +1857,9 @@ if __name__ == '__main__':
     verify = args.verify
 
     if username is not None and password is None:
-
         # User specified a username but not a password, so ask
         import getpass
+
         password = getpass.getpass("Password: ")
 
     if username and password:
@@ -1913,22 +1867,22 @@ if __name__ == '__main__':
         try:
             print("Accessing the Login page")
             r = requests.get(login_url, verify=verify, timeout=DEFAULT_TIMEOUT)
-            csrftoken = r.cookies['csrftoken']
+            csrftoken = r.cookies["csrftoken"]
 
             data = dict()
-            data['username'] = username
-            data['password'] = password
-            data['csrfmiddlewaretoken'] = csrftoken
+            data["username"] = username
+            data["password"] = password
+            data["csrfmiddlewaretoken"] = csrftoken
 
             headers = dict()
-            headers['Cookie'] = 'csrftoken={0}'.format(csrftoken)
-            headers['Referer'] = login_url
+            headers["Cookie"] = f"csrftoken={csrftoken}"
+            headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
             r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=DEFAULT_TIMEOUT)
-            session_id = r2.cookies['sessionid']
+            session_id = r2.cookies["sessionid"]
         except Exception as e:
-            print("Unable to get session id from the platform. Error: {0}".format(str(e)))
+            print(f"Unable to get session id from the platform. Error: {e!s}")
             sys.exit(1)
 
     with open(args.input_test_json) as f:
@@ -1940,8 +1894,8 @@ if __name__ == '__main__':
         connector.print_progress_message = True
 
         if session_id is not None:
-            in_json['user_session_token'] = session_id
-            connector._set_csrf_info(csrftoken, headers['Referer'])
+            in_json["user_session_token"] = session_id
+            connector._set_csrf_info(csrftoken, headers["Referer"])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
