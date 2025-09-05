@@ -1,9 +1,9 @@
 # GitHub
 
-Publisher: Splunk \
-Connector Version: 2.1.1 \
-Product Vendor: Microsoft \
-Product Name: GitHub \
+Publisher: Splunk <br>
+Connector Version: 2.1.1 <br>
+Product Vendor: Microsoft <br>
+Product Name: GitHub <br>
 Minimum Product Version: 5.5.0
 
 This app integrates with GitHub to support various investigative and issue-based actions
@@ -22,29 +22,29 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[list events](#action-list-events) - List events performed by a user \
-[list users](#action-list-users) - List users of an organization \
-[remove collaborator](#action-remove-collaborator) - Remove user as a collaborator from the repo \
-[add collaborator](#action-add-collaborator) - Add user as a collaborator to repo \
-[remove member](#action-remove-member) - Remove user from the team \
-[add member](#action-add-member) - Add user in a team \
-[list teams](#action-list-teams) - List all teams of an organization \
-[list repos](#action-list-repos) - List all repos of an organization \
-[list organizations](#action-list-organizations) - List all organizations \
-[list issues](#action-list-issues) - Get a list of issues for the GitHub repository \
-[list comments](#action-list-comments) - List comments for an issue on the GitHub repository \
-[get issue](#action-get-issue) - Retrieve an issue for the GitHub repository \
-[create issue](#action-create-issue) - Create an issue for the GitHub repository \
-[update issue](#action-update-issue) - Update an issue for the GitHub repository \
-[create comment](#action-create-comment) - Create a comment for an issue on the GitHub repository \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[list events](#action-list-events) - List events performed by a user <br>
+[list users](#action-list-users) - List users of an organization <br>
+[remove collaborator](#action-remove-collaborator) - Remove user as a collaborator from the repo <br>
+[add collaborator](#action-add-collaborator) - Add user as a collaborator to repo <br>
+[remove member](#action-remove-member) - Remove user from the team <br>
+[add member](#action-add-member) - Add user in a team <br>
+[list teams](#action-list-teams) - List all teams of an organization <br>
+[list repos](#action-list-repos) - List all repos of an organization <br>
+[list organizations](#action-list-organizations) - List all organizations <br>
+[list issues](#action-list-issues) - Get a list of issues for the GitHub repository <br>
+[list comments](#action-list-comments) - List comments for an issue on the GitHub repository <br>
+[get issue](#action-get-issue) - Retrieve an issue for the GitHub repository <br>
+[create issue](#action-create-issue) - Create an issue for the GitHub repository <br>
+[update issue](#action-update-issue) - Update an issue for the GitHub repository <br>
+[create comment](#action-create-comment) - Create a comment for an issue on the GitHub repository <br>
 [add labels](#action-add-labels) - Add label(s) to an issue on the GitHub repository
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -59,7 +59,7 @@ No Output
 
 List events performed by a user
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 Action will list a maximum of 300 events. Only events from the past 90 days will be listed.
@@ -2868,7 +2868,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List users of an organization
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -2912,7 +2912,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Remove user as a collaborator from the repo
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted.
@@ -2943,7 +2943,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add user as a collaborator to repo
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to the user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to the user to join as a collaborator. If an invite is already sent to the user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.
@@ -3021,7 +3021,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Remove user from the team
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Parameter 'organization name' is mandatory if the team name is provided instead of team ID.
@@ -3052,7 +3052,7 @@ summary.total_objects_successful | numeric | | 0 1 |
 
 Add user in a team
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Parameter 'organization name' is mandatory if the team name is provided instead of team ID.
@@ -3087,7 +3087,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List all teams of an organization
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -3123,7 +3123,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List all repos of an organization
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -3245,7 +3245,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List all organizations
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -3281,7 +3281,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get a list of issues for the GitHub repository
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -3388,7 +3388,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List comments for an issue on the GitHub repository
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -3445,7 +3445,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve an issue for the GitHub repository
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -3548,7 +3548,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create an issue for the GitHub repository
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Only users with push access can set assignees/labels for the issues.
@@ -3666,7 +3666,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Update an issue for the GitHub repository
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Only users with push access can set assignees/labels for new issues.
@@ -3807,7 +3807,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create a comment for an issue on the GitHub repository
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -3865,7 +3865,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add label(s) to an issue on the GitHub repository
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Only users with push access can set labels for the issues.
