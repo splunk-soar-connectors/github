@@ -1,0 +1,2 @@
+splunk-soar-sdk>=3.22.2
+httpx>=0.28.1
