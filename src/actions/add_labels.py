@@ -28,6 +28,7 @@ from ._helpers import _check_response
 
 logger = getLogger()
 
+
 class AddLabelsParams(Params):
     repo_owner: str = Param(
         description="Owner of the repository",
@@ -87,4 +88,3 @@ def add_labels(
         )
     )
     return [AddLabelsOutput(**label) for label in response.json()]
-

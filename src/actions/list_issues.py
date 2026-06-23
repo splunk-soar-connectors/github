@@ -27,6 +27,7 @@ from ._helpers import _paginate_all
 
 logger = getLogger()
 
+
 class CreatorOutput(ActionOutput):
     avatar_url: str = OutputField(
         cef_types=["url"],
@@ -370,4 +371,3 @@ def list_issues(
     ]
     soar.set_summary(ListIssuesSummary(total_issues=len(output)))
     return output
-

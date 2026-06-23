@@ -34,6 +34,7 @@ from ._helpers import _check_response, _paginate_all, _resolve_team_id
 
 logger = getLogger()
 
+
 class AddMemberParams(Params):
     organization_name: str | None = Param(
         description="Organization name",
@@ -125,4 +126,3 @@ def add_member(
             )
         )
     return AddMemberOutput(**data, status="success")
-

@@ -26,6 +26,7 @@ from ._helpers import _check_response
 
 logger = getLogger()
 
+
 class CreatorOutput(ActionOutput):
     avatar_url: str = OutputField(
         cef_types=["url"],
@@ -444,4 +445,3 @@ def get_issue(params: GetIssueParams, soar: SOARClient, asset: Asset) -> GetIssu
         GetIssueSummary(issue_number=data.get("number"), issue_url=data.get("html_url"))
     )
     return GetIssueOutput(**data)
-

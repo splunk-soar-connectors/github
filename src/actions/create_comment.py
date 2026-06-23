@@ -27,6 +27,7 @@ from ._helpers import _check_response
 
 logger = getLogger()
 
+
 class CreateCommentParams(Params):
     repo_owner: str = Param(
         description="Owner of the repository",
@@ -167,4 +168,3 @@ def create_comment(
         )
     )
     return CreateCommentOutput(**data)
-

@@ -27,6 +27,7 @@ from ._helpers import _paginate_all
 
 logger = getLogger()
 
+
 class ListTeamsParams(Params):
     organization_name: str = Param(
         description="Organization name",
@@ -86,4 +87,3 @@ def list_teams(
     output = [ListTeamsOutput(**t) for t in _paginate_all(endpoint, asset, limit=limit)]
     soar.set_summary(ListTeamsSummary(total_teams=len(output)))
     return output
-

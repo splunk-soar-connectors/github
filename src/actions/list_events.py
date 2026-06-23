@@ -28,6 +28,7 @@ from ._helpers import _check_response
 
 logger = getLogger()
 
+
 class ListEventsParams(Params):
     username: str = Param(
         description="Username", primary=True, cef_types=["github username"]
@@ -2508,6 +2509,7 @@ def list_events(
     output = [ListEventsOutput(**item) for item in results]
     soar.set_summary(ListEventsSummary(total_events=len(output)))
     return output
+
 
 RepositoryOutput.model_rebuild()
 LinksOutput.model_rebuild()

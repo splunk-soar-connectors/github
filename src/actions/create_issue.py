@@ -28,6 +28,7 @@ from ._helpers import _check_response
 
 logger = getLogger()
 
+
 class CreatorOutput(ActionOutput):
     avatar_url: str = OutputField(
         cef_types=["url"],
@@ -164,6 +165,7 @@ class ClosedByOutput(ActionOutput):
     url: str = OutputField(
         cef_types=["url"], example_values=["https://api.github.com/users/testbg11"]
     )
+
 
 class CreateIssueParams(Params):
     repo_owner: str = Param(
@@ -483,4 +485,3 @@ def create_issue(
         )
     )
     return CreateIssueOutput(**data)
-

@@ -26,6 +26,7 @@ from ._helpers import _paginate_all
 
 logger = getLogger()
 
+
 class ListCommentsParams(Params):
     repo_owner: str = Param(
         description="Owner of the repository",
@@ -160,4 +161,3 @@ def list_comments(
     ]
     soar.set_summary(ListCommentsSummary(total_comments=len(output)))
     return output
-

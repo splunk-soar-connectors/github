@@ -50,6 +50,7 @@ from ._helpers import _check_response, _if_role_same, _paginate_all
 
 logger = getLogger()
 
+
 class AddCollaboratorParams(Params):
     repo_owner: str = Param(
         description="Owner of the repository",
@@ -333,4 +334,3 @@ def add_collaborator(
         )
     )
     return AddCollaboratorOutput(invite_sent=False, collaborator_added=True)
-

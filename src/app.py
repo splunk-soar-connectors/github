@@ -69,32 +69,11 @@ def test_connectivity(soar: SOARClient, asset: Asset) -> None:
             "HTTP 401 — check your Personal Access Token."
         )
     # _check_response is re-exported at module level below; safe to call after full load
-    from .actions._helpers import _check_response  # noqa: PLC0415
     _check_response(response)
 
 
-# Import action modules — registers all @app.action() handlers as a side-effect
-from .actions import (  # noqa: F401, E402
-    _helpers,
-    add_collaborator,
-    add_labels,
-    add_member,
-    create_comment,
-    create_issue,
-    get_issue,
-    list_comments,
-    list_events,
-    list_issues,
-    list_organizations,
-    list_repos,
-    list_teams,
-    list_users,
-    make_req,
-    remove_collaborator,
-    remove_member,
-    update_issue,
-)
-
+# Import action modules — registers all @app.action() handlers as a side-effect.
+# The explicit per-symbol imports below also cover this; no separate module block needed.
 from .actions._helpers import (  # noqa: F401
     _check_response,
     _if_role_same,

@@ -26,6 +26,7 @@ from ._helpers import _paginate_all
 
 logger = getLogger()
 
+
 class ListUsersParams(Params):
     organization_name: str = Param(
         description="Organization name",

@@ -33,6 +33,7 @@ from ._helpers import _check_response, _paginate_all, _resolve_team_id
 
 logger = getLogger()
 
+
 class RemoveMemberParams(Params):
     organization_name: str | None = Param(
         description="Organization name",
@@ -116,4 +117,3 @@ def remove_member(
         GITHUB_USER_NOT_TEAM_MEMBER_MSG.format(team=params.team, user_name=params.user)
     )
     return RemoveMemberOutput(status="success")
-

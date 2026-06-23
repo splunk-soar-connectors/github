@@ -38,6 +38,7 @@ from ._helpers import _check_response, _paginate_all
 
 logger = getLogger()
 
+
 class RemoveCollaboratorParams(Params):
     repo_owner: str = Param(
         description="Owner of the repository",
@@ -128,4 +129,3 @@ def remove_collaborator(
             GITHUB_COLLABORATOR_REMOVED_MSG.format(repo_full_name=repo, user_name=user)
         )
     return RemoveCollaboratorOutput(invite_deleted=invite_deleted)
-

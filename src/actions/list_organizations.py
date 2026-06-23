@@ -27,6 +27,7 @@ from ._helpers import _paginate_all
 
 logger = getLogger()
 
+
 class ListOrganizationsParams(Params):
     limit: float | None = Param(
         description="Maximum number of organizations to be fetched"
@@ -98,4 +99,3 @@ def list_organizations(
     ]
     soar.set_summary(ListOrganizationsSummary(total_organizations=len(output)))
     return output
-
