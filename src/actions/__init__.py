@@ -11,4 +11,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from . import make_req  # noqa: F401 — registers @app.make_request() decorator
+
+from . import (  # noqa: F401 — each import registers @app.action() handlers
+    _helpers,
+    add_collaborator,
+    add_labels,
+    add_member,
+    create_comment,
+    create_issue,
+    get_issue,
+    list_comments,
+    list_events,
+    list_issues,
+    list_organizations,
+    list_repos,
+    list_teams,
+    list_users,
+    make_req,
+    remove_collaborator,
+    remove_member,
+    update_issue,
+)
