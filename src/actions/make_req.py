@@ -26,7 +26,8 @@ from soar_sdk.logging import getLogger
 from soar_sdk.params import MakeRequestParams, Param
 
 from ..app import Asset, app
-from ..client import GITHUB_DEFAULT_HEADERS, resolve_auth
+from ..auth import resolve_github_auth
+from ..client import GITHUB_DEFAULT_HEADERS
 from ..consts import GITHUB_API_BASE_URL
 
 logger = getLogger()
@@ -188,7 +189,7 @@ def make_request(
 
     # --- auth ----------------------------------------------------------------
 
-    auth = resolve_auth(asset)
+    auth = resolve_github_auth(asset)
 
     # --- send the request ----------------------------------------------------
 

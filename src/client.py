@@ -15,19 +15,14 @@
 #
 # The legacy connector centralised auth resolution in _handle_update_request and
 # all HTTP calls in _make_rest_call.  This module is the SDK equivalent — a single
-# place that knows how to pick the right credentials and fire a request, so every
-# action doesn't duplicate that logic.
-
-from collections.abc import Generator
+# place that fires a request, delegating credential resolution to auth.py.
 
 import httpx
 
 from soar_sdk.exceptions import ActionFailure
 
-from .consts import (
-    GITHUB_API_BASE_URL,
-    GITHUB_CONFIG_PARAMS_REQUIRED,
-)
+from .auth import resolve_github_auth
+from .consts import GITHUB_API_BASE_URL
 
 # GitHub's recommended headers for REST API v3 calls.
 # X-GitHub-Api-Version pins the behaviour to the 2022-11-28 schema version.
@@ -35,33 +30,6 @@ GITHUB_DEFAULT_HEADERS: dict[str, str] = {
     "Accept": "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
 }
-
-
-class _BearerAuth(httpx.Auth):
-    """Injects 'Authorization: Bearer <token>' for OAuth access tokens."""
-
-    def __init__(self, token: str) -> None:
-        self._token = token
-
-    def auth_flow(
-        self, request: httpx.Request
-    ) -> Generator[httpx.Request, httpx.Response]:
-        request.headers["Authorization"] = f"Bearer {self._token}"
-        yield request
-
-
-def resolve_auth(asset) -> httpx.Auth:
-    """Return the correct httpx.Auth object for the configured asset credentials.
-
-    Priority order:
-      1. personal_access_token (PAT)  →  Authorization: Bearer
-
-    Raises ActionFailure when no credentials are present.
-    """
-    if asset.personal_access_token:
-        return _BearerAuth(asset.personal_access_token)
-
-    raise ActionFailure(GITHUB_CONFIG_PARAMS_REQUIRED)
 
 
 def call_github(
@@ -86,7 +54,7 @@ def call_github(
     url = f"{GITHUB_API_BASE_URL}{endpoint}"
 
     headers = {**GITHUB_DEFAULT_HEADERS, **(extra_headers or {})}
-    auth = resolve_auth(asset)  # raises ActionFailure when unconfigured
+    auth = resolve_github_auth(asset)  # raises ActionFailure when unconfigured
 
     try:
         with httpx.Client(timeout=timeout, verify=verify) as client:
