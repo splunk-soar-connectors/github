@@ -17,13 +17,12 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_EVENTS_ENDPOINT,
     GITHUB_PAGINATION_MAX_SIZE,
 )
-from ..views import display_view
 from ._helpers import _check_response
 
 logger = getLogger()
@@ -2478,12 +2477,6 @@ class ListEventsSummary(ActionOutput):
     total_events: int = OutputField(example_values=[10])
 
 
-@app.action(
-    description="List events performed by a user",
-    action_type="investigate",
-    verbose="Action will list a maximum of 300 events. Only events from the past 90 days will be listed.",
-    view_handler=display_view,
-)
 def list_events(
     params: ListEventsParams, soar: SOARClient, asset: Asset
 ) -> list[ListEventsOutput]:

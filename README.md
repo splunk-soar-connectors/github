@@ -20,7 +20,12 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration. <br>
+[test connectivity](#action-test-connectivity) - test connectivity <br>
+[make request](#action-make-request) - Execute an arbitrary HTTP request against the GitHub API.
+
+Handles all three authentication modes configured on the asset:
+username/password basic auth, personal access token, and OAuth Bearer token.
+The endpoint is appended to https://api.github.com — do not include the base URL. <br>
 [add collaborator](#action-add-collaborator) - Add user as a collaborator to repo <br>
 [add labels](#action-add-labels) - Add label(s) to an issue on the GitHub repository <br>
 [add member](#action-add-member) - Add user in a team <br>
@@ -34,18 +39,13 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [list repos](#action-list-repos) - List all repos of an organization <br>
 [list teams](#action-list-teams) - List all teams of an organization <br>
 [list users](#action-list-users) - List users of an organization <br>
-[make request](#action-make-request) - Execute an arbitrary HTTP request against the GitHub API.
-
-Handles all three authentication modes configured on the asset:
-username/password basic auth, personal access token, and OAuth Bearer token.
-The endpoint is appended to https://api.github.com — do not include the base URL. <br>
 [remove collaborator](#action-remove-collaborator) - Remove user as a collaborator from the repo <br>
 [remove member](#action-remove-member) - Remove user from the team <br>
 [update issue](#action-update-issue) - Update an issue for the GitHub repository
 
 ## action: 'test connectivity'
 
-Validate the asset configuration for connectivity using supplied configuration.
+test connectivity
 
 Type: **test** <br>
 Read only: **True**
@@ -62,6 +62,49 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.status | string | | success failure |
 action_result.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'make request'
+
+Execute an arbitrary HTTP request against the GitHub API.
+
+Handles all three authentication modes configured on the asset:
+username/password basic auth, personal access token, and OAuth Bearer token.
+The endpoint is appended to https://api.github.com — do not include the base URL.
+
+Type: **generic** <br>
+Read only: **False**
+
+'make request' action for the app. Used to handle arbitrary HTTP requests with the app's asset
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**http_method** | required | The HTTP method to use for the request. | string | |
+**endpoint** | required | GitHub API endpoint path appended to https://api.github.com. Do not include the base URL. Examples: '/user', '/repos/owner/name/issues', '/orgs/my-org/teams', '/repos/owner/name/issues/1/labels'. | string | |
+**headers** | optional | The headers to send with the request (JSON object). An example is {'Content-Type': 'application/json'} | string | |
+**query_parameters** | optional | Parameters to append to the URL (JSON object or query string). An example is ?key=value&key2=value2 | string | |
+**body** | optional | The body to send with the request (JSON object). An example is {'key': 'value', 'key2': 'value2'} | string | |
+**timeout** | optional | The timeout for the request in seconds. | numeric | |
+**verify_ssl** | optional | Whether to verify the SSL certificate. Default is False. | boolean | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.http_method | string | | |
+action_result.parameter.endpoint | string | | |
+action_result.parameter.headers | string | | |
+action_result.parameter.query_parameters | string | | |
+action_result.parameter.body | string | | |
+action_result.parameter.timeout | numeric | | |
+action_result.parameter.verify_ssl | boolean | | |
+action_result.data.\*.status_code | numeric | | 200 404 500 |
+action_result.data.\*.response_body | string | | {"key": "value"} |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 
@@ -1917,49 +1960,6 @@ action_result.data.\*.starred_url | string | `url` | https://api.github.com/user
 action_result.data.\*.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
 action_result.data.\*.type | string | | User |
 action_result.data.\*.url | string | `url` | https://api.github.com/users/test |
-summary.total_objects | numeric | | 1 |
-summary.total_objects_successful | numeric | | 1 |
-
-## action: 'make request'
-
-Execute an arbitrary HTTP request against the GitHub API.
-
-Handles all three authentication modes configured on the asset:
-username/password basic auth, personal access token, and OAuth Bearer token.
-The endpoint is appended to https://api.github.com — do not include the base URL.
-
-Type: **generic** <br>
-Read only: **False**
-
-'make request' action for the app. Used to handle arbitrary HTTP requests with the app's asset
-
-#### Action Parameters
-
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**http_method** | required | The HTTP method to use for the request. | string | |
-**endpoint** | required | GitHub API endpoint path appended to https://api.github.com. Do not include the base URL. Examples: '/user', '/repos/owner/name/issues', '/orgs/my-org/teams', '/repos/owner/name/issues/1/labels'. | string | |
-**headers** | optional | The headers to send with the request (JSON object). An example is {'Content-Type': 'application/json'} | string | |
-**query_parameters** | optional | Parameters to append to the URL (JSON object or query string). An example is ?key=value&key2=value2 | string | |
-**body** | optional | The body to send with the request (JSON object). An example is {'key': 'value', 'key2': 'value2'} | string | |
-**timeout** | optional | The timeout for the request in seconds. | numeric | |
-**verify_ssl** | optional | Whether to verify the SSL certificate. Default is False. | boolean | |
-
-#### Action Output
-
-DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
---------- | ---- | -------- | --------------
-action_result.status | string | | success failure |
-action_result.message | string | | |
-action_result.parameter.http_method | string | | |
-action_result.parameter.endpoint | string | | |
-action_result.parameter.headers | string | | |
-action_result.parameter.query_parameters | string | | |
-action_result.parameter.body | string | | |
-action_result.parameter.timeout | numeric | | |
-action_result.parameter.verify_ssl | boolean | | |
-action_result.data.\*.status_code | numeric | | 200 404 500 |
-action_result.data.\*.response_body | string | | {"key": "value"} |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 

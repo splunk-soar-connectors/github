@@ -19,11 +19,10 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..consts import (
     GITHUB_LIST_REPOS_ENDPOINT,
 )
-from ..views import display_view
 from ._helpers import _paginate_all
 
 logger = getLogger()
@@ -353,11 +352,6 @@ class ListReposSummary(ActionOutput):
     total_repos: int = OutputField(example_values=[10])
 
 
-@app.action(
-    description="List all repos of an organization",
-    action_type="investigate",
-    view_handler=display_view,
-)
 def list_repos(
     params: ListReposParams, soar: SOARClient, asset: Asset
 ) -> list[ListReposOutput]:

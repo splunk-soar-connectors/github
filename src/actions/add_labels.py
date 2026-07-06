@@ -17,7 +17,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ENDPOINT_LABELS,
@@ -62,12 +62,6 @@ class AddLabelsOutput(ActionOutput):
     )
 
 
-@app.action(
-    description="Add label(s) to an issue on the GitHub repository",
-    action_type="generic",
-    read_only=False,
-    verbose="Only users with push access can set labels for the issues.",
-)
 def add_labels(
     params: AddLabelsParams, soar: SOARClient, asset: Asset
 ) -> list[AddLabelsOutput]:

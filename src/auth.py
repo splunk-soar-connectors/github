@@ -44,7 +44,7 @@ from .consts import (
 )
 
 if TYPE_CHECKING:
-    from .app import Asset
+    from .asset import Asset
 
 
 def build_pat_auth(asset: Asset) -> StaticTokenAuth:

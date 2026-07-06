@@ -17,13 +17,12 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ENDPOINT_GET_ISSUE,
     GITHUB_REQUEST_PATCH,
 )
-from ..views import display_view
 from ._helpers import _check_response
 
 logger = getLogger()
@@ -442,13 +441,6 @@ class UpdateIssueSummary(ActionOutput):
     )
 
 
-@app.action(
-    description="Update an issue for the GitHub repository",
-    action_type="generic",
-    read_only=False,
-    verbose="Only users with push access can set assignees/labels for new issues. \nAssignees/labels are silently dropped otherwise. The existing labels and assignees of the issue will be replaced with the labels and assignees provided in the respective input parameters by the user. If the to_empty parameter is checked, then, it will empty the field values of the issue (except for the title and the state of the issue) for which the parameter values are not provided or kept empty. If the to_empty parameter is not checked, then, it will simply ignore the empty parameter values from being updated on the issue.",
-    view_handler=display_view,
-)
 def update_issue(
     params: UpdateIssueParams, soar: SOARClient, asset: Asset
 ) -> UpdateIssueOutput:

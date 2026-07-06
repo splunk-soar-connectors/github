@@ -17,7 +17,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ADD_REMOVE_MEMBER_ENDPOINT,
@@ -28,7 +28,6 @@ from ..consts import (
     GITHUB_REQUEST_DELETE,
     GITHUB_USER_NOT_TEAM_MEMBER_MSG,
 )
-from ..views import display_view
 from ._helpers import _check_response, _paginate_all, _resolve_team_id
 
 logger = getLogger()
@@ -61,13 +60,6 @@ class RemoveMemberOutput(ActionOutput):
     )
 
 
-@app.action(
-    description="Remove user from the team",
-    action_type="generic",
-    read_only=False,
-    verbose="Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
-    view_handler=display_view,
-)
 def remove_member(
     params: RemoveMemberParams, soar: SOARClient, asset: Asset
 ) -> RemoveMemberOutput:

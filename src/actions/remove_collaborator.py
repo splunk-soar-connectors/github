@@ -17,7 +17,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT,
@@ -33,7 +33,6 @@ from ..consts import (
     GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT,
     GITHUB_USER_NOT_COLLABORATOR_MSG,
 )
-from ..views import display_view
 from ._helpers import _check_response, _paginate_all
 
 logger = getLogger()
@@ -64,13 +63,6 @@ class RemoveCollaboratorOutput(ActionOutput):
     invite_deleted: bool = OutputField(column_name="Invite Deleted")
 
 
-@app.action(
-    description="Remove user as a collaborator from the repo",
-    action_type="generic",
-    read_only=False,
-    verbose="If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted.",
-    view_handler=display_view,
-)
 def remove_collaborator(
     params: RemoveCollaboratorParams, soar: SOARClient, asset: Asset
 ) -> RemoveCollaboratorOutput:

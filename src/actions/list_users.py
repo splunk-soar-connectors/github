@@ -18,7 +18,7 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..consts import (
     GITHUB_LIST_USERS_ENDPOINT,
 )
@@ -95,7 +95,6 @@ class ListUsersSummary(ActionOutput):
     total_users: int = OutputField(example_values=[10])
 
 
-@app.action(description="List users of an organization", action_type="investigate")
 def list_users(
     params: ListUsersParams, soar: SOARClient, asset: Asset
 ) -> list[ListUsersOutput]:

@@ -18,7 +18,7 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..consts import (
     GITHUB_ENDPOINT_COMMENTS,
 )
@@ -141,10 +141,6 @@ class ListCommentsSummary(ActionOutput):
     total_comments: int = OutputField(example_values=[10])
 
 
-@app.action(
-    description="List comments for an issue on the GitHub repository",
-    action_type="investigate",
-)
 def list_comments(
     params: ListCommentsParams, soar: SOARClient, asset: Asset
 ) -> list[ListCommentsOutput]:

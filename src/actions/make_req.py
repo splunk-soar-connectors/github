@@ -25,7 +25,7 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import MakeRequestParams, Param
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..auth import resolve_github_auth
 from ..client import GITHUB_DEFAULT_HEADERS
 from ..consts import GITHUB_API_BASE_URL
@@ -117,7 +117,6 @@ def _is_valid_query_string(query_string: str) -> bool:
 # ---------------------------------------------------------------------------
 
 
-@app.make_request()
 def make_request(
     params: GitHubMakeRequestParams, asset: Asset
 ) -> GitHubMakeRequestOutput:

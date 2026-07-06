@@ -18,11 +18,10 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..consts import (
     GITHUB_LIST_ORGANIZATIONS_ENDPOINT,
 )
-from ..views import display_view
 from ._helpers import _paginate_all
 
 logger = getLogger()
@@ -82,11 +81,6 @@ class ListOrganizationsSummary(ActionOutput):
     total_organizations: int = OutputField(example_values=[10])
 
 
-@app.action(
-    description="List all organizations",
-    action_type="investigate",
-    view_handler=display_view,
-)
 def list_organizations(
     params: ListOrganizationsParams, soar: SOARClient, asset: Asset
 ) -> list[ListOrganizationsOutput]:

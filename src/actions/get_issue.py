@@ -17,7 +17,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ENDPOINT_GET_ISSUE,
@@ -429,9 +429,6 @@ class GetIssueSummary(ActionOutput):
     )
 
 
-@app.action(
-    description="Retrieve an issue for the GitHub repository", action_type="investigate"
-)
 def get_issue(params: GetIssueParams, soar: SOARClient, asset: Asset) -> GetIssueOutput:
     endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
         repo_owner=params.repo_owner,

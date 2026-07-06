@@ -17,7 +17,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ENDPOINT_COMMENTS,
@@ -144,11 +144,6 @@ class CreateCommentSummary(ActionOutput):
     )
 
 
-@app.action(
-    description="Create a comment for an issue on the GitHub repository",
-    action_type="generic",
-    read_only=False,
-)
 def create_comment(
     params: CreateCommentParams, soar: SOARClient, asset: Asset
 ) -> CreateCommentOutput:

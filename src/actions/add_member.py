@@ -17,7 +17,7 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ADD_MEMBER_MSG,
@@ -29,7 +29,6 @@ from ..consts import (
     GITHUB_JSON_ROLE,
     GITHUB_REQUEST_PUT,
 )
-from ..views import display_view
 from ._helpers import _check_response, _paginate_all, _resolve_team_id
 
 logger = getLogger()
@@ -76,13 +75,6 @@ class AddMemberOutput(ActionOutput):
     )
 
 
-@app.action(
-    description="Add user in a team",
-    action_type="generic",
-    read_only=False,
-    verbose="Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
-    view_handler=display_view,
-)
 def add_member(
     params: AddMemberParams, soar: SOARClient, asset: Asset
 ) -> AddMemberOutput:

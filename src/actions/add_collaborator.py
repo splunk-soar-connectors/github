@@ -18,7 +18,7 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT,
@@ -45,7 +45,6 @@ from ..consts import (
     GITHUB_REQUEST_PUT,
     GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT,
 )
-from ..views import display_view
 from ._helpers import _check_response, _if_role_same, _paginate_all
 
 logger = getLogger()
@@ -215,13 +214,6 @@ class AddCollaboratorOutput(ActionOutput):
     )
 
 
-@app.action(
-    description="Add user as a collaborator to repo",
-    action_type="generic",
-    read_only=False,
-    verbose="For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to the user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to the user to join as a collaborator. If an invite is already sent to the user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.",
-    view_handler=display_view,
-)
 def add_collaborator(
     params: AddCollaboratorParams, soar: SOARClient, asset: Asset
 ) -> AddCollaboratorOutput:

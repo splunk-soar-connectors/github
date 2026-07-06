@@ -17,13 +17,12 @@ from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
-from ..app import Asset, app
+from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ENDPOINT_ISSUES,
     GITHUB_REQUEST_POST,
 )
-from ..views import display_view
 from ._helpers import _check_response
 
 logger = getLogger()
@@ -455,13 +454,6 @@ class CreateIssueSummary(ActionOutput):
     )
 
 
-@app.action(
-    description="Create an issue for the GitHub repository",
-    action_type="generic",
-    read_only=False,
-    verbose="Only users with push access can set assignees/labels for the issues. \nAssignees/labels are silently dropped otherwise.",
-    view_handler=display_view,
-)
 def create_issue(
     params: CreateIssueParams, soar: SOARClient, asset: Asset
 ) -> CreateIssueOutput:
