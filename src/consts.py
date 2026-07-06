@@ -78,6 +78,9 @@ GITHUB_PHANTOM_SYS_INFO_URL = "/system_info"
 GITHUB_PHANTOM_ASSET_INFO_URL = "/asset/{asset_id}"
 GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize?client_id={client_id}&scope={scope}&state={state}"
 GITHUB_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token"  # noqa: S105
+
+GITHUB_AUTHORIZE_ENDPOINT = "https://github.com/login/oauth/authorize"
+GITHUB_TOKEN_ENDPOINT = "https://github.com/login/oauth/access_token"  # noqa: S105
 GITHUB_CURRENT_USER_ENDPOINT = "/user"
 GITHUB_EVENTS_ENDPOINT = "/users/{username}/events"
 GITHUB_LIST_ORGANIZATIONS_ENDPOINT = "/user/orgs"
