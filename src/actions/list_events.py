@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pydantic import model_validator
 from soar_sdk.abstract import SOARClient
 from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.logging import getLogger
@@ -2463,14 +2464,42 @@ class PayloadOutput(ActionOutput):
 
 
 class ListEventsOutput(ActionOutput):
+    # Column fields in widget display order
+    id: str = OutputField(example_values=["7987124418"], column_name="Event ID")
+    type: str = OutputField(example_values=["CreateEvent"], column_name="Event Type")
+    public: bool = OutputField(column_name="Public")
+    created_at: str = OutputField(
+        example_values=["2018-07-19T06:26:57Z"], column_name="Created At"
+    )
+    repo_name: str | None = OutputField(
+        cef_types=["github repo"],
+        example_values=["test-repo"],
+        column_name="Repo Name",
+    )
+    org_login: str | None = OutputField(
+        cef_types=["github organization name"],
+        example_values=["test"],
+        column_name="Organization Name",
+    )
+    # Non-column fields
     actor: ActorOutput
-    created_at: str = OutputField(example_values=["2018-07-19T06:26:57Z"])
-    id: str = OutputField(example_values=["7987124418"])
     org: OrgOutput | None
     payload: PayloadOutput
-    public: bool
     repo: RepoOutput
-    type: str = OutputField(example_values=["CreateEvent"])
+
+    @model_validator(mode="before")
+    @classmethod
+    def _flatten_repo_and_org(cls, values):
+        """Promote nested repo.name and org.login to top-level columns so the
+        native table can display them (the API nests them under `repo`/`org`)."""
+        if isinstance(values, dict):
+            repo = values.get("repo")
+            if isinstance(repo, dict):
+                values.setdefault("repo_name", repo.get("name"))
+            org = values.get("org")
+            if isinstance(org, dict):
+                values.setdefault("org_login", org.get("login"))
+        return values
 
 
 class ListEventsSummary(ActionOutput):

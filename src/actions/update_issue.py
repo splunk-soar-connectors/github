@@ -382,10 +382,21 @@ class UserOutput(ActionOutput):
 
 
 class UpdateIssueOutput(ActionOutput):
+    # Column fields in widget display order
+    number: float = OutputField(
+        cef_types=["github issue id"], example_values=[1], column_name="Issue Number"
+    )
+    title: str = OutputField(
+        example_values=["update test title"], column_name="Issue Title"
+    )
+    body: str | None = OutputField(
+        example_values=["test update body"], column_name="Issue Body"
+    )
+    state: str = OutputField(example_values=["closed"], column_name="Issue State")
+    # Non-column fields
     assignee: AssigneeOutput | None
     assignees: list[AssigneesOutput]
     author_association: str = OutputField(example_values=["OWNER"])
-    body: str | None = OutputField(example_values=["test update body"])
     closed_at: str | None = OutputField(example_values=["2019-07-29T11:24:09Z"])
     closed_by: ClosedByOutput | None
     comments: float = OutputField(example_values=[1])
@@ -419,13 +430,10 @@ class UpdateIssueOutput(ActionOutput):
     node_id: str = OutputField(
         example_values=["MDU6SXNzdWU0NzM2MDE5Nzk="]  # pragma: allowlist secret
     )
-    number: float = OutputField(cef_types=["github issue id"], example_values=[1])
     repository_url: str = OutputField(
         cef_types=["url"],
         example_values=["https://api.github.com/repos/testbg11/Testing1"],
     )
-    state: str = OutputField(example_values=["closed"])
-    title: str = OutputField(example_values=["update test title"])
     updated_at: str = OutputField(example_values=["2019-07-29T11:27:10Z"])
     url: str = OutputField(
         cef_types=["url"],

@@ -13,7 +13,6 @@
 # limitations under the License.
 from soar_sdk.app import App
 
-from ..views import display_view
 from .add_collaborator import add_collaborator
 from .add_labels import add_labels
 from .add_member import add_member
@@ -50,7 +49,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="For repo whose owner is an organization, if the user is not a member of the organization, GitHub will send an email invite to the user to join as a collaborator. Otherwise, he will be directly added as a collaborator. For repo whose owner is a user, GitHub will always send an email invite to the user to join as a collaborator. If an invite is already sent to the user, re-invite will not be sent. If the user is already a collaborator, his role will be updated.",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=add_labels,
@@ -65,7 +64,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=create_comment,
@@ -79,7 +78,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="Only users with push access can set assignees/labels for the issues. \nAssignees/labels are silently dropped otherwise.",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=get_issue,
@@ -96,31 +95,31 @@ def register_actions(app: App) -> App:
         description="List events performed by a user",
         action_type="investigate",
         verbose="Action will list a maximum of 300 events. Only events from the past 90 days will be listed.",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=list_issues,
         description="Get a list of issues for the GitHub repository",
         action_type="investigate",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=list_organizations,
         description="List all organizations",
         action_type="investigate",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=list_repos,
         description="List all repos of an organization",
         action_type="investigate",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=list_teams,
         description="List all teams of an organization",
         action_type="investigate",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=list_users,
@@ -133,7 +132,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="If the user is not a direct collaborator to the repo, any pending invitations to the user will also be deleted.",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=remove_member,
@@ -141,7 +140,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="Parameter 'organization name' is mandatory if the team name is provided instead of team ID.",
-        view_handler=display_view,
+        render_as="table",
     )
     app.register_action(
         action=update_issue,
@@ -149,7 +148,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="Only users with push access can set assignees/labels for new issues. \nAssignees/labels are silently dropped otherwise. The existing labels and assignees of the issue will be replaced with the labels and assignees provided in the respective input parameters by the user. If the to_empty parameter is checked, then, it will empty the field values of the issue (except for the title and the state of the issue) for which the parameter values are not provided or kept empty. If the to_empty parameter is not checked, then, it will simply ignore the empty parameter values from being updated on the issue.",
-        view_handler=display_view,
+        render_as="table",
     )
 
     return app

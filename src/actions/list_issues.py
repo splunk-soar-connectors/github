@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pydantic import model_validator
 from soar_sdk.abstract import SOARClient
 from soar_sdk.action_results import ActionOutput, OutputField
 from soar_sdk.exceptions import ActionFailure
@@ -298,10 +299,26 @@ class UserOutput(ActionOutput):
 
 
 class ListIssuesOutput(ActionOutput):
+    # Column fields in widget display order
+    number: float = OutputField(
+        cef_types=["github issue id"], example_values=[4], column_name="Issue Number"
+    )
+    title: str = OutputField(
+        example_values=["Test issue title here"], column_name="Issue Title"
+    )
+    body: str | None = OutputField(
+        example_values=["Test issue body right here"], column_name="Issue Body"
+    )
+    state: str = OutputField(example_values=["open"], column_name="Issue State")
+    assignee_login: str | None = OutputField(
+        cef_types=["github username"],
+        example_values=["testusername"],
+        column_name="Assignee",
+    )
+    # Non-column fields
     assignee: AssigneeOutput | None
     assignees: list[AssigneesOutput]
     author_association: str = OutputField(example_values=["COLLABORATOR"])
-    body: str | None = OutputField(example_values=["Test issue body right here"])
     closed_at: str | None
     comments: float = OutputField(example_values=[0])
     comments_url: str = OutputField(
@@ -332,19 +349,27 @@ class ListIssuesOutput(ActionOutput):
     locked: bool
     milestone: MilestoneOutput | None
     node_id: str = OutputField(example_values=["LAKSJDOIWsase="])
-    number: float = OutputField(cef_types=["github issue id"], example_values=[4])
     repository_url: str = OutputField(
         cef_types=["url"],
         example_values=["https://api.github.com/repos/username/testrepo"],
     )
-    state: str = OutputField(example_values=["open"])
-    title: str = OutputField(example_values=["Test issue title here"])
     updated_at: str = OutputField(example_values=["2018-04-23T01:15:25Z"])
     url: str = OutputField(
         cef_types=["url"],
         example_values=["https://api.github.com/repos/username/testrepo/issues/4"],
     )
     user: UserOutput
+
+    @model_validator(mode="before")
+    @classmethod
+    def _flatten_assignee(cls, values):
+        """Promote the nested assignee's login to a top-level column, mirroring
+        the API's nested `assignee` object into the flat `assignee_login` field."""
+        if isinstance(values, dict) and values.get("assignee"):
+            assignee = values["assignee"]
+            if isinstance(assignee, dict):
+                values.setdefault("assignee_login", assignee.get("login"))
+        return values
 
 
 class ListIssuesSummary(ActionOutput):

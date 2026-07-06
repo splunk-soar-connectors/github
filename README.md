@@ -346,6 +346,10 @@ action_result.parameter.issue_title | string | | |
 action_result.parameter.issue_body | string | | |
 action_result.parameter.assignees | string | `github username` | |
 action_result.parameter.labels | string | | |
+action_result.data.\*.number | numeric | `github issue id` | 2 |
+action_result.data.\*.title | string | | I am testing from the app |
+action_result.data.\*.body | string | | This is what the body looks like when testing from the app |
+action_result.data.\*.state | string | | open |
 action_result.data.\*.assignee.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/11890709?v=4 |
 action_result.data.\*.assignee.events_url | string | `url` | https://api.github.com/users/repoowner/events{/privacy} |
 action_result.data.\*.assignee.followers_url | string | `url` | https://api.github.com/users/repoowner/followers |
@@ -383,7 +387,6 @@ action_result.data.\*.assignees.\*.subscriptions_url | string | `url` | https://
 action_result.data.\*.assignees.\*.type | string | | User |
 action_result.data.\*.assignees.\*.url | string | `url` | https://api.github.com/users/repoowner |
 action_result.data.\*.author_association | string | | OWNER |
-action_result.data.\*.body | string | | This is what the body looks like when testing from the app |
 action_result.data.\*.closed_at | string | | |
 action_result.data.\*.closed_by.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/53362718?v=4 |
 action_result.data.\*.closed_by.events_url | string | `url` | https://api.github.com/users/testbg11/events{/privacy} |
@@ -451,10 +454,7 @@ action_result.data.\*.milestone.title | string | | 3.4 |
 action_result.data.\*.milestone.updated_at | string | | 2018-07-19T07:12:02Z |
 action_result.data.\*.milestone.url | string | `url` | https://api.github.com/repos/test/test/milestones/10 |
 action_result.data.\*.node_id | string | | MDU6SXNzdWU0Njg4NDAwMTQ= |
-action_result.data.\*.number | numeric | `github issue id` | 2 |
 action_result.data.\*.repository_url | string | `url` | https://api.github.com/repos/repoowner/TestingAPI |
-action_result.data.\*.state | string | | open |
-action_result.data.\*.title | string | | I am testing from the app |
 action_result.data.\*.updated_at | string | | 2019-07-16T20:07:27Z |
 action_result.data.\*.url | string | `url` | https://api.github.com/repos/repoowner/TestingAPI/issues/2 |
 action_result.data.\*.user.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/11890709?v=4 |
@@ -706,14 +706,18 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 action_result.status | string | | success failure |
 action_result.message | string | | |
 action_result.parameter.username | string | `github username` | |
+action_result.data.\*.id | string | | 7987124418 |
+action_result.data.\*.type | string | | CreateEvent |
+action_result.data.\*.public | boolean | | True False |
+action_result.data.\*.created_at | string | | 2018-07-19T06:26:57Z |
+action_result.data.\*.repo_name | string | `github repo` | test-repo |
+action_result.data.\*.org_login | string | `github organization name` | test |
 action_result.data.\*.actor.avatar_url | string | `url` | https://avatars.githubusercontent.com/u/41301719? |
 action_result.data.\*.actor.display_login | string | `github username` | test |
 action_result.data.\*.actor.gravatar_id | string | | |
 action_result.data.\*.actor.id | numeric | | 41301719 |
 action_result.data.\*.actor.login | string | `github username` | test |
 action_result.data.\*.actor.url | string | `url` | https://api.github.com/users/test |
-action_result.data.\*.created_at | string | | 2018-07-19T06:26:57Z |
-action_result.data.\*.id | string | | 7987124418 |
 action_result.data.\*.org.avatar_url | string | `url` | https://avatars.githubusercontent.com/u/41301665? |
 action_result.data.\*.org.gravatar_id | string | | |
 action_result.data.\*.org.id | numeric | | 41301665 |
@@ -1582,11 +1586,9 @@ action_result.data.\*.payload.sender.subscriptions_url | string | `url` | https:
 action_result.data.\*.payload.sender.type | string | | User |
 action_result.data.\*.payload.sender.url | string | `url` | https://api.github.com/users/test |
 action_result.data.\*.payload.size | numeric | | 2 |
-action_result.data.\*.public | boolean | | True False |
 action_result.data.\*.repo.id | numeric | | 141531062 |
 action_result.data.\*.repo.name | string | `github repo` | test-repo |
 action_result.data.\*.repo.url | string | `url` | https://api.github.com/repos/test/test-repo |
-action_result.data.\*.type | string | | CreateEvent |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 
@@ -1614,6 +1616,11 @@ action_result.message | string | | |
 action_result.parameter.repo_owner | string | `github repo owner` `github username` | |
 action_result.parameter.repo_name | string | `github repo` | |
 action_result.parameter.limit | numeric | | |
+action_result.data.\*.number | numeric | `github issue id` | 4 |
+action_result.data.\*.title | string | | Test issue title here |
+action_result.data.\*.body | string | | Test issue body right here |
+action_result.data.\*.state | string | | open |
+action_result.data.\*.assignee_login | string | `github username` | testusername |
 action_result.data.\*.assignee.avatar_url | string | `url` | https://avatars0.githubusercontent.com/u/id |
 action_result.data.\*.assignee.events_url | string | `url` | https://api.github.com/users/username/events{/privacy} |
 action_result.data.\*.assignee.followers_url | string | `url` | https://api.github.com/users/username/followers |
@@ -1651,7 +1658,6 @@ action_result.data.\*.assignees.\*.subscriptions_url | string | `url` | https://
 action_result.data.\*.assignees.\*.type | string | | User |
 action_result.data.\*.assignees.\*.url | string | `url` | https://api.github.com/users/username |
 action_result.data.\*.author_association | string | | COLLABORATOR |
-action_result.data.\*.body | string | | Test issue body right here |
 action_result.data.\*.closed_at | string | | |
 action_result.data.\*.comments | numeric | | 0 |
 action_result.data.\*.comments_url | string | `url` | https://api.github.com/repos/username/testrepo/issues/4/comments |
@@ -1701,10 +1707,7 @@ action_result.data.\*.milestone.title | string | | 3.4 |
 action_result.data.\*.milestone.updated_at | string | | 2018-07-19T07:12:02Z |
 action_result.data.\*.milestone.url | string | `url` | https://api.github.com/repos/test/test/milestones/10 |
 action_result.data.\*.node_id | string | | LAKSJDOIWsase= |
-action_result.data.\*.number | numeric | `github issue id` | 4 |
 action_result.data.\*.repository_url | string | `url` | https://api.github.com/repos/username/testrepo |
-action_result.data.\*.state | string | | open |
-action_result.data.\*.title | string | | Test issue title here |
 action_result.data.\*.updated_at | string | | 2018-04-23T01:15:25Z |
 action_result.data.\*.url | string | `url` | https://api.github.com/repos/username/testrepo/issues/4 |
 action_result.data.\*.user.avatar_url | string | `url` | https://avatars0.githubusercontent.com/u/avatarid |
@@ -2062,6 +2065,10 @@ action_result.parameter.issue_body | string | | |
 action_result.parameter.assignees | string | `github username` | |
 action_result.parameter.labels | string | | |
 action_result.parameter.to_empty | boolean | | |
+action_result.data.\*.number | numeric | `github issue id` | 1 |
+action_result.data.\*.title | string | | update test title |
+action_result.data.\*.body | string | | test update body |
+action_result.data.\*.state | string | | closed |
 action_result.data.\*.assignee.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/53362718?v=4 |
 action_result.data.\*.assignee.events_url | string | `url` | https://api.github.com/users/testbg11/events{/privacy} |
 action_result.data.\*.assignee.followers_url | string | `url` | https://api.github.com/users/testbg11/followers |
@@ -2099,7 +2106,6 @@ action_result.data.\*.assignees.\*.subscriptions_url | string | `url` | https://
 action_result.data.\*.assignees.\*.type | string | | User |
 action_result.data.\*.assignees.\*.url | string | `url` | https://api.github.com/users/testbg11 |
 action_result.data.\*.author_association | string | | OWNER |
-action_result.data.\*.body | string | | test update body |
 action_result.data.\*.closed_at | string | | 2019-07-29T11:24:09Z |
 action_result.data.\*.closed_by.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/53362718?v=4 |
 action_result.data.\*.closed_by.events_url | string | `url` | https://api.github.com/users/testbg11/events{/privacy} |
@@ -2167,10 +2173,7 @@ action_result.data.\*.milestone.title | string | | 3.4 |
 action_result.data.\*.milestone.updated_at | string | | 2018-07-19T07:12:02Z |
 action_result.data.\*.milestone.url | string | `url` | https://api.github.com/repos/test/test/milestones/10 |
 action_result.data.\*.node_id | string | | MDU6SXNzdWU0NzM2MDE5Nzk= |
-action_result.data.\*.number | numeric | `github issue id` | 1 |
 action_result.data.\*.repository_url | string | `url` | https://api.github.com/repos/testbg11/Testing1 |
-action_result.data.\*.state | string | | closed |
-action_result.data.\*.title | string | | update test title |
 action_result.data.\*.updated_at | string | | 2019-07-29T11:27:10Z |
 action_result.data.\*.url | string | `url` | https://api.github.com/repos/testbg11/Testing1/issues/1 |
 action_result.data.\*.user.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/53362718?v=4 |
