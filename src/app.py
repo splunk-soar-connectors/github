@@ -19,6 +19,7 @@ from soar_sdk.logging import getLogger
 from .actions import register_actions
 from .actions.test_connectivity import run_test_connectivity
 from .asset import Asset
+from .webhooks import register_oauth_webhook
 
 logger = getLogger()
 
@@ -37,9 +38,11 @@ def create_github_app() -> App:
         asset_cls=Asset,
     )
 
+    register_oauth_webhook(app)
+
     @app.test_connectivity()
     def test_connectivity(soar: SOARClient, asset: Asset) -> None:
-        run_test_connectivity(soar, asset)
+        run_test_connectivity(soar, asset, app=app)
 
     return register_actions(app)
 

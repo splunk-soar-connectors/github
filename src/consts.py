@@ -81,6 +81,17 @@ GITHUB_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token"  # noqa:
 
 GITHUB_AUTHORIZE_ENDPOINT = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_ENDPOINT = "https://github.com/login/oauth/access_token"  # noqa: S105
+# Device Authorization Flow — fully outbound (no browser redirect / webhook).
+GITHUB_DEVICE_CODE_ENDPOINT = "https://github.com/login/device/code"
+GITHUB_DEVICE_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:device_code"
+GITHUB_DEVICE_VERIFICATION_MSG = (
+    "To authorize this app, open {verification_uri} in a browser and enter code: "
+    "{user_code}"
+)
+GITHUB_DEVICE_WAITING_MSG = "Waiting for you to authorize the device..."
+GITHUB_DEVICE_AUTH_TIMEOUT_MSG = (
+    "Device authorization timed out. Please run test connectivity again."
+)
 GITHUB_CURRENT_USER_ENDPOINT = "/user"
 GITHUB_EVENTS_ENDPOINT = "/users/{username}/events"
 GITHUB_LIST_ORGANIZATIONS_ENDPOINT = "/user/orgs"
@@ -127,7 +138,23 @@ GITHUB_REQUEST_PUT = "put"
 GITHUB_REQUEST_POST = "post"
 GITHUB_REQUEST_PATCH = "patch"
 GITHUB_TC_FILE = "oauth_task.out"
-GITHUB_SCOPE = "admin:org, user"
+GITHUB_OAUTH_CALLBACK_ROUTE = "oauth_callback"
+GITHUB_OAUTH_SUCCESS_MSG = (
+    "Authorization successful! You can close this window and return to Splunk SOAR."
+)
+GITHUB_WAITING_FOR_AUTHORIZATION_MSG = "Waiting for user to complete authorization..."
+GITHUB_OAUTH_FAILED_MSG = "OAuth authorization failed"
+# Labels for the OAuth progress log printed during test connectivity.
+GITHUB_OAUTH_CALLBACK_URL_MSG = (
+    "STEP 1 — Register this Authorization callback URL on your GitHub OAuth App "
+    "(GitHub → Settings → Developer settings → OAuth Apps → your app → "
+    "Authorization callback URL). It must match exactly"
+)
+GITHUB_OAUTH_LOGIN_URL_MSG = (
+    "STEP 2 — Open this URL in your browser to log in to GitHub and authorize access"
+)
+# GitHub expects a space-delimited scope list on the authorize endpoint.
+GITHUB_SCOPE = "admin:org user"
 GITHUB_PAGINATION_MAX_SIZE = 100
 GITHUB_TC_STATUS_SLEEP = 3
 GITHUB_AUTHORIZE_WAIT_TIME = 15

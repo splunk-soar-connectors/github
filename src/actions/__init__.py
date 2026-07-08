@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from soar_sdk.app import App
-
 from .add_collaborator import add_collaborator
 from .add_labels import add_labels
 from .add_member import add_member

@@ -180,4 +180,6 @@ test_asset.json
 
 # makrdown Files
 CLAUDE.md
+webhook-check.md
+patterns.md
 .claude

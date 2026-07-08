@@ -23,28 +23,37 @@
 
 from __future__ import annotations
 
+import time
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 import httpx
 
 from soar_sdk.auth import (
-    AuthorizationCodeFlow,
     OAuthBearerAuth,
     OAuthConfig,
     SOARAssetOAuthClient,
     StaticTokenAuth,
 )
+from soar_sdk.auth.client import ConfigurationChangedError, OAuthToken
 from soar_sdk.exceptions import ActionFailure
 
 from .consts import (
+    DEFAULT_TIMEOUT,
     GITHUB_AUTHORIZE_ENDPOINT,
     GITHUB_CONFIG_PARAMS_REQUIRED,
+    GITHUB_OAUTH_FAILED_MSG,
     GITHUB_SCOPE,
+    GITHUB_TC_STATUS_SLEEP,
     GITHUB_TOKEN_ENDPOINT,
 )
 
 if TYPE_CHECKING:
     from .asset import Asset
+
+# How long test_connectivity waits (in seconds) for the user to complete the
+# browser authorization step before giving up.
+_OAUTH_POLL_TIMEOUT = 300
 
 
 def build_pat_auth(asset: Asset) -> StaticTokenAuth:
@@ -52,20 +61,39 @@ def build_pat_auth(asset: Asset) -> StaticTokenAuth:
     return StaticTokenAuth(asset.personal_access_token)
 
 
-def _build_oauth_config(asset: Asset) -> OAuthConfig:
+def _build_oauth_config(
+    asset: Asset, *, redirect_uri: str | None = None
+) -> OAuthConfig:
     """Build the OAuth config shared by the flow and the bearer auth."""
     return OAuthConfig(
         client_id=asset.client_id,
         client_secret=asset.client_secret,
         authorization_endpoint=GITHUB_AUTHORIZE_ENDPOINT,
         token_endpoint=GITHUB_TOKEN_ENDPOINT,
+        redirect_uri=redirect_uri,
         scope=GITHUB_SCOPE,
     )
 
 
-def build_oauth_client(asset: Asset) -> SOARAssetOAuthClient:
+def _github_oauth_http_client() -> httpx.Client:
+    """HTTP client for the OAuth token endpoint.
+
+    GitHub's token endpoint returns a form-encoded body by default; the SDK's
+    OAuth client parses the response as JSON. Sending ``Accept: application/json``
+    makes GitHub respond with JSON so token exchange and refresh succeed.
+    """
+    return httpx.Client(headers={"Accept": "application/json"}, timeout=DEFAULT_TIMEOUT)
+
+
+def build_oauth_client(
+    asset: Asset, *, redirect_uri: str | None = None
+) -> SOARAssetOAuthClient:
     """Return the SDK OAuth client bound to the asset's persisted auth_state."""
-    return SOARAssetOAuthClient(_build_oauth_config(asset), asset.auth_state)
+    return SOARAssetOAuthClient(
+        _build_oauth_config(asset, redirect_uri=redirect_uri),
+        asset.auth_state,
+        http_client=_github_oauth_http_client(),
+    )
 
 
 def build_oauth_auth(asset: Asset) -> OAuthBearerAuth:
@@ -73,23 +101,55 @@ def build_oauth_auth(asset: Asset) -> OAuthBearerAuth:
     return OAuthBearerAuth(build_oauth_client(asset), auto_refresh=True)
 
 
-def build_oauth_flow(
+def complete_oauth_authorization(
     asset: Asset,
-    asset_id: str,
     *,
+    asset_id: str,
     redirect_uri: str,
-) -> AuthorizationCodeFlow:
-    """Return the authorization code flow used to kick off user authorization."""
-    return AuthorizationCodeFlow(
-        asset.auth_state,
-        asset_id,
-        client_id=asset.client_id,
-        client_secret=asset.client_secret,
-        authorization_endpoint=GITHUB_AUTHORIZE_ENDPOINT,
-        token_endpoint=GITHUB_TOKEN_ENDPOINT,
-        redirect_uri=redirect_uri,
-        scope=GITHUB_SCOPE,
-        use_pkce=False,
+    announce_url: Callable[[str], None],
+    poll_timeout: int = _OAUTH_POLL_TIMEOUT,
+    poll_interval: int = GITHUB_TC_STATUS_SLEEP,
+) -> OAuthToken:
+    """Drive the authorization code flow to obtain and persist an OAuth token.
+
+    If a valid token is already stored for the current credentials it is reused.
+    Otherwise an authorization URL is generated and handed to ``announce_url``
+    (so the caller can surface it to the user), then this polls ``auth_state``
+    until the webhook callback lands the authorization code, exchanges it for a
+    token, and returns it. Raises ActionFailure if the user does not authorize
+    within ``poll_timeout`` seconds.
+    """
+    client = build_oauth_client(asset, redirect_uri=redirect_uri)
+
+    # Reuse an existing token when the stored credentials still match.
+    try:
+        if client.get_stored_token() is not None:
+            return client.get_valid_token(auto_refresh=True)
+    except ConfigurationChangedError:
+        # client_id changed → stored token was cleared, fall through to re-auth.
+        pass
+
+    auth_url, _ = client.create_authorization_url(asset_id, use_pkce=False)
+    announce_url(auth_url)
+
+    deadline = time.time() + poll_timeout
+    while time.time() < deadline:
+        time.sleep(poll_interval)
+        code = client.get_authorization_code(force_reload=True)
+        if code:
+            token = client.fetch_token_with_authorization_code(code)
+            # SDK bug workaround: fetch_token_with_authorization_code() stores the
+            # token, then clears the session by re-saving a state object it loaded
+            # *before* the token existed — which wipes the token from auth_state.
+            # It still returns a valid token, so re-persist it here; otherwise the
+            # subsequent connectivity probe reads an empty auth_state and raises
+            # AuthorizationRequiredError ("No OAuth token available").
+            client._store_token(token)
+            return token
+
+    raise ActionFailure(
+        f"{GITHUB_OAUTH_FAILED_MSG}: timed out after {poll_timeout}s "
+        "waiting for user authorization."
     )
 
 
