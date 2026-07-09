@@ -49,6 +49,7 @@ class AddLabelsParams(Params):
 class AddLabelsOutput(ActionOutput):
     color: str = OutputField(example_values=["ededed"])
     default: bool
+    description: str | None = OutputField(example_values=["Something isn't working"])
     id: float = OutputField(example_values=[1454479580])
     name: str = OutputField(example_values=["app-testing"])
     node_id: str = OutputField(

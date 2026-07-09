@@ -37,6 +37,47 @@ class ListTeamsParams(Params):
     limit: float | None = Param(description="Maximum number of teams to be fetched")
 
 
+class PermissionsOutput(ActionOutput):
+    admin: bool
+    maintain: bool
+    pull: bool
+    push: bool
+    triage: bool
+
+
+class ParentOutput(ActionOutput):
+    id: float = OutputField(cef_types=["github team id"], example_values=[2825461])
+    name: str = OutputField(
+        cef_types=["github team name"], example_values=["parent team"]
+    )
+    description: str | None = OutputField(example_values=["Parent team"])
+    html_url: str = OutputField(
+        cef_types=["url"], example_values=["https://github.com/orgs/test/teams/parent"]
+    )
+    ldap_dn: str | None = OutputField(
+        example_values=["uid=parent,ou=teams,dc=example,dc=com"]
+    )
+    members_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/teams/2825461/members{/member}"],
+    )
+    node_id: str = OutputField(
+        example_values=["MDQ6VGVhbTI4JmcyNjE="]  # pragma: allowlist secret
+    )
+    notification_setting: str | None = OutputField(
+        example_values=["notifications_enabled"]
+    )
+    permission: str = OutputField(example_values=["pull"])
+    privacy: str | None = OutputField(example_values=["closed"])
+    repositories_url: str = OutputField(
+        cef_types=["url"], example_values=["https://api.github.com/teams/2825461/repos"]
+    )
+    slug: str = OutputField(example_values=["parent-team"])
+    url: str = OutputField(
+        cef_types=["url"], example_values=["https://api.github.com/teams/2825461"]
+    )
+
+
 class ListTeamsOutput(ActionOutput):
     id: float = OutputField(
         cef_types=["github team id"], example_values=[2825460], column_name="Team Id"
@@ -51,6 +92,13 @@ class ListTeamsOutput(ActionOutput):
     )
     privacy: str = OutputField(example_values=["closed"], column_name="Privacy")
     permission: str = OutputField(example_values=["pull"], column_name="Permission")
+    html_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://github.com/orgs/test/teams/new-team"],
+    )
+    ldap_dn: str | None = OutputField(
+        example_values=["uid=new-team,ou=teams,dc=example,dc=com"]
+    )
     members_url: str = OutputField(
         cef_types=["url"],
         example_values=["https://api.github.com/teams/2825460/members{/member}"],
@@ -58,6 +106,11 @@ class ListTeamsOutput(ActionOutput):
     node_id: str = OutputField(
         example_values=["MDQ6VGVhbTI4JmcyNjA="]  # pragma: allowlist secret
     )
+    notification_setting: str | None = OutputField(
+        example_values=["notifications_enabled"]
+    )
+    parent: ParentOutput | None = OutputField()
+    permissions: PermissionsOutput | None = OutputField()
     repositories_url: str = OutputField(
         cef_types=["url"], example_values=["https://api.github.com/teams/2825460/repos"]
     )

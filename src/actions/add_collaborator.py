@@ -13,7 +13,11 @@
 # limitations under the License.
 
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.action_results import (
+    ActionOutput,
+    OutputField,
+    PermissiveActionOutput,
+)
 from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
@@ -191,9 +195,18 @@ class InviterOutput(ActionOutput):
     )
 
 
-class AddCollaboratorOutput(ActionOutput):
+class AddCollaboratorOutput(PermissiveActionOutput):
+    # PermissiveActionOutput so that every field GitHub returns for a repository
+    # invitation is passed through to the client. The invitation carries a nested
+    # `repository` (a full 89-field Minimal Repository object with volatile fields
+    # like security_and_analysis, custom_properties, topics, visibility), so
+    # modeling it strictly would silently drop any new repo field GitHub adds.
+    # Declared fields drive the widget columns and CEF pivots; unknown fields
+    # (including the whole `repository` object) flow through instead of being
+    # dropped.
     collaborator_added: bool = OutputField(column_name="Collaborator Added")
     created_at: str | None = OutputField(example_values=["2018-07-25T12:47:00Z"])
+    expired: bool | None = OutputField()
     html_url: str | None = OutputField(
         cef_types=["url"],
         example_values=["https://github.com/test/test-repo/invitations"],

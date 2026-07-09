@@ -887,7 +887,7 @@ class UserOutput(ActionOutput):
 class BaseOutput(ActionOutput):
     label: str = OutputField(example_values=["test:2.8"])
     ref: str = OutputField(example_values=["2.8"])
-    repo: RepoOutput
+    repo: RepositoryOutput
     sha: str = OutputField(
         cef_types=["sha1"],
         example_values=[
@@ -900,7 +900,7 @@ class BaseOutput(ActionOutput):
 class HeadOutput(ActionOutput):
     label: str = OutputField(example_values=["test:uuid-translations"])
     ref: str = OutputField(example_values=["uuid-translations"])
-    repo: RepoOutput
+    repo: RepositoryOutput
     sha: str = OutputField(
         cef_types=["sha1"],
         example_values=[
@@ -2396,6 +2396,179 @@ class SenderOutput(ActionOutput):
     )
 
 
+class PayloadPullRequestLinksOutput(ActionOutput):
+    # The `_links` object on a pull request. Each child is an {href} object;
+    # reuses the existing href-stub classes.
+    comments: CommentsOutput
+    commits: CommitsOutput
+    html: HtmlOutput
+    issue: IssueOutput
+    review_comment: ReviewCommentOutput
+    review_comments: ReviewCommentsOutput
+    self_: SelfOutput = OutputField(alias="self")
+    statuses: StatusesOutput
+
+
+class PayloadIssuePullRequestOutput(ActionOutput):
+    # The `pull_request` sub-object attached to an issue (present when the issue
+    # is a PR). Same shape as PullRequestsOutput.
+    diff_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://github.com/test/test-repo/pull/1.diff"],
+    )
+    html_url: str = OutputField(
+        cef_types=["url"], example_values=["https://github.com/test/test-repo/pull/1"]
+    )
+    patch_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://github.com/test/test-repo/pull/1.patch"],
+    )
+    url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test-repo/pulls/1"],
+    )
+
+
+class PayloadIssueOutput(ActionOutput):
+    # Full issue object carried on payload.issue for IssuesEvent /
+    # IssueCommentEvent. Previously mis-wired to the {href}-only IssueOutput
+    # stub, which dropped these fields from the manifest datapaths/CEF.
+    assignee: AssigneeOutput | None
+    assignees: list[AssigneesOutput]
+    author_association: str = OutputField(example_values=["OWNER"])
+    body: str | None = OutputField(example_values=["Issue body text"])
+    closed_at: str | None
+    comments: float = OutputField(example_values=[0])
+    comments_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/issues/1/comments"],
+    )
+    created_at: str = OutputField(example_values=["2019-05-15T15:20:18Z"])
+    events_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/issues/1/events"],
+    )
+    html_url: str = OutputField(
+        cef_types=["url"], example_values=["https://github.com/test/test/issues/1"]
+    )
+    id: float = OutputField(example_values=[446430])
+    labels: list[LabelsOutput]
+    labels_url: str = OutputField(
+        cef_types=["url"],
+        example_values=[
+            "https://api.github.com/repos/test/test/issues/1/labels{/name}"
+        ],
+    )
+    locked: bool
+    milestone: MilestoneOutput | None
+    node_id: str = OutputField(
+        example_values=["MDU6SXNzdWU0NDY0MzA="]  # pragma: allowlist secret
+    )
+    number: float = OutputField(cef_types=["github issue id"], example_values=[1])
+    pull_request: PayloadIssuePullRequestOutput | None
+    repository_url: str = OutputField(
+        cef_types=["url"], example_values=["https://api.github.com/repos/test/test"]
+    )
+    state: str = OutputField(example_values=["open"])
+    title: str = OutputField(example_values=["Issue title"])
+    updated_at: str = OutputField(example_values=["2019-05-15T15:20:18Z"])
+    url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/issues/1"],
+    )
+    user: UserOutput
+
+
+class PayloadPullRequestOutput(ActionOutput):
+    # Full pull_request object carried on payload.pull_request for
+    # PullRequestEvent. Previously mis-wired to the {href}-only
+    # PullRequestOutput stub (which is correct only for the `_links` children),
+    # so these fields were dropped from the manifest datapaths/CEF.
+    links: PayloadPullRequestLinksOutput | None = OutputField(alias="_links")
+    additions: float = OutputField(example_values=[10])
+    assignee: AssigneeOutput | None
+    assignees: list[AssigneesOutput]
+    author_association: str = OutputField(example_values=["OWNER"])
+    base: BaseOutput
+    body: str | None = OutputField(example_values=["PR body text"])
+    changed_files: float = OutputField(example_values=[1])
+    closed_at: str | None
+    comments: float = OutputField(example_values=[0])
+    comments_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/issues/1/comments"],
+    )
+    commits: float = OutputField(example_values=[1])
+    commits_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/pulls/1/commits"],
+    )
+    created_at: str = OutputField(example_values=["2019-05-15T15:20:33Z"])
+    deletions: float = OutputField(example_values=[2])
+    diff_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://github.com/test/test/pull/1.diff"],
+    )
+    head: HeadOutput
+    html_url: str = OutputField(
+        cef_types=["url"], example_values=["https://github.com/test/test/pull/1"]
+    )
+    id: float = OutputField(example_values=[279147437])
+    issue_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/issues/1"],
+    )
+    labels: list[LabelsOutput]
+    locked: bool
+    maintainer_can_modify: bool
+    merge_commit_sha: str | None = OutputField(
+        cef_types=["sha1"],
+        example_values=[
+            "e5bd3914e2e596debea16f86500e58f9c4f3f78e"  # pragma: allowlist secret
+        ],
+    )
+    mergeable: bool | None
+    mergeable_state: str = OutputField(example_values=["clean"])
+    merged: bool
+    merged_at: str | None = OutputField(example_values=["2019-05-15T15:20:34Z"])
+    merged_by: MergedByOutput | None
+    milestone: MilestoneOutput | None
+    node_id: str = OutputField(
+        example_values=["MDExOlB1bGxSZXF1ZXN0Mjc5MTQ3NDM3"]  # pragma: allowlist secret
+    )
+    number: float = OutputField(cef_types=["github issue id"], example_values=[1])
+    patch_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://github.com/test/test/pull/1.patch"],
+    )
+    rebaseable: bool | None
+    requested_reviewers: list[RequestedReviewersOutput]
+    requested_teams: list[RequestedTeamsOutput]
+    review_comment_url: str = OutputField(
+        cef_types=["url"],
+        example_values=[
+            "https://api.github.com/repos/test/test/pulls/comments{/number}"
+        ],
+    )
+    review_comments: float = OutputField(example_values=[0])
+    review_comments_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/pulls/1/comments"],
+    )
+    state: str = OutputField(example_values=["open"])
+    statuses_url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/statuses/{sha}"],
+    )
+    title: str = OutputField(example_values=["PR title"])
+    updated_at: str = OutputField(example_values=["2019-05-15T15:20:33Z"])
+    url: str = OutputField(
+        cef_types=["url"],
+        example_values=["https://api.github.com/repos/test/test/pulls/1"],
+    )
+    user: UserOutput
+
+
 class PayloadOutput(PermissiveActionOutput):
     # The GitHub Events API `payload` is polymorphic: its shape depends on the
     # event `type` (PushEvent, IssuesEvent, PullRequestEvent, etc.), and GitHub
@@ -2446,7 +2619,7 @@ class PayloadOutput(PermissiveActionOutput):
     )
     head_commit: HeadCommitOutput | None = None
     installation: InstallationOutput | None = None
-    issue: IssueOutput | None = None
+    issue: PayloadIssueOutput | None = None
     marketplace_purchase: MarketplacePurchaseOutput | None = None
     master_branch: str | None = OutputField(example_values=["master"])
     member: MemberOutput | None = None
@@ -2456,7 +2629,7 @@ class PayloadOutput(PermissiveActionOutput):
     project: ProjectOutput | None = None
     project_card: ProjectCardOutput | None = None
     project_column: ProjectColumnOutput | None = None
-    pull_request: PullRequestOutput | None = None
+    pull_request: PayloadPullRequestOutput | None = None
     push_id: float | None = OutputField(example_values=[2731668591])
     pusher_type: str | None = OutputField(example_values=["user"])
     ref: str | None = OutputField(example_values=["refs/heads/2.8"])

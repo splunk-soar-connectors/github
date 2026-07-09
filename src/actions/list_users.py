@@ -63,6 +63,10 @@ class ListUsersOutput(ActionOutput):
     )
     id: float = OutputField(example_values=[29939753])
     login: str = OutputField(cef_types=["github username"], example_values=["test"])
+    name: str | None = OutputField(example_values=["Test User"])
+    email: str | None = OutputField(
+        cef_types=["email"], example_values=["test@example.com"]
+    )
     node_id: str = OutputField(
         example_values=["MDQ6VXNlcjI5OTM5NzUz"]  # pragma: allowlist secret
     )
@@ -89,6 +93,8 @@ class ListUsersOutput(ActionOutput):
     url: str = OutputField(
         cef_types=["url"], example_values=["https://api.github.com/users/test"]
     )
+    starred_at: str | None = OutputField(example_values=["2020-07-09T00:17:55Z"])
+    user_view_type: str | None = OutputField(example_values=["public"])
 
 
 class ListUsersSummary(ActionOutput):

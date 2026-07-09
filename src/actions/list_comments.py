@@ -13,7 +13,11 @@
 # limitations under the License.
 
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.action_results import (
+    ActionOutput,
+    OutputField,
+    PermissiveActionOutput,
+)
 from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
@@ -105,7 +109,11 @@ class UserOutput(ActionOutput):
     )
 
 
-class ListCommentsOutput(ActionOutput):
+class ListCommentsOutput(PermissiveActionOutput):
+    # PermissiveActionOutput so that every field GitHub returns for a comment is
+    # passed through to the client (playbooks may key off fields we don't model,
+    # e.g. reactions, performed_via_github_app). Declared fields drive the
+    # datapaths/CEF pivots; unknown fields flow through instead of being dropped.
     author_association: str = OutputField(example_values=["OWNER"])
     body: str | None = OutputField(
         example_values=["I am writing a comment to this issue"]

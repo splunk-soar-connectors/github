@@ -140,6 +140,7 @@ action_result.parameter.role | string | | |
 action_result.parameter.override | boolean | | |
 action_result.data.\*.collaborator_added | boolean | | True False |
 action_result.data.\*.created_at | string | | 2018-07-25T12:47:00Z |
+action_result.data.\*.expired | boolean | | True False |
 action_result.data.\*.html_url | string | `url` | https://github.com/test/test-repo/invitations |
 action_result.data.\*.id | numeric | | 10200401 |
 action_result.data.\*.invite_sent | boolean | | True False |
@@ -215,6 +216,7 @@ action_result.parameter.issue_number | numeric | `github issue id` | |
 action_result.parameter.labels | string | | |
 action_result.data.\*.color | string | | ededed |
 action_result.data.\*.default | boolean | | True False |
+action_result.data.\*.description | string | | Something isn't working |
 action_result.data.\*.id | numeric | | 1454479580 |
 action_result.data.\*.name | string | | app-testing |
 action_result.data.\*.node_id | string | | MDU6TGFiZWwxNDU0NDc5NTgw |
@@ -1038,7 +1040,121 @@ action_result.data.\*.payload.installation.single_file_name | string | `file nam
 action_result.data.\*.payload.installation.target_id | numeric | | 3880403 |
 action_result.data.\*.payload.installation.target_type | string | | User |
 action_result.data.\*.payload.installation.updated_at | numeric | | 1525109899 |
-action_result.data.\*.payload.issue.href | string | `url` | https://api.github.com/repos/test/test/issues/27999 |
+action_result.data.\*.payload.issue.assignee.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/29939753?v=4 |
+action_result.data.\*.payload.issue.assignee.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.issue.assignee.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.issue.assignee.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.issue.assignee.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.issue.assignee.gravatar_id | string | | |
+action_result.data.\*.payload.issue.assignee.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.issue.assignee.id | numeric | | 29939753 |
+action_result.data.\*.payload.issue.assignee.login | string | `github username` | test |
+action_result.data.\*.payload.issue.assignee.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
+action_result.data.\*.payload.issue.assignee.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.issue.assignee.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.issue.assignee.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.issue.assignee.site_admin | boolean | | True False |
+action_result.data.\*.payload.issue.assignee.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.issue.assignee.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.issue.assignee.type | string | | User |
+action_result.data.\*.payload.issue.assignee.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.issue.assignees.\*.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/29939753?v=4 |
+action_result.data.\*.payload.issue.assignees.\*.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.issue.assignees.\*.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.issue.assignees.\*.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.issue.assignees.\*.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.issue.assignees.\*.gravatar_id | string | | |
+action_result.data.\*.payload.issue.assignees.\*.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.issue.assignees.\*.id | numeric | | 29939753 |
+action_result.data.\*.payload.issue.assignees.\*.login | string | `github username` | test |
+action_result.data.\*.payload.issue.assignees.\*.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
+action_result.data.\*.payload.issue.assignees.\*.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.issue.assignees.\*.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.issue.assignees.\*.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.issue.assignees.\*.site_admin | boolean | | True False |
+action_result.data.\*.payload.issue.assignees.\*.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.issue.assignees.\*.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.issue.assignees.\*.type | string | | User |
+action_result.data.\*.payload.issue.assignees.\*.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.issue.author_association | string | | OWNER |
+action_result.data.\*.payload.issue.body | string | | Issue body text |
+action_result.data.\*.payload.issue.closed_at | string | | |
+action_result.data.\*.payload.issue.comments | numeric | | 0 |
+action_result.data.\*.payload.issue.comments_url | string | `url` | https://api.github.com/repos/test/test/issues/1/comments |
+action_result.data.\*.payload.issue.created_at | string | | 2019-05-15T15:20:18Z |
+action_result.data.\*.payload.issue.events_url | string | `url` | https://api.github.com/repos/test/test/issues/1/events |
+action_result.data.\*.payload.issue.html_url | string | `url` | https://github.com/test/test/issues/1 |
+action_result.data.\*.payload.issue.id | numeric | | 446430 |
+action_result.data.\*.payload.issue.labels.\*.color | string | | e10c02 |
+action_result.data.\*.payload.issue.labels.\*.default | boolean | | True False |
+action_result.data.\*.payload.issue.labels.\*.id | numeric | | 100079 |
+action_result.data.\*.payload.issue.labels.\*.name | string | | Bug |
+action_result.data.\*.payload.issue.labels.\*.node_id | string | | MDU6TGFiZWwxMDAwNzk= |
+action_result.data.\*.payload.issue.labels.\*.url | string | `url` | https://api.github.com/repos/test/test/labels/Bug |
+action_result.data.\*.payload.issue.labels_url | string | `url` | https://api.github.com/repos/test/test/issues/1/labels{/name} |
+action_result.data.\*.payload.issue.locked | boolean | | True False |
+action_result.data.\*.payload.issue.milestone.closed_at | string | | 2018-07-20T11:26:15Z |
+action_result.data.\*.payload.issue.milestone.closed_issues | numeric | | 879 |
+action_result.data.\*.payload.issue.milestone.created_at | string | | 2016-11-06T20:24:23Z |
+action_result.data.\*.payload.issue.milestone.creator.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/73419?v=4 |
+action_result.data.\*.payload.issue.milestone.creator.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.issue.milestone.creator.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.issue.milestone.creator.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.issue.milestone.creator.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.issue.milestone.creator.gravatar_id | string | | |
+action_result.data.\*.payload.issue.milestone.creator.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.issue.milestone.creator.id | numeric | | 73419 |
+action_result.data.\*.payload.issue.milestone.creator.login | string | `github username` | test |
+action_result.data.\*.payload.issue.milestone.creator.node_id | string | | MDQ6VXNlcjczNDE5 |
+action_result.data.\*.payload.issue.milestone.creator.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.issue.milestone.creator.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.issue.milestone.creator.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.issue.milestone.creator.site_admin | boolean | | True False |
+action_result.data.\*.payload.issue.milestone.creator.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.issue.milestone.creator.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.issue.milestone.creator.type | string | | User |
+action_result.data.\*.payload.issue.milestone.creator.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.issue.milestone.description | string | | Sample description |
+action_result.data.\*.payload.issue.milestone.due_on | string | | 2020-11-30T08:00:00Z |
+action_result.data.\*.payload.issue.milestone.html_url | string | `url` | https://github.com/test/test/milestone/10 |
+action_result.data.\*.payload.issue.milestone.id | numeric | | 2117464 |
+action_result.data.\*.payload.issue.milestone.labels_url | string | `url` | https://api.github.com/repos/test/test/milestones/10/labels |
+action_result.data.\*.payload.issue.milestone.node_id | string | | MDk6TWlsZXN0b25lMjExNzQ2NA== |
+action_result.data.\*.payload.issue.milestone.number | numeric | | 10 |
+action_result.data.\*.payload.issue.milestone.open_issues | numeric | | 15 |
+action_result.data.\*.payload.issue.milestone.state | string | | open |
+action_result.data.\*.payload.issue.milestone.title | string | | 3.4 |
+action_result.data.\*.payload.issue.milestone.updated_at | string | | 2018-07-19T07:12:02Z |
+action_result.data.\*.payload.issue.milestone.url | string | `url` | https://api.github.com/repos/test/test/milestones/10 |
+action_result.data.\*.payload.issue.node_id | string | | MDU6SXNzdWU0NDY0MzA= |
+action_result.data.\*.payload.issue.number | numeric | `github issue id` | 1 |
+action_result.data.\*.payload.issue.pull_request.diff_url | string | `url` | https://github.com/test/test-repo/pull/1.diff |
+action_result.data.\*.payload.issue.pull_request.html_url | string | `url` | https://github.com/test/test-repo/pull/1 |
+action_result.data.\*.payload.issue.pull_request.patch_url | string | `url` | https://github.com/test/test-repo/pull/1.patch |
+action_result.data.\*.payload.issue.pull_request.url | string | `url` | https://api.github.com/repos/test/test-repo/pulls/1 |
+action_result.data.\*.payload.issue.repository_url | string | `url` | https://api.github.com/repos/test/test |
+action_result.data.\*.payload.issue.state | string | | open |
+action_result.data.\*.payload.issue.title | string | | Issue title |
+action_result.data.\*.payload.issue.updated_at | string | | 2019-05-15T15:20:18Z |
+action_result.data.\*.payload.issue.url | string | `url` | https://api.github.com/repos/test/test/issues/1 |
+action_result.data.\*.payload.issue.user.avatar_url | string | `url` | https://avatars1.githubusercontent.com/u/1032411?v=4 |
+action_result.data.\*.payload.issue.user.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.issue.user.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.issue.user.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.issue.user.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.issue.user.gravatar_id | string | | |
+action_result.data.\*.payload.issue.user.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.issue.user.id | numeric | | 1032411 |
+action_result.data.\*.payload.issue.user.login | string | `github username` | test |
+action_result.data.\*.payload.issue.user.node_id | string | | MDQ6VXNlcjEwMzI0MTE= |
+action_result.data.\*.payload.issue.user.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.issue.user.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.issue.user.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.issue.user.site_admin | boolean | | True False |
+action_result.data.\*.payload.issue.user.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.issue.user.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.issue.user.type | string | | User |
+action_result.data.\*.payload.issue.user.url | string | `url` | https://api.github.com/users/test |
 action_result.data.\*.payload.marketplace_purchase.account.id | numeric | | 18404719 |
 action_result.data.\*.payload.marketplace_purchase.account.login | string | `github username` | test |
 action_result.data.\*.payload.marketplace_purchase.account.organization_billing_email | string | `email` | username@email.com |
@@ -1187,7 +1303,445 @@ action_result.data.\*.payload.project_column.node_id | string | | MDEzOlByb2plY3
 action_result.data.\*.payload.project_column.project_url | string | `url` | https://api.github.com/projects/1547122 |
 action_result.data.\*.payload.project_column.updated_at | string | | 2018-05-30T20:18:52Z |
 action_result.data.\*.payload.project_column.url | string | `url` | https://api.github.com/projects/columns/2803722 |
-action_result.data.\*.payload.pull_request.href | string | `url` | https://api.github.com/repos/test/test-repo/pulls/1 |
+action_result.data.\*.payload.pull_request.\_links.comments.href | string | `url` | https://api.github.com/repos/test/test/issues/27999/comments |
+action_result.data.\*.payload.pull_request.\_links.commits.href | string | `url` | https://api.github.com/repos/test/test/pulls/27999/commits |
+action_result.data.\*.payload.pull_request.\_links.html.href | string | `url` | https://github.com/test/test-repo/pull/1#pullrequestreview-124575911 |
+action_result.data.\*.payload.pull_request.\_links.issue.href | string | `url` | https://api.github.com/repos/test/test/issues/27999 |
+action_result.data.\*.payload.pull_request.\_links.review_comment.href | string | `url` | https://api.github.com/repos/test/test/pulls/comments{/number} |
+action_result.data.\*.payload.pull_request.\_links.review_comments.href | string | `url` | https://api.github.com/repos/test/test/pulls/27999/comments |
+action_result.data.\*.payload.pull_request.\_links.self.href | string | `url` | https://api.github.com/repos/test/test/pulls/27999 |
+action_result.data.\*.payload.pull_request.\_links.statuses.href | string | `url` | https://api.github.com/repos/test/test/statuses/ee780f3c664f8e2846aba087c5e9653a92c64252 |
+action_result.data.\*.payload.pull_request.additions | numeric | | 10 |
+action_result.data.\*.payload.pull_request.assignee.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/29939753?v=4 |
+action_result.data.\*.payload.pull_request.assignee.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.assignee.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.assignee.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.assignee.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.assignee.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.assignee.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.assignee.id | numeric | | 29939753 |
+action_result.data.\*.payload.pull_request.assignee.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.assignee.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
+action_result.data.\*.payload.pull_request.assignee.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.assignee.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.assignee.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.assignee.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.assignee.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.assignee.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.assignee.type | string | | User |
+action_result.data.\*.payload.pull_request.assignee.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.assignees.\*.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/29939753?v=4 |
+action_result.data.\*.payload.pull_request.assignees.\*.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.assignees.\*.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.assignees.\*.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.assignees.\*.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.assignees.\*.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.assignees.\*.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.assignees.\*.id | numeric | | 29939753 |
+action_result.data.\*.payload.pull_request.assignees.\*.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.assignees.\*.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
+action_result.data.\*.payload.pull_request.assignees.\*.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.assignees.\*.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.assignees.\*.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.assignees.\*.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.assignees.\*.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.assignees.\*.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.assignees.\*.type | string | | User |
+action_result.data.\*.payload.pull_request.assignees.\*.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.author_association | string | | OWNER |
+action_result.data.\*.payload.pull_request.base.label | string | | test:2.8 |
+action_result.data.\*.payload.pull_request.base.ref | string | | 2.8 |
+action_result.data.\*.payload.pull_request.base.repo.archive_url | string | `url` | https://api.github.com/repos/test/test-repo/{archive_format}{/ref} |
+action_result.data.\*.payload.pull_request.base.repo.archived | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.assignees_url | string | `url` | https://api.github.com/repos/test/test-repo/assignees{/user} |
+action_result.data.\*.payload.pull_request.base.repo.blobs_url | string | `url` | https://api.github.com/repos/test/test-repo/git/blobs{/sha} |
+action_result.data.\*.payload.pull_request.base.repo.branches_url | string | `url` | https://api.github.com/repos/test/test-repo/branches{/branch} |
+action_result.data.\*.payload.pull_request.base.repo.clone_url | string | `url` | https://github.com/test/test-repo.git |
+action_result.data.\*.payload.pull_request.base.repo.collaborators_url | string | `url` | https://api.github.com/repos/test/test-repo/collaborators{/collaborator} |
+action_result.data.\*.payload.pull_request.base.repo.comments_url | string | `url` | https://api.github.com/repos/test/test-repo/comments{/number} |
+action_result.data.\*.payload.pull_request.base.repo.commits_url | string | `url` | https://api.github.com/repos/test/test-repo/commits{/sha} |
+action_result.data.\*.payload.pull_request.base.repo.compare_url | string | `url` | https://api.github.com/repos/test/test-repo/compare/{base}...{head} |
+action_result.data.\*.payload.pull_request.base.repo.contents_url | string | `url` | https://api.github.com/repos/test/test-repo/contents/{+path} |
+action_result.data.\*.payload.pull_request.base.repo.contributors_url | string | `url` | https://api.github.com/repos/test/test-repo/contributors |
+action_result.data.\*.payload.pull_request.base.repo.created_at | string | | 2018-05-30T20:18:04Z |
+action_result.data.\*.payload.pull_request.base.repo.default_branch | string | | master |
+action_result.data.\*.payload.pull_request.base.repo.deployments_url | string | `url` | https://api.github.com/repos/test/test-repo/deployments |
+action_result.data.\*.payload.pull_request.base.repo.description | string | | |
+action_result.data.\*.payload.pull_request.base.repo.downloads_url | string | `url` | https://api.github.com/repos/test/test-repo/downloads |
+action_result.data.\*.payload.pull_request.base.repo.events_url | string | `url` | https://api.github.com/repos/test/test-repo/events |
+action_result.data.\*.payload.pull_request.base.repo.fork | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.forks | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.forks_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.forks_url | string | `url` | https://api.github.com/repos/test/test-repo/forks |
+action_result.data.\*.payload.pull_request.base.repo.full_name | string | | test/test-repo |
+action_result.data.\*.payload.pull_request.base.repo.git_commits_url | string | `url` | https://api.github.com/repos/test/test-repo/git/commits{/sha} |
+action_result.data.\*.payload.pull_request.base.repo.git_refs_url | string | `url` | https://api.github.com/repos/test/test-repo/git/refs{/sha} |
+action_result.data.\*.payload.pull_request.base.repo.git_tags_url | string | `url` | https://api.github.com/repos/test/test-repo/git/tags{/sha} |
+action_result.data.\*.payload.pull_request.base.repo.git_url | string | | git://github.com/test/test-repo.git |
+action_result.data.\*.payload.pull_request.base.repo.has_downloads | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.has_issues | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.has_pages | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.has_projects | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.has_wiki | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.homepage | string | `url` | https://test.com |
+action_result.data.\*.payload.pull_request.base.repo.hooks_url | string | `url` | https://api.github.com/repos/test/test-repo/hooks |
+action_result.data.\*.payload.pull_request.base.repo.html_url | string | `url` | https://github.com/test/test-repo |
+action_result.data.\*.payload.pull_request.base.repo.id | numeric | | 135493233 |
+action_result.data.\*.payload.pull_request.base.repo.issue_comment_url | string | `url` | https://api.github.com/repos/test/test-repo/issues/comments{/number} |
+action_result.data.\*.payload.pull_request.base.repo.issue_events_url | string | `url` | https://api.github.com/repos/test/test-repo/issues/events{/number} |
+action_result.data.\*.payload.pull_request.base.repo.issues_url | string | `url` | https://api.github.com/repos/test/test-repo/issues{/number} |
+action_result.data.\*.payload.pull_request.base.repo.keys_url | string | `url` | https://api.github.com/repos/test/test-repo/keys{/key_id} |
+action_result.data.\*.payload.pull_request.base.repo.labels_url | string | `url` | https://api.github.com/repos/test/test-repo/labels{/name} |
+action_result.data.\*.payload.pull_request.base.repo.language | string | | |
+action_result.data.\*.payload.pull_request.base.repo.languages_url | string | `url` | https://api.github.com/repos/test/test-repo/languages |
+action_result.data.\*.payload.pull_request.base.repo.license.key | string | | mit |
+action_result.data.\*.payload.pull_request.base.repo.license.name | string | | MIT License |
+action_result.data.\*.payload.pull_request.base.repo.license.node_id | string | | MDc6TGljZW5zZTEz |
+action_result.data.\*.payload.pull_request.base.repo.license.spdx_id | string | | MIT |
+action_result.data.\*.payload.pull_request.base.repo.license.url | string | `url` | https://api.github.com/licenses/mit |
+action_result.data.\*.payload.pull_request.base.repo.master_branch | string | | master |
+action_result.data.\*.payload.pull_request.base.repo.merges_url | string | `url` | https://api.github.com/repos/test/test-repo/merges |
+action_result.data.\*.payload.pull_request.base.repo.milestones_url | string | `url` | https://api.github.com/repos/test/test-repo/milestones{/number} |
+action_result.data.\*.payload.pull_request.base.repo.mirror_url | string | `url` | |
+action_result.data.\*.payload.pull_request.base.repo.name | string | | test-repo |
+action_result.data.\*.payload.pull_request.base.repo.node_id | string | | MDEwOlJlcG9zaXRvcnkxMzU0OTMyMzM= |
+action_result.data.\*.payload.pull_request.base.repo.notifications_url | string | `url` | https://api.github.com/repos/test/test-repo/notifications{?since,all,participating} |
+action_result.data.\*.payload.pull_request.base.repo.open_issues | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.open_issues_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.owner.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/29939753?v=4 |
+action_result.data.\*.payload.pull_request.base.repo.owner.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.base.repo.owner.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.base.repo.owner.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.base.repo.owner.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.base.repo.owner.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.base.repo.owner.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.base.repo.owner.id | numeric | | 29939753 |
+action_result.data.\*.payload.pull_request.base.repo.owner.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.base.repo.owner.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
+action_result.data.\*.payload.pull_request.base.repo.owner.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.base.repo.owner.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.base.repo.owner.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.base.repo.owner.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.owner.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.base.repo.owner.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.base.repo.owner.type | string | | User |
+action_result.data.\*.payload.pull_request.base.repo.owner.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.base.repo.private | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.repo.pulls_url | string | `url` | https://api.github.com/repos/test/test-repo/pulls{/number} |
+action_result.data.\*.payload.pull_request.base.repo.pushed_at | string | | 2018-05-30T20:18:34Z |
+action_result.data.\*.payload.pull_request.base.repo.releases_url | string | `url` | https://api.github.com/repos/test/test-repo/releases{/id} |
+action_result.data.\*.payload.pull_request.base.repo.size | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.ssh_url | string | | git@github.com:test/test-repo.git |
+action_result.data.\*.payload.pull_request.base.repo.stargazers | numeric | | 1 |
+action_result.data.\*.payload.pull_request.base.repo.stargazers_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.stargazers_url | string | `url` | https://api.github.com/repos/test/test-repo/stargazers |
+action_result.data.\*.payload.pull_request.base.repo.statuses_url | string | `url` | https://api.github.com/repos/test/test-repo/statuses/{sha} |
+action_result.data.\*.payload.pull_request.base.repo.subscribers_url | string | `url` | https://api.github.com/repos/test/test-repo/subscribers |
+action_result.data.\*.payload.pull_request.base.repo.subscription_url | string | `url` | https://api.github.com/repos/test/test-repo/subscription |
+action_result.data.\*.payload.pull_request.base.repo.svn_url | string | `url` | https://github.com/test/test-repo |
+action_result.data.\*.payload.pull_request.base.repo.tags_url | string | `url` | https://api.github.com/repos/test/test-repo/tags |
+action_result.data.\*.payload.pull_request.base.repo.teams_url | string | `url` | https://api.github.com/repos/test/test-repo/teams |
+action_result.data.\*.payload.pull_request.base.repo.trees_url | string | `url` | https://api.github.com/repos/test/test-repo/git/trees{/sha} |
+action_result.data.\*.payload.pull_request.base.repo.updated_at | string | | 2018-05-30T20:18:44Z |
+action_result.data.\*.payload.pull_request.base.repo.url | string | `url` | https://api.github.com/repos/test/test-repo |
+action_result.data.\*.payload.pull_request.base.repo.watchers | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.repo.watchers_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.base.sha | string | `sha1` | 08a49bc5302de373bdb44e5c189133a7d5d5f12b |
+action_result.data.\*.payload.pull_request.base.user.avatar_url | string | `url` | https://avatars1.githubusercontent.com/u/1032411?v=4 |
+action_result.data.\*.payload.pull_request.base.user.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.base.user.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.base.user.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.base.user.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.base.user.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.base.user.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.base.user.id | numeric | | 1032411 |
+action_result.data.\*.payload.pull_request.base.user.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.base.user.node_id | string | | MDQ6VXNlcjEwMzI0MTE= |
+action_result.data.\*.payload.pull_request.base.user.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.base.user.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.base.user.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.base.user.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.base.user.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.base.user.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.base.user.type | string | | User |
+action_result.data.\*.payload.pull_request.base.user.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.body | string | | PR body text |
+action_result.data.\*.payload.pull_request.changed_files | numeric | | 1 |
+action_result.data.\*.payload.pull_request.closed_at | string | | |
+action_result.data.\*.payload.pull_request.comments | numeric | | 0 |
+action_result.data.\*.payload.pull_request.comments_url | string | `url` | https://api.github.com/repos/test/test/issues/1/comments |
+action_result.data.\*.payload.pull_request.commits | numeric | | 1 |
+action_result.data.\*.payload.pull_request.commits_url | string | `url` | https://api.github.com/repos/test/test/pulls/1/commits |
+action_result.data.\*.payload.pull_request.created_at | string | | 2019-05-15T15:20:33Z |
+action_result.data.\*.payload.pull_request.deletions | numeric | | 2 |
+action_result.data.\*.payload.pull_request.diff_url | string | `url` | https://github.com/test/test/pull/1.diff |
+action_result.data.\*.payload.pull_request.head.label | string | | test:uuid-translations |
+action_result.data.\*.payload.pull_request.head.ref | string | | uuid-translations |
+action_result.data.\*.payload.pull_request.head.repo.archive_url | string | `url` | https://api.github.com/repos/test/test-repo/{archive_format}{/ref} |
+action_result.data.\*.payload.pull_request.head.repo.archived | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.assignees_url | string | `url` | https://api.github.com/repos/test/test-repo/assignees{/user} |
+action_result.data.\*.payload.pull_request.head.repo.blobs_url | string | `url` | https://api.github.com/repos/test/test-repo/git/blobs{/sha} |
+action_result.data.\*.payload.pull_request.head.repo.branches_url | string | `url` | https://api.github.com/repos/test/test-repo/branches{/branch} |
+action_result.data.\*.payload.pull_request.head.repo.clone_url | string | `url` | https://github.com/test/test-repo.git |
+action_result.data.\*.payload.pull_request.head.repo.collaborators_url | string | `url` | https://api.github.com/repos/test/test-repo/collaborators{/collaborator} |
+action_result.data.\*.payload.pull_request.head.repo.comments_url | string | `url` | https://api.github.com/repos/test/test-repo/comments{/number} |
+action_result.data.\*.payload.pull_request.head.repo.commits_url | string | `url` | https://api.github.com/repos/test/test-repo/commits{/sha} |
+action_result.data.\*.payload.pull_request.head.repo.compare_url | string | `url` | https://api.github.com/repos/test/test-repo/compare/{base}...{head} |
+action_result.data.\*.payload.pull_request.head.repo.contents_url | string | `url` | https://api.github.com/repos/test/test-repo/contents/{+path} |
+action_result.data.\*.payload.pull_request.head.repo.contributors_url | string | `url` | https://api.github.com/repos/test/test-repo/contributors |
+action_result.data.\*.payload.pull_request.head.repo.created_at | string | | 2018-05-30T20:18:04Z |
+action_result.data.\*.payload.pull_request.head.repo.default_branch | string | | master |
+action_result.data.\*.payload.pull_request.head.repo.deployments_url | string | `url` | https://api.github.com/repos/test/test-repo/deployments |
+action_result.data.\*.payload.pull_request.head.repo.description | string | | |
+action_result.data.\*.payload.pull_request.head.repo.downloads_url | string | `url` | https://api.github.com/repos/test/test-repo/downloads |
+action_result.data.\*.payload.pull_request.head.repo.events_url | string | `url` | https://api.github.com/repos/test/test-repo/events |
+action_result.data.\*.payload.pull_request.head.repo.fork | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.forks | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.forks_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.forks_url | string | `url` | https://api.github.com/repos/test/test-repo/forks |
+action_result.data.\*.payload.pull_request.head.repo.full_name | string | | test/test-repo |
+action_result.data.\*.payload.pull_request.head.repo.git_commits_url | string | `url` | https://api.github.com/repos/test/test-repo/git/commits{/sha} |
+action_result.data.\*.payload.pull_request.head.repo.git_refs_url | string | `url` | https://api.github.com/repos/test/test-repo/git/refs{/sha} |
+action_result.data.\*.payload.pull_request.head.repo.git_tags_url | string | `url` | https://api.github.com/repos/test/test-repo/git/tags{/sha} |
+action_result.data.\*.payload.pull_request.head.repo.git_url | string | | git://github.com/test/test-repo.git |
+action_result.data.\*.payload.pull_request.head.repo.has_downloads | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.has_issues | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.has_pages | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.has_projects | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.has_wiki | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.homepage | string | `url` | https://test.com |
+action_result.data.\*.payload.pull_request.head.repo.hooks_url | string | `url` | https://api.github.com/repos/test/test-repo/hooks |
+action_result.data.\*.payload.pull_request.head.repo.html_url | string | `url` | https://github.com/test/test-repo |
+action_result.data.\*.payload.pull_request.head.repo.id | numeric | | 135493233 |
+action_result.data.\*.payload.pull_request.head.repo.issue_comment_url | string | `url` | https://api.github.com/repos/test/test-repo/issues/comments{/number} |
+action_result.data.\*.payload.pull_request.head.repo.issue_events_url | string | `url` | https://api.github.com/repos/test/test-repo/issues/events{/number} |
+action_result.data.\*.payload.pull_request.head.repo.issues_url | string | `url` | https://api.github.com/repos/test/test-repo/issues{/number} |
+action_result.data.\*.payload.pull_request.head.repo.keys_url | string | `url` | https://api.github.com/repos/test/test-repo/keys{/key_id} |
+action_result.data.\*.payload.pull_request.head.repo.labels_url | string | `url` | https://api.github.com/repos/test/test-repo/labels{/name} |
+action_result.data.\*.payload.pull_request.head.repo.language | string | | |
+action_result.data.\*.payload.pull_request.head.repo.languages_url | string | `url` | https://api.github.com/repos/test/test-repo/languages |
+action_result.data.\*.payload.pull_request.head.repo.license.key | string | | mit |
+action_result.data.\*.payload.pull_request.head.repo.license.name | string | | MIT License |
+action_result.data.\*.payload.pull_request.head.repo.license.node_id | string | | MDc6TGljZW5zZTEz |
+action_result.data.\*.payload.pull_request.head.repo.license.spdx_id | string | | MIT |
+action_result.data.\*.payload.pull_request.head.repo.license.url | string | `url` | https://api.github.com/licenses/mit |
+action_result.data.\*.payload.pull_request.head.repo.master_branch | string | | master |
+action_result.data.\*.payload.pull_request.head.repo.merges_url | string | `url` | https://api.github.com/repos/test/test-repo/merges |
+action_result.data.\*.payload.pull_request.head.repo.milestones_url | string | `url` | https://api.github.com/repos/test/test-repo/milestones{/number} |
+action_result.data.\*.payload.pull_request.head.repo.mirror_url | string | `url` | |
+action_result.data.\*.payload.pull_request.head.repo.name | string | | test-repo |
+action_result.data.\*.payload.pull_request.head.repo.node_id | string | | MDEwOlJlcG9zaXRvcnkxMzU0OTMyMzM= |
+action_result.data.\*.payload.pull_request.head.repo.notifications_url | string | `url` | https://api.github.com/repos/test/test-repo/notifications{?since,all,participating} |
+action_result.data.\*.payload.pull_request.head.repo.open_issues | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.open_issues_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.owner.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/29939753?v=4 |
+action_result.data.\*.payload.pull_request.head.repo.owner.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.head.repo.owner.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.head.repo.owner.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.head.repo.owner.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.head.repo.owner.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.head.repo.owner.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.head.repo.owner.id | numeric | | 29939753 |
+action_result.data.\*.payload.pull_request.head.repo.owner.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.head.repo.owner.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
+action_result.data.\*.payload.pull_request.head.repo.owner.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.head.repo.owner.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.head.repo.owner.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.head.repo.owner.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.owner.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.head.repo.owner.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.head.repo.owner.type | string | | User |
+action_result.data.\*.payload.pull_request.head.repo.owner.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.head.repo.private | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.repo.pulls_url | string | `url` | https://api.github.com/repos/test/test-repo/pulls{/number} |
+action_result.data.\*.payload.pull_request.head.repo.pushed_at | string | | 2018-05-30T20:18:34Z |
+action_result.data.\*.payload.pull_request.head.repo.releases_url | string | `url` | https://api.github.com/repos/test/test-repo/releases{/id} |
+action_result.data.\*.payload.pull_request.head.repo.size | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.ssh_url | string | | git@github.com:test/test-repo.git |
+action_result.data.\*.payload.pull_request.head.repo.stargazers | numeric | | 1 |
+action_result.data.\*.payload.pull_request.head.repo.stargazers_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.stargazers_url | string | `url` | https://api.github.com/repos/test/test-repo/stargazers |
+action_result.data.\*.payload.pull_request.head.repo.statuses_url | string | `url` | https://api.github.com/repos/test/test-repo/statuses/{sha} |
+action_result.data.\*.payload.pull_request.head.repo.subscribers_url | string | `url` | https://api.github.com/repos/test/test-repo/subscribers |
+action_result.data.\*.payload.pull_request.head.repo.subscription_url | string | `url` | https://api.github.com/repos/test/test-repo/subscription |
+action_result.data.\*.payload.pull_request.head.repo.svn_url | string | `url` | https://github.com/test/test-repo |
+action_result.data.\*.payload.pull_request.head.repo.tags_url | string | `url` | https://api.github.com/repos/test/test-repo/tags |
+action_result.data.\*.payload.pull_request.head.repo.teams_url | string | `url` | https://api.github.com/repos/test/test-repo/teams |
+action_result.data.\*.payload.pull_request.head.repo.trees_url | string | `url` | https://api.github.com/repos/test/test-repo/git/trees{/sha} |
+action_result.data.\*.payload.pull_request.head.repo.updated_at | string | | 2018-05-30T20:18:44Z |
+action_result.data.\*.payload.pull_request.head.repo.url | string | `url` | https://api.github.com/repos/test/test-repo |
+action_result.data.\*.payload.pull_request.head.repo.watchers | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.repo.watchers_count | numeric | | 0 |
+action_result.data.\*.payload.pull_request.head.sha | string | `sha1` | ee780f3c664f8e2846aba087c5e9653a92c64252 |
+action_result.data.\*.payload.pull_request.head.user.avatar_url | string | `url` | https://avatars1.githubusercontent.com/u/1032411?v=4 |
+action_result.data.\*.payload.pull_request.head.user.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.head.user.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.head.user.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.head.user.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.head.user.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.head.user.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.head.user.id | numeric | | 1032411 |
+action_result.data.\*.payload.pull_request.head.user.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.head.user.node_id | string | | MDQ6VXNlcjEwMzI0MTE= |
+action_result.data.\*.payload.pull_request.head.user.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.head.user.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.head.user.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.head.user.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.head.user.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.head.user.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.head.user.type | string | | User |
+action_result.data.\*.payload.pull_request.head.user.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.html_url | string | `url` | https://github.com/test/test/pull/1 |
+action_result.data.\*.payload.pull_request.id | numeric | | 279147437 |
+action_result.data.\*.payload.pull_request.issue_url | string | `url` | https://api.github.com/repos/test/test/issues/1 |
+action_result.data.\*.payload.pull_request.labels.\*.color | string | | e10c02 |
+action_result.data.\*.payload.pull_request.labels.\*.default | boolean | | True False |
+action_result.data.\*.payload.pull_request.labels.\*.id | numeric | | 100079 |
+action_result.data.\*.payload.pull_request.labels.\*.name | string | | Bug |
+action_result.data.\*.payload.pull_request.labels.\*.node_id | string | | MDU6TGFiZWwxMDAwNzk= |
+action_result.data.\*.payload.pull_request.labels.\*.url | string | `url` | https://api.github.com/repos/test/test/labels/Bug |
+action_result.data.\*.payload.pull_request.locked | boolean | | True False |
+action_result.data.\*.payload.pull_request.maintainer_can_modify | boolean | | True False |
+action_result.data.\*.payload.pull_request.merge_commit_sha | string | `sha1` | e5bd3914e2e596debea16f86500e58f9c4f3f78e |
+action_result.data.\*.payload.pull_request.mergeable | boolean | | True False |
+action_result.data.\*.payload.pull_request.mergeable_state | string | | clean |
+action_result.data.\*.payload.pull_request.merged | boolean | | True False |
+action_result.data.\*.payload.pull_request.merged_at | string | | 2019-05-15T15:20:34Z |
+action_result.data.\*.payload.pull_request.merged_by.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/47313?v=4 |
+action_result.data.\*.payload.pull_request.merged_by.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.merged_by.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.merged_by.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.merged_by.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.merged_by.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.merged_by.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.merged_by.id | numeric | | 47313 |
+action_result.data.\*.payload.pull_request.merged_by.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.merged_by.node_id | string | | MDQ6VXNlcjQ3MzEz |
+action_result.data.\*.payload.pull_request.merged_by.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.merged_by.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.merged_by.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.merged_by.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.merged_by.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.merged_by.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.merged_by.type | string | | User |
+action_result.data.\*.payload.pull_request.merged_by.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.milestone.closed_at | string | | 2018-07-20T11:26:15Z |
+action_result.data.\*.payload.pull_request.milestone.closed_issues | numeric | | 879 |
+action_result.data.\*.payload.pull_request.milestone.created_at | string | | 2016-11-06T20:24:23Z |
+action_result.data.\*.payload.pull_request.milestone.creator.avatar_url | string | `url` | https://avatars3.githubusercontent.com/u/73419?v=4 |
+action_result.data.\*.payload.pull_request.milestone.creator.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.milestone.creator.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.milestone.creator.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.milestone.creator.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.milestone.creator.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.milestone.creator.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.milestone.creator.id | numeric | | 73419 |
+action_result.data.\*.payload.pull_request.milestone.creator.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.milestone.creator.node_id | string | | MDQ6VXNlcjczNDE5 |
+action_result.data.\*.payload.pull_request.milestone.creator.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.milestone.creator.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.milestone.creator.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.milestone.creator.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.milestone.creator.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.milestone.creator.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.milestone.creator.type | string | | User |
+action_result.data.\*.payload.pull_request.milestone.creator.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.milestone.description | string | | Sample description |
+action_result.data.\*.payload.pull_request.milestone.due_on | string | | 2020-11-30T08:00:00Z |
+action_result.data.\*.payload.pull_request.milestone.html_url | string | `url` | https://github.com/test/test/milestone/10 |
+action_result.data.\*.payload.pull_request.milestone.id | numeric | | 2117464 |
+action_result.data.\*.payload.pull_request.milestone.labels_url | string | `url` | https://api.github.com/repos/test/test/milestones/10/labels |
+action_result.data.\*.payload.pull_request.milestone.node_id | string | | MDk6TWlsZXN0b25lMjExNzQ2NA== |
+action_result.data.\*.payload.pull_request.milestone.number | numeric | | 10 |
+action_result.data.\*.payload.pull_request.milestone.open_issues | numeric | | 15 |
+action_result.data.\*.payload.pull_request.milestone.state | string | | open |
+action_result.data.\*.payload.pull_request.milestone.title | string | | 3.4 |
+action_result.data.\*.payload.pull_request.milestone.updated_at | string | | 2018-07-19T07:12:02Z |
+action_result.data.\*.payload.pull_request.milestone.url | string | `url` | https://api.github.com/repos/test/test/milestones/10 |
+action_result.data.\*.payload.pull_request.node_id | string | | MDExOlB1bGxSZXF1ZXN0Mjc5MTQ3NDM3 |
+action_result.data.\*.payload.pull_request.number | numeric | `github issue id` | 1 |
+action_result.data.\*.payload.pull_request.patch_url | string | `url` | https://github.com/test/test/pull/1.patch |
+action_result.data.\*.payload.pull_request.rebaseable | boolean | | True False |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.avatar_url | string | `url` | https://avatars2.githubusercontent.com/u/57224?v=4 |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.id | numeric | | 57224 |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.node_id | string | | MDQ6VXNlcjU3MjI0 |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.type | string | | User |
+action_result.data.\*.payload.pull_request.requested_reviewers.\*.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.payload.pull_request.requested_teams.\*.created_at | string | | 2018-07-16T23:08:17Z |
+action_result.data.\*.payload.pull_request.requested_teams.\*.description | string | | Everybody but Tony |
+action_result.data.\*.payload.pull_request.requested_teams.\*.id | numeric | | 2826794 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.members_count | numeric | | 2 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.members_url | string | `url` | https://api.github.com/teams/2826794/members{/member} |
+action_result.data.\*.payload.pull_request.requested_teams.\*.name | string | | not-tony-team |
+action_result.data.\*.payload.pull_request.requested_teams.\*.node_id | string | | MDQ6VGVhbTI4MjY3OTQ= |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.avatar_url | string | `url` | https://avatars0.githubusercontent.com/u/41309665?v=4 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.created_at | string | | 2018-07-16T23:02:38Z |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.description | string | | |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.events_url | string | `url` | https://api.github.com/orgs/test/events |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.followers | numeric | | 3 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.following | numeric | | 3 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.has_organization_projects | boolean | | True False |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.has_repository_projects | boolean | | True False |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.hooks_url | string | `url` | https://api.github.com/orgs/test/hooks |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.id | numeric | | 41309665 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.issues_url | string | `url` | https://api.github.com/orgs/test/issues |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.login | string | `github organization name` | test |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.members_url | string | `url` | https://api.github.com/orgs/test/members{/member} |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.node_id | string | | MDEyOk9yZ2FuaXphdGlvbjQxMzA5NjY1 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.public_gists | numeric | | 3 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.public_members_url | string | `url` | https://api.github.com/orgs/test/public_members{/member} |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.public_repos | numeric | | 3 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.repos_url | string | `url` | https://api.github.com/orgs/test/repos |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.type | string | | Organization |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.updated_at | string | | 2018-07-16T23:02:38Z |
+action_result.data.\*.payload.pull_request.requested_teams.\*.organization.url | string | `url` | https://api.github.com/orgs/test |
+action_result.data.\*.payload.pull_request.requested_teams.\*.permission | string | | pull |
+action_result.data.\*.payload.pull_request.requested_teams.\*.privacy | string | | closed |
+action_result.data.\*.payload.pull_request.requested_teams.\*.repos_count | numeric | | 2 |
+action_result.data.\*.payload.pull_request.requested_teams.\*.repositories_url | string | `url` | https://api.github.com/teams/test/repos |
+action_result.data.\*.payload.pull_request.requested_teams.\*.slug | string | | not-tony-team |
+action_result.data.\*.payload.pull_request.requested_teams.\*.updated_at | string | | 2018-07-16T23:08:17Z |
+action_result.data.\*.payload.pull_request.requested_teams.\*.url | string | `url` | https://api.github.com/teams/2826794 |
+action_result.data.\*.payload.pull_request.review_comment_url | string | `url` | https://api.github.com/repos/test/test/pulls/comments{/number} |
+action_result.data.\*.payload.pull_request.review_comments | numeric | | 0 |
+action_result.data.\*.payload.pull_request.review_comments_url | string | `url` | https://api.github.com/repos/test/test/pulls/1/comments |
+action_result.data.\*.payload.pull_request.state | string | | open |
+action_result.data.\*.payload.pull_request.statuses_url | string | `url` | https://api.github.com/repos/test/test/statuses/{sha} |
+action_result.data.\*.payload.pull_request.title | string | | PR title |
+action_result.data.\*.payload.pull_request.updated_at | string | | 2019-05-15T15:20:33Z |
+action_result.data.\*.payload.pull_request.url | string | `url` | https://api.github.com/repos/test/test/pulls/1 |
+action_result.data.\*.payload.pull_request.user.avatar_url | string | `url` | https://avatars1.githubusercontent.com/u/1032411?v=4 |
+action_result.data.\*.payload.pull_request.user.events_url | string | `url` | https://api.github.com/users/test/events{/privacy} |
+action_result.data.\*.payload.pull_request.user.followers_url | string | `url` | https://api.github.com/users/test/followers |
+action_result.data.\*.payload.pull_request.user.following_url | string | `url` | https://api.github.com/users/test/following{/other_user} |
+action_result.data.\*.payload.pull_request.user.gists_url | string | `url` | https://api.github.com/users/test/gists{/gist_id} |
+action_result.data.\*.payload.pull_request.user.gravatar_id | string | | |
+action_result.data.\*.payload.pull_request.user.html_url | string | `url` | https://github.com/test |
+action_result.data.\*.payload.pull_request.user.id | numeric | | 1032411 |
+action_result.data.\*.payload.pull_request.user.login | string | `github username` | test |
+action_result.data.\*.payload.pull_request.user.node_id | string | | MDQ6VXNlcjEwMzI0MTE= |
+action_result.data.\*.payload.pull_request.user.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
+action_result.data.\*.payload.pull_request.user.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
+action_result.data.\*.payload.pull_request.user.repos_url | string | `url` | https://api.github.com/users/test/repos |
+action_result.data.\*.payload.pull_request.user.site_admin | boolean | | True False |
+action_result.data.\*.payload.pull_request.user.starred_url | string | `url` | https://api.github.com/users/test/starred{/owner}{/repo} |
+action_result.data.\*.payload.pull_request.user.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
+action_result.data.\*.payload.pull_request.user.type | string | | User |
+action_result.data.\*.payload.pull_request.user.url | string | `url` | https://api.github.com/users/test |
 action_result.data.\*.payload.push_id | numeric | | 2731668591 |
 action_result.data.\*.payload.pusher_type | string | | user |
 action_result.data.\*.payload.ref | string | | refs/heads/2.8 |
@@ -1915,8 +2469,29 @@ action_result.data.\*.name | string | `github team name` | new team |
 action_result.data.\*.description | string | | New team |
 action_result.data.\*.privacy | string | | closed |
 action_result.data.\*.permission | string | | pull |
+action_result.data.\*.html_url | string | `url` | https://github.com/orgs/test/teams/new-team |
+action_result.data.\*.ldap_dn | string | | uid=new-team,ou=teams,dc=example,dc=com |
 action_result.data.\*.members_url | string | `url` | https://api.github.com/teams/2825460/members{/member} |
 action_result.data.\*.node_id | string | | MDQ6VGVhbTI4JmcyNjA= |
+action_result.data.\*.notification_setting | string | | notifications_enabled |
+action_result.data.\*.parent.id | numeric | `github team id` | 2825461 |
+action_result.data.\*.parent.name | string | `github team name` | parent team |
+action_result.data.\*.parent.description | string | | Parent team |
+action_result.data.\*.parent.html_url | string | `url` | https://github.com/orgs/test/teams/parent |
+action_result.data.\*.parent.ldap_dn | string | | uid=parent,ou=teams,dc=example,dc=com |
+action_result.data.\*.parent.members_url | string | `url` | https://api.github.com/teams/2825461/members{/member} |
+action_result.data.\*.parent.node_id | string | | MDQ6VGVhbTI4JmcyNjE= |
+action_result.data.\*.parent.notification_setting | string | | notifications_enabled |
+action_result.data.\*.parent.permission | string | | pull |
+action_result.data.\*.parent.privacy | string | | closed |
+action_result.data.\*.parent.repositories_url | string | `url` | https://api.github.com/teams/2825461/repos |
+action_result.data.\*.parent.slug | string | | parent-team |
+action_result.data.\*.parent.url | string | `url` | https://api.github.com/teams/2825461 |
+action_result.data.\*.permissions.admin | boolean | | True False |
+action_result.data.\*.permissions.maintain | boolean | | True False |
+action_result.data.\*.permissions.pull | boolean | | True False |
+action_result.data.\*.permissions.push | boolean | | True False |
+action_result.data.\*.permissions.triage | boolean | | True False |
 action_result.data.\*.repositories_url | string | `url` | https://api.github.com/teams/2825460/repos |
 action_result.data.\*.slug | string | | new-team |
 action_result.data.\*.url | string | `url` | https://api.github.com/teams/2825460 |
@@ -1954,6 +2529,8 @@ action_result.data.\*.gravatar_id | string | | |
 action_result.data.\*.html_url | string | `url` | https://github.com/test |
 action_result.data.\*.id | numeric | | 29939753 |
 action_result.data.\*.login | string | `github username` | test |
+action_result.data.\*.name | string | | Test User |
+action_result.data.\*.email | string | `email` | test@example.com |
 action_result.data.\*.node_id | string | | MDQ6VXNlcjI5OTM5NzUz |
 action_result.data.\*.organizations_url | string | `url` | https://api.github.com/users/test/orgs |
 action_result.data.\*.received_events_url | string | `url` | https://api.github.com/users/test/received_events |
@@ -1963,6 +2540,8 @@ action_result.data.\*.starred_url | string | `url` | https://api.github.com/user
 action_result.data.\*.subscriptions_url | string | `url` | https://api.github.com/users/test/subscriptions |
 action_result.data.\*.type | string | | User |
 action_result.data.\*.url | string | `url` | https://api.github.com/users/test |
+action_result.data.\*.starred_at | string | | 2020-07-09T00:17:55Z |
+action_result.data.\*.user_view_type | string | | public |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |
 

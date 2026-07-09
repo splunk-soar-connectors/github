@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import model_validator
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.action_results import (
+    ActionOutput,
+    OutputField,
+    PermissiveActionOutput,
+)
 from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
@@ -111,7 +114,14 @@ class PermissionsOutput(ActionOutput):
     push: bool
 
 
-class ListReposOutput(ActionOutput):
+class ListReposOutput(PermissiveActionOutput):
+    # PermissiveActionOutput so that every field GitHub returns for a repository
+    # is passed through to the client. The repository object is the largest and
+    # most volatile object in the API (GitHub keeps adding fields like
+    # security_and_analysis, custom_properties, topics, visibility), and
+    # playbooks may key off fields we don't model. Declared fields drive the
+    # widget columns and CEF pivots; unknown fields flow through instead of
+    # being dropped.
     # Column fields in widget display order
     id: float = OutputField(example_values=[141304012], column_name="Repo Id")
     full_name: str = OutputField(
@@ -338,18 +348,18 @@ class ListReposOutput(ActionOutput):
     watchers: float = OutputField(example_values=[0])
     watchers_count: float = OutputField(example_values=[0])
 
-    @model_validator(mode="before")
-    @classmethod
-    def _flatten_owner(cls, values):
-        if isinstance(values, dict) and "owner" in values:
-            owner = values["owner"]
-            if isinstance(owner, dict):
-                values.setdefault("repo_owner", owner.get("login"))
-        return values
-
 
 class ListReposSummary(ActionOutput):
     total_repos: int = OutputField(example_values=[10])
+
+
+def _flatten_owner(item: dict) -> dict:
+    """Promote the nested owner's login to the top-level ``repo_owner`` column.
+    Done here rather than in a validator because PermissiveActionOutput
+    serializes the raw input dict, so the column value must be present in it."""
+    if isinstance(item, dict) and isinstance(item.get("owner"), dict):
+        item.setdefault("repo_owner", item["owner"].get("login"))
+    return item
 
 
 def list_repos(
@@ -359,6 +369,9 @@ def list_repos(
     if limit is not None and limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     endpoint = GITHUB_LIST_REPOS_ENDPOINT.format(org_name=params.organization_name)
-    output = [ListReposOutput(**r) for r in _paginate_all(endpoint, asset, limit=limit)]
+    output = [
+        ListReposOutput(**_flatten_owner(r))
+        for r in _paginate_all(endpoint, asset, limit=limit)
+    ]
     soar.set_summary(ListReposSummary(total_repos=len(output)))
     return output
