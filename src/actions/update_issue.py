@@ -13,7 +13,11 @@
 # limitations under the License.
 
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.action_results import (
+    ActionOutput,
+    OutputField,
+    PermissiveActionOutput,
+)
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
@@ -381,7 +385,12 @@ class UserOutput(ActionOutput):
     )
 
 
-class UpdateIssueOutput(ActionOutput):
+class UpdateIssueOutput(PermissiveActionOutput):
+    # PermissiveActionOutput so that every field GitHub returns for an issue is
+    # passed through to the client (playbooks may key off fields we don't model,
+    # e.g. reactions, pull_request, state_reason). Declared fields drive the
+    # widget columns and CEF pivots; unknown fields flow through instead of
+    # being dropped.
     # Column fields in widget display order
     number: float = OutputField(
         cef_types=["github issue id"], example_values=[1], column_name="Issue Number"

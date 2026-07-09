@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import model_validator
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.action_results import (
+    ActionOutput,
+    OutputField,
+    PermissiveActionOutput,
+)
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
@@ -2393,7 +2396,12 @@ class SenderOutput(ActionOutput):
     )
 
 
-class PayloadOutput(ActionOutput):
+class PayloadOutput(PermissiveActionOutput):
+    # The GitHub Events API `payload` is polymorphic: its shape depends on the
+    # event `type` (PushEvent, IssuesEvent, PullRequestEvent, etc.), and GitHub
+    # can add or change payload variants at any time. The fields below document
+    # the commonly-seen keys, but PermissiveActionOutput ensures an unexpected
+    # or partial payload is passed through with a warning instead of failing.
     action: str | None = OutputField(example_values=["added"])
     after: str | None = OutputField(
         cef_types=["sha1"],
@@ -2463,7 +2471,11 @@ class PayloadOutput(ActionOutput):
     size: float | None = OutputField(example_values=[2])
 
 
-class ListEventsOutput(ActionOutput):
+class ListEventsOutput(PermissiveActionOutput):
+    # PermissiveActionOutput so that every field GitHub returns for an event is
+    # passed through to the client. The Events API is polymorphic (payload shape
+    # varies by event type), so unknown/new fields must flow through rather than
+    # being dropped. The fields below drive the widget columns and CEF pivots.
     # Column fields in widget display order
     id: str = OutputField(example_values=["7987124418"], column_name="Event ID")
     type: str = OutputField(example_values=["CreateEvent"], column_name="Event Type")
@@ -2487,23 +2499,22 @@ class ListEventsOutput(ActionOutput):
     payload: PayloadOutput
     repo: RepoOutput
 
-    @model_validator(mode="before")
-    @classmethod
-    def _flatten_repo_and_org(cls, values):
-        """Promote nested repo.name and org.login to top-level columns so the
-        native table can display them (the API nests them under `repo`/`org`)."""
-        if isinstance(values, dict):
-            repo = values.get("repo")
-            if isinstance(repo, dict):
-                values.setdefault("repo_name", repo.get("name"))
-            org = values.get("org")
-            if isinstance(org, dict):
-                values.setdefault("org_login", org.get("login"))
-        return values
-
 
 class ListEventsSummary(ActionOutput):
     total_events: int = OutputField(example_values=[10])
+
+
+def _flatten_repo_and_org(item: dict) -> dict:
+    """Promote nested repo.name and org.login to top-level columns so the native
+    table can display them (the API nests them under `repo`/`org`). Done here
+    rather than in a validator because PermissiveActionOutput serializes the raw
+    input dict, so the column values must be present in it."""
+    if isinstance(item, dict):
+        if isinstance(item.get("repo"), dict):
+            item.setdefault("repo_name", item["repo"].get("name"))
+        if isinstance(item.get("org"), dict):
+            item.setdefault("org_login", item["org"].get("login"))
+    return item
 
 
 def list_events(
@@ -2528,7 +2539,7 @@ def list_events(
             break
         page += 1
 
-    output = [ListEventsOutput(**item) for item in results]
+    output = [ListEventsOutput(**_flatten_repo_and_org(item)) for item in results]
     soar.set_summary(ListEventsSummary(total_events=len(output)))
     return output
 

@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import model_validator
 from soar_sdk.abstract import SOARClient
-from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.action_results import (
+    ActionOutput,
+    OutputField,
+    PermissiveActionOutput,
+)
 from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
@@ -298,7 +301,12 @@ class UserOutput(ActionOutput):
     )
 
 
-class ListIssuesOutput(ActionOutput):
+class ListIssuesOutput(PermissiveActionOutput):
+    # PermissiveActionOutput so that every field GitHub returns for an issue is
+    # passed through to the client (playbooks may key off fields we don't model,
+    # e.g. reactions, pull_request, state_reason). The fields below are declared
+    # to drive the widget columns and CEF pivots; unknown fields flow through
+    # untouched instead of being dropped.
     # Column fields in widget display order
     number: float = OutputField(
         cef_types=["github issue id"], example_values=[4], column_name="Issue Number"
@@ -360,20 +368,18 @@ class ListIssuesOutput(ActionOutput):
     )
     user: UserOutput
 
-    @model_validator(mode="before")
-    @classmethod
-    def _flatten_assignee(cls, values):
-        """Promote the nested assignee's login to a top-level column, mirroring
-        the API's nested `assignee` object into the flat `assignee_login` field."""
-        if isinstance(values, dict) and values.get("assignee"):
-            assignee = values["assignee"]
-            if isinstance(assignee, dict):
-                values.setdefault("assignee_login", assignee.get("login"))
-        return values
-
 
 class ListIssuesSummary(ActionOutput):
     total_issues: int = OutputField(example_values=[10])
+
+
+def _flatten_assignee(item: dict) -> dict:
+    """Promote the nested assignee's login to the top-level ``assignee_login``
+    column. Done here rather than in a validator because PermissiveActionOutput
+    serializes the raw input dict, so the column value must be present in it."""
+    if isinstance(item, dict) and isinstance(item.get("assignee"), dict):
+        item.setdefault("assignee_login", item["assignee"].get("login"))
+    return item
 
 
 def list_issues(
@@ -386,7 +392,8 @@ def list_issues(
         repo_owner=params.repo_owner, repo_name=params.repo_name
     )
     output = [
-        ListIssuesOutput(**i) for i in _paginate_all(endpoint, asset, limit=limit)
+        ListIssuesOutput(**_flatten_assignee(i))
+        for i in _paginate_all(endpoint, asset, limit=limit)
     ]
     soar.set_summary(ListIssuesSummary(total_issues=len(output)))
     return output
