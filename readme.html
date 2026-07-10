@@ -16,11 +16,12 @@ and limitations under the License.
   <head></head>
   <body>
     <h2>Authentication</h2>
-    This app supports three types of authentication:
+    This app supports four types of authentication:
     <ul>
       <li>Basic authentication</li>
       <li>OAuth authentication</li>
       <li>Using the personal access token</li>
+      <li>GitHub App authentication</li>
     </ul>
     <h3>Basic authentication</h3>
     To use basic authentication, provide the username and password of your GitHub account in <b>username</b> and <b>password</b> fields of asset configuration. Click save and run test connectivity.
@@ -85,6 +86,46 @@ and limitations under the License.
 https://&lt;phantom_host&gt;/rest/handler/github_5553a13b-ca44-4d03-ac48-293fce874001/&lt;asset_name&gt;/result
 </pre>
     Once again, click save.
+    <h3>GitHub App authentication</h3>
+    GitHub App authentication uses a private key to sign a short-lived JWT, which is then exchanged for an installation access token. This method is recommended for automated workflows as it does not require user credentials.
+    <br>
+    <b>Required GitHub App permissions for the <code>create_issue</code> action:</b> the App must have the <b>Issues</b> repository permission set to <b>Read &amp; write</b>.
+    <ol>
+      <li>
+        Navigate to <a href="https://github.com/settings/apps">GitHub Apps settings</a> and click <b>New GitHub App</b>.
+      </li>
+      <li>
+        Provide a name for the app, a homepage URL, and (optionally) a description.
+      </li>
+      <li>
+        Under <b>Permissions</b>, expand <b>Repository permissions</b> and set <b>Issues</b> to <b>Read &amp; write</b>. Add any other permissions your use case requires.
+      </li>
+      <li>
+        Uncheck <b>Active</b> under <b>Webhook</b> if you do not need webhook events.
+      </li>
+      <li>
+        Click <b>Create GitHub App</b>. Note the <b>App ID</b> displayed on the resulting settings page — you will need it later.
+      </li>
+      <li>
+        Scroll down to the <b>Private keys</b> section and click <b>Generate a private key</b>. A <code>.pem</code> file will be downloaded to your computer. Store it securely; this is the only copy.
+      </li>
+      <li>
+        Install the App on the relevant organization or repository: click <b>Install App</b> in the left sidebar of the App settings page, choose the account, and select the repositories the App should have access to.
+      </li>
+      <li>
+        After installation, GitHub redirects you to a URL like <code>https://github.com/settings/installations/&lt;installation_id&gt;</code>. Note the numeric <b>installation ID</b> from this URL.
+        Alternatively, you can retrieve it via the GitHub API: <code>GET /app/installations</code> (authenticated as the App using its JWT).
+      </li>
+    </ol>
+    In the asset configuration, provide:
+    <ul>
+      <li><b>app_id</b> — the numeric GitHub App ID noted above.</li>
+      <li><b>app_private_key</b> — the full contents of the downloaded <code>.pem</code> file (including the <code>-----BEGIN RSA PRIVATE KEY-----</code> and <code>-----END RSA PRIVATE KEY-----</code> lines).</li>
+      <li><b>app_installation_id</b> — the numeric installation ID noted above.</li>
+    </ul>
+    Click <b>Save</b> and then <b>TEST CONNECTIVITY</b>. The connector generates a short-lived JWT (valid for 9 minutes), exchanges it for an installation access token (valid for 1 hour), and makes a test call to the GitHub API.
+    The installation token is cached in memory and automatically refreshed when it is within 5 minutes of expiry, so subsequent action executions within the same run reuse it without an extra API round-trip.
+    <br>
     <h2>Method to run test connectivity</h2>
     For the Basic Authentication and Personal Access Token method of authentication, you just need to click the <b>TEST CONNECTIVITY</b> button.
     <br>
@@ -117,7 +158,8 @@ https://&lt;phantom_host&gt;/rest/handler/github_5553a13b-ca44-4d03-ac48-293fce8
       <li>
         If you have provided all the configuration parameters, the priority of the authentication method is as follows:
         <ol>
-          <li>Basic authentication</li>
+          <li>GitHub App authentication (app_id + app_private_key + app_installation_id)</li>
+          <li>Basic authentication (username + password)</li>
           <li>Using the personal access token</li>
           <li>OAuth token</li>
         </ol>

@@ -18,6 +18,9 @@ GITHUB_CONFIG_CLIENT_ID = "client_id"
 GITHUB_CONFIG_CLIENT_SECRET = "client_secret"  # pragma: allowlist secret
 GITHUB_CONFIG_AUTH_TOKEN = "personal_access_token"
 GITHUB_ACCESS_TOKEN = "access_token"
+GITHUB_CONFIG_APP_ID = "app_id"
+GITHUB_CONFIG_APP_PRIVATE_KEY = "app_private_key"  # pragma: allowlist secret
+GITHUB_CONFIG_APP_INSTALLATION_ID = "app_installation_id"
 GITHUB_JSON_REPO_OWNER = "repo_owner"
 GITHUB_JSON_REPO_NAME = "repo_name"
 GITHUB_JSON_ISSUE_NUMBER = "issue_number"
@@ -31,6 +34,7 @@ GITHUB_ENDPOINT_ISSUES = "/repos/{repo_owner}/{repo_name}/issues"
 GITHUB_ENDPOINT_COMMENTS = "/repos/{repo_owner}/{repo_name}/issues/{issue_number}/comments"
 GITHUB_ENDPOINT_GET_ISSUE = "/repos/{repo_owner}/{repo_name}/issues/{issue_number}"
 GITHUB_ENDPOINT_LABELS = "/repos/{repo_owner}/{repo_name}/issues/{issue_number}/labels"
+GITHUB_ENDPOINT_APP_INSTALLATION_TOKEN = "/app/installations/{installation_id}/access_tokens"
 GITHUB_INVALID_INTEGER = 'Please provide non-zero positive integer in "{parameter}"'
 GITHUB_MAKING_CONNECTION_MSG = "Connecting to an endpoint"
 GITHUB_TEST_CONNECTIVITY_FAILED_MSG = "Test connectivity failed"
@@ -47,10 +51,12 @@ GITHUB_ADD_MEMBER_PENDING_MSG = (
 )
 GITHUB_MEMBER_REMOVAL_MSG = 'Member with username "{user_name}" successfully removed from Team "{team}"'
 GITHUB_CONFIG_PARAMS_REQUIRED_CONNECTIVITY = (
-    "Either 'username' and 'password' or 'client_id' and 'client_secret' or 'oauth_access_token' are required for test connectivity"
+    "Either 'username' and 'password' or 'client_id' and 'client_secret' or 'oauth_access_token' or "
+    "'app_id', 'app_private_key', and 'app_installation_id' are required for test connectivity"
 )
 GITHUB_CONFIG_PARAMS_REQUIRED = (
-    "Please provide 'username' and 'password' or 'oauth_access_token' or run test connectivity with 'client_id' and 'client_secret'"
+    "Please provide 'username' and 'password' or 'oauth_access_token' or run test connectivity with 'client_id' and 'client_secret' "
+    "or provide 'app_id', 'app_private_key', and 'app_installation_id'"
 )
 GITHUB_BASE_URL_NOT_FOUND_MSG = "Phantom Base URL not found in System Settings. Please specify the value in System Settings"
 GITHUB_OAUTH_URL_MSG = "Using OAuth URL:"
@@ -133,4 +139,7 @@ GITHUB_SCOPE = "admin:org, user"
 GITHUB_PAGINATION_MAX_SIZE = 100
 GITHUB_TC_STATUS_SLEEP = 3
 GITHUB_AUTHORIZE_WAIT_TIME = 15
+GITHUB_APP_JWT_GENERATION_FAILED_MSG = "Failed to generate GitHub App JWT. Please verify 'app_private_key' is a valid PEM-encoded RSA private key."
+GITHUB_APP_INSTALLATION_TOKEN_FAILED_MSG = "Failed to obtain GitHub App installation access token"
+GITHUB_APP_INSTALLATION_TOKEN_MISSING_MSG = "GitHub API response did not contain an installation access token"
 DEFAULT_TIMEOUT = 30  # seconds
