@@ -12,6 +12,7 @@
 # the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
+import datetime
 import grp
 import json
 import os
@@ -19,6 +20,7 @@ import pwd
 import sys
 import time
 
+import jwt
 import phantom.app as phantom
 import requests
 from bs4 import BeautifulSoup, UnicodeDammit
@@ -230,6 +232,11 @@ class GithubConnector(BaseConnector):
         self._client_secret = None
         self._oauth_token = None
         self._access_token = None
+        self._app_id = None
+        self._app_private_key = None
+        self._app_installation_id = None
+        self._installation_token = None
+        self._installation_token_expires_at = None
 
     def _process_empty_response(self, response, action_result):
         """This function is used to process empty response.
@@ -398,6 +405,77 @@ class GithubConnector(BaseConnector):
 
         return error_code, error_message
 
+    def _generate_github_app_jwt(self):
+        """Generate a signed JWT for GitHub App authentication (RS256).
+
+        The JWT is built per GitHub's App authentication spec:
+        - iat: issued ~60 seconds in the past to compensate for clock drift
+        - exp: 9 minutes from now (GitHub enforces a 10-minute maximum)
+        - iss: the App ID
+
+        :return: signed JWT string
+        :raises Exception: if the private key is invalid or JWT signing fails
+        """
+        now = int(time.time())
+        payload = {
+            "iat": now - 60,
+            "exp": now + 540,  # 9 minutes to stay within GitHub's 10-minute limit
+            "iss": self._app_id,
+        }
+        # Raises jwt.exceptions.InvalidKeyError on bad key — propagated to caller
+        return jwt.encode(payload, self._app_private_key, algorithm="RS256")
+
+    def _get_installation_access_token(self, action_result):
+        """Obtain a GitHub App installation access token, reusing a cached one when still valid.
+
+        Calls POST /app/installations/{installation_id}/access_tokens with a short-lived JWT.
+        The returned token is cached until it expires (minus a 5-minute buffer).
+
+        :param action_result: Object of ActionResult class
+        :return: (status, token_string or None)
+        """
+        now = datetime.datetime.now(datetime.timezone.utc)
+
+        # Reuse cached token if it has not expired (keep a 5-minute safety buffer)
+        if self._installation_token and self._installation_token_expires_at:
+            if now < self._installation_token_expires_at - datetime.timedelta(minutes=5):
+                return phantom.APP_SUCCESS, self._installation_token
+
+        # Generate a short-lived JWT to authenticate as the App
+        try:
+            jwt_token = self._generate_github_app_jwt()
+        except Exception as e:
+            return (
+                action_result.set_status(phantom.APP_ERROR, f"{GITHUB_APP_JWT_GENERATION_FAILED_MSG} Details: {e!s}"),
+                None,
+            )
+
+        # Exchange the JWT for an installation access token
+        url = f"{GITHUB_API_BASE_URL}{GITHUB_ENDPOINT_APP_INSTALLATION_TOKEN.format(installation_id=self._app_installation_id)}"
+        headers = {
+            "Authorization": "Bearer " + jwt_token,
+            "Accept": "application/vnd.github+json",
+        }
+
+        ret_val, response = self._make_rest_call(url=url, action_result=action_result, headers=headers, method="post")
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status(), None
+
+        token = response.get("token")
+        if not token:
+            return action_result.set_status(phantom.APP_ERROR, GITHUB_APP_INSTALLATION_TOKEN_MISSING_MSG), None
+
+        # Parse expiry; fall back to 1-hour default if missing or unparseable
+        expires_at_str = response.get("expires_at", "")
+        try:
+            self._installation_token_expires_at = datetime.datetime.fromisoformat(expires_at_str.replace("Z", "+00:00"))
+        except (ValueError, AttributeError):
+            self._installation_token_expires_at = now + datetime.timedelta(hours=1)
+
+        self._installation_token = token
+        return phantom.APP_SUCCESS, self._installation_token
+
     def _make_rest_call(self, url, action_result, headers=None, params=None, data=None, method="get", auth=None, verify=True):
         """This function is used to make the REST call.
 
@@ -444,6 +522,21 @@ class GithubConnector(BaseConnector):
         :return: Status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
         response obtained by making an API call
         """
+
+        # If GitHub App credentials are configured, use an installation access token (highest priority)
+        if self._app_id and self._app_private_key and self._app_installation_id:
+            ret_val, installation_token = self._get_installation_access_token(action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status(), None
+            if not headers:
+                headers = {}
+            headers.update({"Authorization": "Bearer " + installation_token})
+            ret_val, response = self._make_rest_call(
+                url=url, action_result=action_result, headers=headers, data=data, params=params, verify=verify, method=method
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status(), None
+            return phantom.APP_SUCCESS, response
 
         # If username and password are provided, call using basic auth
         if self._username and self._password:
@@ -513,13 +606,32 @@ class GithubConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         app_state = {}
         # If none of the config parameters are present, return error
-        if not (self._username and self._password) and not (self._client_id and self._client_secret) and not self._oauth_token:
+        if (
+            not (self._username and self._password)
+            and not (self._client_id and self._client_secret)
+            and not self._oauth_token
+            and not (self._app_id and self._app_private_key and self._app_installation_id)
+        ):
             self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED_CONNECTIVITY)
 
         self.save_progress(GITHUB_MAKING_CONNECTION_MSG)
 
         url = f"{GITHUB_API_BASE_URL}{GITHUB_CURRENT_USER_ENDPOINT}"
+
+        # GitHub App auth: obtain an installation token and make a lightweight call
+        if self._app_id and self._app_private_key and self._app_installation_id:
+            ret_val, installation_token = self._get_installation_access_token(action_result)
+            if phantom.is_fail(ret_val):
+                self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
+                return action_result.get_status()
+            request_headers = {"Authorization": "Bearer " + installation_token}
+            ret_val, _ = self._make_rest_call(url=url, action_result=action_result, headers=request_headers)
+            if phantom.is_fail(ret_val):
+                self.save_progress(GITHUB_TEST_CONNECTIVITY_FAILED_MSG)
+                return action_result.get_status()
+            self.save_progress(GITHUB_TEST_CONNECTIVITY_PASSED_MSG)
+            return action_result.set_status(phantom.APP_SUCCESS)
 
         if self._username and self._password:
             # make rest call
@@ -786,7 +898,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         username = self._handle_py_ver_compat_for_input_str(param[GITHUB_CONFIG_USERNAME])
@@ -831,7 +943,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         organization_name = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_ORGANIZATION])
@@ -869,7 +981,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         repo_owner = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_REPO_OWNER])
@@ -949,7 +1061,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         override = param.get(GITHUB_JSON_OVERRIDE, False)
@@ -1141,7 +1253,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         team = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_TEAM])
@@ -1265,7 +1377,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         team = self._handle_py_ver_compat_for_input_str(param[GITHUB_JSON_TEAM])
@@ -1330,7 +1442,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         limit = param.get("limit")
@@ -1413,7 +1525,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         limit = param.get("limit")
@@ -1450,7 +1562,7 @@ class GithubConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not (self._username and self._password) and not self._oauth_token and not self._access_token:
+        if not (self._username and self._password) and not self._oauth_token and not self._access_token and not (self._app_id and self._app_private_key and self._app_installation_id):
             return action_result.set_status(phantom.APP_ERROR, status_message=GITHUB_CONFIG_PARAMS_REQUIRED)
 
         limit = param.get("limit")
@@ -1814,6 +1926,9 @@ class GithubConnector(BaseConnector):
         self._client_id = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_CLIENT_ID))
         self._client_secret = config.get(GITHUB_CONFIG_CLIENT_SECRET)
         self._oauth_token = config.get(GITHUB_CONFIG_AUTH_TOKEN)
+        self._app_id = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_APP_ID))
+        self._app_private_key = config.get(GITHUB_CONFIG_APP_PRIVATE_KEY)
+        self._app_installation_id = self._handle_py_ver_compat_for_input_str(config.get(GITHUB_CONFIG_APP_INSTALLATION_ID))
 
         self._access_token = self._state.get("token", {}).get(GITHUB_ACCESS_TOKEN)
         return phantom.APP_SUCCESS

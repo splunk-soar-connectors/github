@@ -47,6 +47,21 @@
             "description": "Personal access token",
             "data_type": "password",
             "order": 4
+        },
+        "app_id": {
+            "description": "GitHub App ID",
+            "data_type": "string",
+            "order": 5
+        },
+        "app_private_key": {
+            "description": "GitHub App private key (PEM format)",
+            "data_type": "password",
+            "order": 6
+        },
+        "app_installation_id": {
+            "description": "GitHub App installation ID",
+            "data_type": "string",
+            "order": 7
         }
     },
     "actions": [
