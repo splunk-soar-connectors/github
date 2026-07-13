@@ -30,6 +30,7 @@ from unittest.mock import MagicMock, patch
 import jwt
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.serialization import load_pem_private_key
 
 
 # ---------------------------------------------------------------------------
@@ -232,8 +233,6 @@ class TestGenerateGithubAppJWT(unittest.TestCase):
 
     def test_jwt_signature_verifiable(self):
         """Verify the JWT signature using the corresponding public key."""
-        from cryptography.hazmat.primitives.serialization import load_pem_private_key
-
         private_key_obj = load_pem_private_key(self.private_pem.encode(), None)
         public_key = private_key_obj.public_key()
         token = self.connector._generate_github_app_jwt()
@@ -244,6 +243,53 @@ class TestGenerateGithubAppJWT(unittest.TestCase):
         self.connector._app_private_key = "not-a-valid-pem-key"
         with self.assertRaises(Exception):
             self.connector._generate_github_app_jwt()
+
+    # ------------------------------------------------------------------
+    # PEM normalization tests
+    # ------------------------------------------------------------------
+
+    def test_pem_with_literal_escaped_newlines_parses_successfully(self):
+        """PEM key with literal \\n sequences (two chars) is normalized and signs."""
+        # Simulate a config field that stored real newlines as literal \n
+        collapsed = self.private_pem.replace("\n", "\\n")
+        self.connector._app_private_key = collapsed
+        token = self.connector._generate_github_app_jwt()
+        self.assertIsInstance(token, str)
+        parts = token.split(".")
+        self.assertEqual(len(parts), 3)
+
+    def test_pem_with_leading_trailing_whitespace_parses_successfully(self):
+        """PEM key with extra leading/trailing whitespace is stripped and signs."""
+        self.connector._app_private_key = "\n\n  " + self.private_pem + "  \n\n"
+        token = self.connector._generate_github_app_jwt()
+        self.assertIsInstance(token, str)
+
+    def test_pem_with_bom_parses_successfully(self):
+        """PEM key prefixed with a UTF-8 BOM is stripped and signs."""
+        self.connector._app_private_key = "\ufeff" + self.private_pem
+        token = self.connector._generate_github_app_jwt()
+        self.assertIsInstance(token, str)
+
+    def test_public_key_produces_specific_error(self):
+        """Pasting a public key produces a clear, actionable error message."""
+        private_key_obj = load_pem_private_key(self.private_pem.encode(), None)
+        public_key = private_key_obj.public_key()
+        public_pem = public_key.public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo,
+        ).decode("utf-8")
+
+        self.connector._app_private_key = public_pem
+        with self.assertRaises(ValueError) as ctx:
+            self.connector._generate_github_app_jwt()
+        self.assertIn("public key", str(ctx.exception).lower())
+
+    def test_garbage_string_produces_generic_invalid_pem_error(self):
+        """A completely invalid string produces the generic invalid PEM error."""
+        self.connector._app_private_key = "this-is-not-a-pem-key-at-all"
+        with self.assertRaises(ValueError) as ctx:
+            self.connector._generate_github_app_jwt()
+        self.assertIn("PRIVATE KEY", str(ctx.exception))
 
 
 class TestGetInstallationAccessToken(unittest.TestCase):

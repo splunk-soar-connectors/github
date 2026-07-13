@@ -140,6 +140,15 @@ GITHUB_PAGINATION_MAX_SIZE = 100
 GITHUB_TC_STATUS_SLEEP = 3
 GITHUB_AUTHORIZE_WAIT_TIME = 15
 GITHUB_APP_JWT_GENERATION_FAILED_MSG = "Failed to generate GitHub App JWT. Please verify 'app_private_key' is a valid PEM-encoded RSA private key."
+GITHUB_APP_INVALID_PEM_PUBLIC_KEY_MSG = (
+    "The 'app_private_key' value appears to be a public key. "
+    "Please re-download the private key from your GitHub App's settings page and paste the full contents of the .pem file."
+)
+GITHUB_APP_INVALID_PEM_FORMAT_MSG = (
+    "The 'app_private_key' value does not appear to be a valid PEM private key. "
+    "Expected a string containing a '-----BEGIN RSA PRIVATE KEY-----' or '-----BEGIN PRIVATE KEY-----' header "
+    "and a matching '-----END ... PRIVATE KEY-----' footer."
+)
 GITHUB_APP_INSTALLATION_TOKEN_FAILED_MSG = "Failed to obtain GitHub App installation access token"
 GITHUB_APP_INSTALLATION_TOKEN_MISSING_MSG = "GitHub API response did not contain an installation access token"
 DEFAULT_TIMEOUT = 30  # seconds

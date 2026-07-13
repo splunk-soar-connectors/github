@@ -17,6 +17,7 @@ import grp
 import json
 import os
 import pwd
+import re
 import sys
 import time
 
@@ -29,6 +30,11 @@ from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
 from github_consts import *
+
+# Pre-compiled patterns for PEM key validation used in _generate_github_app_jwt
+_PEM_PUBLIC_KEY_RE = re.compile(r"-----BEGIN (?:RSA )?PUBLIC KEY-----")
+_PEM_PRIVATE_KEY_HEADER_RE = re.compile(r"-----BEGIN (?:\w+ )*PRIVATE KEY-----")
+_PEM_PRIVATE_KEY_FOOTER_RE = re.compile(r"-----END (?:\w+ )*PRIVATE KEY-----")
 
 
 def _handle_login_redirect(request, key):
@@ -414,8 +420,34 @@ class GithubConnector(BaseConnector):
         - iss: the App ID
 
         :return: signed JWT string
-        :raises Exception: if the private key is invalid or JWT signing fails
+        :raises ValueError: if the private key is missing, a public key, or otherwise invalid PEM
+        :raises Exception: if JWT signing fails
         """
+        # --- Normalize the private key to handle common copy/paste artifacts ---
+        key_str = self._app_private_key or ""
+
+        # 1. Strip UTF-8 BOM if present
+        key_str = key_str.lstrip("\ufeff")
+
+        # 2. Normalize literal \n escape sequences (two characters) to real newlines
+        if "\\n" in key_str:
+            key_str = key_str.replace("\\n", "\n")
+
+        # 3. Strip leading/trailing whitespace and blank lines
+        key_str = key_str.strip()
+
+        # --- Validate PEM structure ---
+        # Check for a public key pasted by mistake (specific, actionable error)
+        if _PEM_PUBLIC_KEY_RE.search(key_str):
+            raise ValueError(GITHUB_APP_INVALID_PEM_PUBLIC_KEY_MSG)
+
+        # Check for a valid private key header and footer
+        if not (_PEM_PRIVATE_KEY_HEADER_RE.search(key_str) and _PEM_PRIVATE_KEY_FOOTER_RE.search(key_str)):
+            raise ValueError(GITHUB_APP_INVALID_PEM_FORMAT_MSG)
+
+        # Encode to UTF-8 bytes (standard encoding for PEM text)
+        key_bytes = key_str.encode("utf-8")
+
         now = int(time.time())
         payload = {
             "iat": now - 60,
@@ -423,7 +455,7 @@ class GithubConnector(BaseConnector):
             "iss": self._app_id,
         }
         # Raises jwt.exceptions.InvalidKeyError on bad key — propagated to caller
-        return jwt.encode(payload, self._app_private_key, algorithm="RS256")
+        return jwt.encode(payload, key_bytes, algorithm="RS256")
 
     def _get_installation_access_token(self, action_result):
         """Obtain a GitHub App installation access token, reusing a cached one when still valid.
