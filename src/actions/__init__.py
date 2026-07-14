@@ -56,6 +56,7 @@ def register_actions(app: App) -> App:
         action_type="generic",
         read_only=False,
         verbose="Only users with push access can set labels for the issues.",
+        render_as="table",
     )
     app.register_action(
         action=add_member,
@@ -70,6 +71,7 @@ def register_actions(app: App) -> App:
         description="Create a comment for an issue on the GitHub repository",
         action_type="generic",
         read_only=False,
+        render_as="table",
     )
     app.register_action(
         action=create_issue,
@@ -83,11 +85,13 @@ def register_actions(app: App) -> App:
         action=get_issue,
         description="Retrieve an issue for the GitHub repository",
         action_type="investigate",
+        render_as="table",
     )
     app.register_action(
         action=list_comments,
         description="List comments for an issue on the GitHub repository",
         action_type="investigate",
+        render_as="table",
     )
     app.register_action(
         action=list_events,
@@ -124,6 +128,7 @@ def register_actions(app: App) -> App:
         action=list_users,
         description="List users of an organization",
         action_type="investigate",
+        render_as="table",
     )
     app.register_action(
         action=remove_collaborator,
