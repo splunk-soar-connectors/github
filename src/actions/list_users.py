@@ -33,7 +33,7 @@ class ListUsersParams(Params):
         primary=True,
         cef_types=["github organization name"],
     )
-    limit: float | None = Param(description="Maximum number of users to be fetched")
+    limit: int | None = Param(description="Maximum number of users to be fetched")
 
 
 class ListUsersOutput(ActionOutput):
@@ -104,12 +104,13 @@ class ListUsersSummary(ActionOutput):
 def list_users(
     params: ListUsersParams, soar: SOARClient, asset: Asset
 ) -> list[ListUsersOutput]:
-    limit = int(params.limit) if params.limit is not None else None
-    if limit is not None and limit <= 0:
+    if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     endpoint = GITHUB_LIST_USERS_ENDPOINT.format(
         organization_name=params.organization_name
     )
-    output = [ListUsersOutput(**u) for u in _paginate_all(endpoint, asset, limit=limit)]
+    output = [
+        ListUsersOutput(**u) for u in _paginate_all(endpoint, asset, limit=params.limit)
+    ]
     soar.set_summary(ListUsersSummary(total_users=len(output)))
     return output

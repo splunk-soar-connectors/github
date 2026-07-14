@@ -179,7 +179,7 @@ class UpdateIssueParams(Params):
     repo_name: str = Param(
         description="Name of the repository", primary=True, cef_types=["github repo"]
     )
-    issue_number: float = Param(
+    issue_number: int = Param(
         description="Issue ID", primary=True, cef_types=["github issue id"]
     )
     state: str | None = Param(
@@ -386,13 +386,8 @@ class UserOutput(ActionOutput):
 
 
 class UpdateIssueOutput(PermissiveActionOutput):
-    # PermissiveActionOutput so that every field GitHub returns for an issue is
-    # passed through to the client (playbooks may key off fields we don't model,
-    # e.g. reactions, pull_request, state_reason). Declared fields drive the
-    # widget columns and CEF pivots; unknown fields flow through instead of
-    # being dropped.
     # Column fields in widget display order
-    number: float = OutputField(
+    number: int = OutputField(
         cef_types=["github issue id"], example_values=[1], column_name="Issue Number"
     )
     title: str = OutputField(
@@ -452,7 +447,7 @@ class UpdateIssueOutput(PermissiveActionOutput):
 
 
 class UpdateIssueSummary(ActionOutput):
-    issue_number: float | None = OutputField(example_values=[1])
+    issue_number: int | None = OutputField(example_values=[1])
     issue_url: str | None = OutputField(
         cef_types=["url"], example_values=["https://github.com/test/test-repo/issues/1"]
     )
@@ -488,7 +483,7 @@ def update_issue(
     endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
-        issue_number=int(params.issue_number),
+        issue_number=params.issue_number,
     )
     response = call_github(GITHUB_REQUEST_PATCH.upper(), endpoint, asset, json=body)
     _check_response(response)

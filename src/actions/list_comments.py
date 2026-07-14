@@ -40,10 +40,10 @@ class ListCommentsParams(Params):
     repo_name: str = Param(
         description="Name of the repository", primary=True, cef_types=["github repo"]
     )
-    issue_number: float = Param(
+    issue_number: int = Param(
         description="Issue ID", primary=True, cef_types=["github issue id"]
     )
-    limit: float | None = Param(description="Maximum number of comments to be fetched")
+    limit: int | None = Param(description="Maximum number of comments to be fetched")
 
 
 class UserOutput(ActionOutput):
@@ -110,10 +110,6 @@ class UserOutput(ActionOutput):
 
 
 class ListCommentsOutput(PermissiveActionOutput):
-    # PermissiveActionOutput so that every field GitHub returns for a comment is
-    # passed through to the client (playbooks may key off fields we don't model,
-    # e.g. reactions, performed_via_github_app). Declared fields drive the
-    # datapaths/CEF pivots; unknown fields flow through instead of being dropped.
     author_association: str = OutputField(example_values=["OWNER"])
     body: str | None = OutputField(
         example_values=["I am writing a comment to this issue"]
@@ -152,16 +148,16 @@ class ListCommentsSummary(ActionOutput):
 def list_comments(
     params: ListCommentsParams, soar: SOARClient, asset: Asset
 ) -> list[ListCommentsOutput]:
-    limit = int(params.limit) if params.limit is not None else None
-    if limit is not None and limit <= 0:
+    if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     endpoint = GITHUB_ENDPOINT_COMMENTS.format(
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
-        issue_number=int(params.issue_number),
+        issue_number=params.issue_number,
     )
     output = [
-        ListCommentsOutput(**c) for c in _paginate_all(endpoint, asset, limit=limit)
+        ListCommentsOutput(**c)
+        for c in _paginate_all(endpoint, asset, limit=params.limit)
     ]
     soar.set_summary(ListCommentsSummary(total_comments=len(output)))
     return output

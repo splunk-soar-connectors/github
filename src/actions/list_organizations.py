@@ -28,7 +28,7 @@ logger = getLogger()
 
 
 class ListOrganizationsParams(Params):
-    limit: float | None = Param(
+    limit: int | None = Param(
         description="Maximum number of organizations to be fetched"
     )
 
@@ -84,12 +84,13 @@ class ListOrganizationsSummary(ActionOutput):
 def list_organizations(
     params: ListOrganizationsParams, soar: SOARClient, asset: Asset
 ) -> list[ListOrganizationsOutput]:
-    limit = int(params.limit) if params.limit is not None else None
-    if limit is not None and limit <= 0:
+    if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     output = [
         ListOrganizationsOutput(**o)
-        for o in _paginate_all(GITHUB_LIST_ORGANIZATIONS_ENDPOINT, asset, limit=limit)
+        for o in _paginate_all(
+            GITHUB_LIST_ORGANIZATIONS_ENDPOINT, asset, limit=params.limit
+        )
     ]
     soar.set_summary(ListOrganizationsSummary(total_organizations=len(output)))
     return output

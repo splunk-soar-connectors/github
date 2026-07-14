@@ -62,14 +62,14 @@ class AddMemberParams(Params):
 
 
 class AddMemberOutput(ActionOutput):
-    state: str = OutputField(
+    state: str | None = OutputField(
         example_values=["active", "pending"], column_name="Membership State"
     )
     status: str = OutputField(
         example_values=["success", "failed"], column_name="Status"
     )
-    role: str = OutputField(example_values=["member", "maintainer"])
-    url: str = OutputField(
+    role: str | None = OutputField(example_values=["member", "maintainer"])
+    url: str | None = OutputField(
         cef_types=["url"],
         example_values=["https://api.github.com/teams/2830072/memberships/test"],
     )
@@ -93,7 +93,7 @@ def add_member(
                     user_name=params.user, team=params.team, role=role
                 )
             )
-            return AddMemberOutput(**member, status="success")
+            return AddMemberOutput(status="success")
 
     response = call_github(
         GITHUB_REQUEST_PUT.upper(),

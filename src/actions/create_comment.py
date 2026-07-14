@@ -41,7 +41,7 @@ class CreateCommentParams(Params):
     repo_name: str = Param(
         description="Name of the repository", primary=True, cef_types=["github repo"]
     )
-    issue_number: float = Param(
+    issue_number: int = Param(
         description="Issue ID", primary=True, cef_types=["github issue id"]
     )
     comment_body: str = Param(description="Contents of a comment to add to the issue")
@@ -111,10 +111,6 @@ class UserOutput(ActionOutput):
 
 
 class CreateCommentOutput(PermissiveActionOutput):
-    # PermissiveActionOutput so that every field GitHub returns for a comment is
-    # passed through to the client (playbooks may key off fields we don't model,
-    # e.g. reactions, performed_via_github_app). Declared fields drive the
-    # datapaths/CEF pivots; unknown fields flow through instead of being dropped.
     author_association: str = OutputField(example_values=["OWNER"])
     body: str = OutputField(example_values=["I am adding a comment from the app"])
     created_at: str = OutputField(example_values=["2019-07-16T20:11:38Z"])
@@ -158,7 +154,7 @@ def create_comment(
     endpoint = GITHUB_ENDPOINT_COMMENTS.format(
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
-        issue_number=int(params.issue_number),
+        issue_number=params.issue_number,
     )
     response = call_github(
         GITHUB_REQUEST_POST.upper(), endpoint, asset, json={"body": params.comment_body}

@@ -34,7 +34,7 @@ class ListTeamsParams(Params):
         cef_types=["github organization name"],
         column_name="Organization Name",
     )
-    limit: float | None = Param(description="Maximum number of teams to be fetched")
+    limit: int | None = Param(description="Maximum number of teams to be fetched")
 
 
 class PermissionsOutput(ActionOutput):
@@ -127,10 +127,11 @@ class ListTeamsSummary(ActionOutput):
 def list_teams(
     params: ListTeamsParams, soar: SOARClient, asset: Asset
 ) -> list[ListTeamsOutput]:
-    limit = int(params.limit) if params.limit is not None else None
-    if limit is not None and limit <= 0:
+    if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     endpoint = GITHUB_LIST_TEAMS_ENDPOINT.format(org_name=params.organization_name)
-    output = [ListTeamsOutput(**t) for t in _paginate_all(endpoint, asset, limit=limit)]
+    output = [
+        ListTeamsOutput(**t) for t in _paginate_all(endpoint, asset, limit=params.limit)
+    ]
     soar.set_summary(ListTeamsSummary(total_teams=len(output)))
     return output

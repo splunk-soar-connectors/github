@@ -38,7 +38,7 @@ class ListReposParams(Params):
         cef_types=["github organization name"],
         column_name="Organization Name",
     )
-    limit: float | None = Param(
+    limit: int | None = Param(
         description="Maximum number of repositories to be fetched"
     )
 
@@ -115,13 +115,6 @@ class PermissionsOutput(ActionOutput):
 
 
 class ListReposOutput(PermissiveActionOutput):
-    # PermissiveActionOutput so that every field GitHub returns for a repository
-    # is passed through to the client. The repository object is the largest and
-    # most volatile object in the API (GitHub keeps adding fields like
-    # security_and_analysis, custom_properties, topics, visibility), and
-    # playbooks may key off fields we don't model. Declared fields drive the
-    # widget columns and CEF pivots; unknown fields flow through instead of
-    # being dropped.
     # Column fields in widget display order
     id: float = OutputField(example_values=[141304012], column_name="Repo Id")
     full_name: str = OutputField(
@@ -365,13 +358,12 @@ def _flatten_owner(item: dict) -> dict:
 def list_repos(
     params: ListReposParams, soar: SOARClient, asset: Asset
 ) -> list[ListReposOutput]:
-    limit = int(params.limit) if params.limit is not None else None
-    if limit is not None and limit <= 0:
+    if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     endpoint = GITHUB_LIST_REPOS_ENDPOINT.format(org_name=params.organization_name)
     output = [
         ListReposOutput(**_flatten_owner(r))
-        for r in _paginate_all(endpoint, asset, limit=limit)
+        for r in _paginate_all(endpoint, asset, limit=params.limit)
     ]
     soar.set_summary(ListReposSummary(total_repos=len(output)))
     return output

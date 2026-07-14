@@ -23,9 +23,9 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [test connectivity](#action-test-connectivity) - test connectivity <br>
 [make request](#action-make-request) - Execute an arbitrary HTTP request against the GitHub API.
 
-Handles all three authentication modes configured on the asset:
-username/password basic auth, personal access token, and OAuth Bearer token.
-The endpoint is appended to https://api.github.com — do not include the base URL. <br>
+Handles both authentication modes configured on the asset: personal access
+token and OAuth Bearer token. The endpoint is appended to
+https://api.github.com — do not include the base URL. <br>
 [add collaborator](#action-add-collaborator) - Add user as a collaborator to repo <br>
 [add labels](#action-add-labels) - Add label(s) to an issue on the GitHub repository <br>
 [add member](#action-add-member) - Add user in a team <br>
@@ -69,9 +69,9 @@ summary.total_objects_successful | numeric | | 1 |
 
 Execute an arbitrary HTTP request against the GitHub API.
 
-Handles all three authentication modes configured on the asset:
-username/password basic auth, personal access token, and OAuth Bearer token.
-The endpoint is appended to https://api.github.com — do not include the base URL.
+Handles both authentication modes configured on the asset: personal access
+token and OAuth Bearer token. The endpoint is appended to
+https://api.github.com — do not include the base URL.
 
 Type: **generic** <br>
 Read only: **False**

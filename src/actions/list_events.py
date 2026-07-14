@@ -2645,10 +2645,6 @@ class PayloadOutput(PermissiveActionOutput):
 
 
 class ListEventsOutput(PermissiveActionOutput):
-    # PermissiveActionOutput so that every field GitHub returns for an event is
-    # passed through to the client. The Events API is polymorphic (payload shape
-    # varies by event type), so unknown/new fields must flow through rather than
-    # being dropped. The fields below drive the widget columns and CEF pivots.
     # Column fields in widget display order
     id: str = OutputField(example_values=["7987124418"], column_name="Event ID")
     type: str = OutputField(example_values=["CreateEvent"], column_name="Event Type")

@@ -52,45 +52,12 @@ class GitHubMakeRequestParams(MakeRequestParams):
 
 
 class GitHubMakeRequestOutput(MakeRequestOutput):
-    """Output for the make_request action.
-
-    Inherits status_code and response_body from MakeRequestOutput.
-    Additionally, if the GitHub API returns a JSON object, its top-level keys are
-    merged in as individual output fields so downstream playbook steps can reference
-    them directly (e.g. action_result.data.*.number for an issue number).
-    """
-
-    def __init__(self, **data):
-        # Separate the two declared fields from any extra JSON keys we want to attach
-        known = {
-            "status_code": data.pop("status_code", None),
-            "response_body": data.pop("response_body", None),
-        }
-        super().__init__(**{k: v for k, v in known.items() if v is not None})
-
-        # Attach extra keys directly so they show up in the SOAR action result data
-        for key, value in data.items():
-            object.__setattr__(self, key, value)
+    """Output for the make_request action. Inherits status_code and response_body from MakeRequestOutput."""
 
     @classmethod
     def from_response(cls, response: httpx.Response) -> "GitHubMakeRequestOutput":
-        """Build the output from an httpx Response, merging JSON keys when possible."""
-        data: dict = {
-            "status_code": response.status_code,
-            "response_body": response.text,
-        }
-
-        try:
-            json_body = response.json()
-            # Only merge top-level keys when the response is a single JSON object.
-            # GitHub list endpoints return arrays — those are preserved as response_body
-            # and not merged, because there is no stable set of keys to promote.
-            if isinstance(json_body, dict):
-                data.update(json_body)
-        except Exception as exc:
-            logger.warning(f"Response body is not JSON — skipping field merge: {exc!s}")
-
-        return cls(**data)
+        """Build the output from an httpx Response."""
+        return cls(status_code=response.status_code, response_body=response.text)
 
 
 # ---------------------------------------------------------------------------
@@ -122,9 +89,9 @@ def make_request(
 ) -> GitHubMakeRequestOutput:
     """Execute an arbitrary HTTP request against the GitHub API.
 
-    Handles all three authentication modes configured on the asset:
-    username/password basic auth, personal access token, and OAuth Bearer token.
-    The endpoint is appended to https://api.github.com — do not include the base URL.
+    Handles both authentication modes configured on the asset: personal access
+    token and OAuth Bearer token. The endpoint is appended to
+    https://api.github.com — do not include the base URL.
     """
     logger.info(f"make_request: {params.http_method} {params.endpoint}")
 
@@ -193,7 +160,7 @@ def make_request(
     # --- send the request ----------------------------------------------------
 
     timeout = params.timeout if params.timeout else 30
-    verify = params.verify_ssl if params.verify_ssl is not None else True
+    verify = params.verify_ssl
 
     try:
         with httpx.Client(timeout=timeout, verify=verify) as client:

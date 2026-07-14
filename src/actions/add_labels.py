@@ -38,7 +38,7 @@ class AddLabelsParams(Params):
     repo_name: str = Param(
         description="Name of the repository", primary=True, cef_types=["github repo"]
     )
-    issue_number: float = Param(
+    issue_number: int = Param(
         description="Issue ID", primary=True, cef_types=["github issue id"]
     )
     labels: str = Param(
@@ -71,7 +71,7 @@ def add_labels(
     endpoint = GITHUB_ENDPOINT_LABELS.format(
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
-        issue_number=int(params.issue_number),
+        issue_number=params.issue_number,
     )
     response = call_github(
         GITHUB_REQUEST_POST.upper(), endpoint, asset, json={"labels": labels}
@@ -79,7 +79,7 @@ def add_labels(
     _check_response(response)
     soar.set_message(
         GITHUB_LABEL_ADDED_MSG.format(
-            labels=",".join(labels), issue_number=int(params.issue_number)
+            labels=",".join(labels), issue_number=params.issue_number
         )
     )
     return [AddLabelsOutput(**label) for label in response.json()]

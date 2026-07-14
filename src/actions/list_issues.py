@@ -122,7 +122,7 @@ class ListIssuesParams(Params):
     repo_name: str = Param(
         description="Name of the repository", primary=True, cef_types=["github repo"]
     )
-    limit: float | None = Param(description="Maximum number of issues to be fetched")
+    limit: int | None = Param(description="Maximum number of issues to be fetched")
 
 
 class AssigneeOutput(ActionOutput):
@@ -302,13 +302,8 @@ class UserOutput(ActionOutput):
 
 
 class ListIssuesOutput(PermissiveActionOutput):
-    # PermissiveActionOutput so that every field GitHub returns for an issue is
-    # passed through to the client (playbooks may key off fields we don't model,
-    # e.g. reactions, pull_request, state_reason). The fields below are declared
-    # to drive the widget columns and CEF pivots; unknown fields flow through
-    # untouched instead of being dropped.
     # Column fields in widget display order
-    number: float = OutputField(
+    number: int = OutputField(
         cef_types=["github issue id"], example_values=[4], column_name="Issue Number"
     )
     title: str = OutputField(
@@ -385,15 +380,14 @@ def _flatten_assignee(item: dict) -> dict:
 def list_issues(
     params: ListIssuesParams, soar: SOARClient, asset: Asset
 ) -> list[ListIssuesOutput]:
-    limit = int(params.limit) if params.limit is not None else None
-    if limit is not None and limit <= 0:
+    if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
     endpoint = GITHUB_ENDPOINT_ISSUES.format(
         repo_owner=params.repo_owner, repo_name=params.repo_name
     )
     output = [
         ListIssuesOutput(**_flatten_assignee(i))
-        for i in _paginate_all(endpoint, asset, limit=limit)
+        for i in _paginate_all(endpoint, asset, limit=params.limit)
     ]
     soar.set_summary(ListIssuesSummary(total_issues=len(output)))
     return output
