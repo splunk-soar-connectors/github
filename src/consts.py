@@ -156,6 +156,7 @@ GITHUB_OAUTH_LOGIN_URL_MSG = (
 # GitHub expects a space-delimited scope list on the authorize endpoint.
 GITHUB_SCOPE = "admin:org user"
 GITHUB_PAGINATION_MAX_SIZE = 100
+GITHUB_PAGINATION_MAX_PAGES = 1000
 GITHUB_TC_STATUS_SLEEP = 3
 GITHUB_AUTHORIZE_WAIT_TIME = 15
 DEFAULT_TIMEOUT = 30  # seconds
