@@ -24,7 +24,7 @@ from ..consts import (
     GITHUB_LABEL_ADDED_MSG,
     GITHUB_REQUEST_POST,
 )
-from ._helpers import _check_response
+from ._helpers import _check_response, _format_endpoint
 
 logger = getLogger()
 
@@ -68,7 +68,8 @@ def add_labels(
 ) -> list[AddLabelsOutput]:
     labels = [label.strip() for label in params.labels.split(",") if label.strip()]
 
-    endpoint = GITHUB_ENDPOINT_LABELS.format(
+    endpoint = _format_endpoint(
+        GITHUB_ENDPOINT_LABELS,
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
         issue_number=params.issue_number,

@@ -26,7 +26,7 @@ from ..asset import Asset
 from ..consts import (
     GITHUB_LIST_REPOS_ENDPOINT,
 )
-from ._helpers import _paginate_all
+from ._helpers import _format_endpoint, _paginate_all
 
 logger = getLogger()
 
@@ -360,7 +360,9 @@ def list_repos(
 ) -> list[ListReposOutput]:
     if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
-    endpoint = GITHUB_LIST_REPOS_ENDPOINT.format(org_name=params.organization_name)
+    endpoint = _format_endpoint(
+        GITHUB_LIST_REPOS_ENDPOINT, org_name=params.organization_name
+    )
     output = [
         ListReposOutput(**_flatten_owner(r))
         for r in _paginate_all(endpoint, asset, limit=params.limit)

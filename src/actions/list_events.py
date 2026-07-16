@@ -27,7 +27,7 @@ from ..consts import (
     GITHUB_EVENTS_ENDPOINT,
     GITHUB_PAGINATION_MAX_SIZE,
 )
-from ._helpers import _check_response
+from ._helpers import _check_response, _format_endpoint
 
 logger = getLogger()
 
@@ -2689,7 +2689,7 @@ def _flatten_repo_and_org(item: dict) -> dict:
 def list_events(
     params: ListEventsParams, soar: SOARClient, asset: Asset
 ) -> list[ListEventsOutput]:
-    endpoint = GITHUB_EVENTS_ENDPOINT.format(username=params.username)
+    endpoint = _format_endpoint(GITHUB_EVENTS_ENDPOINT, username=params.username)
     results = []
     page = 1
 

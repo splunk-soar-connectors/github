@@ -29,7 +29,12 @@ from ..consts import (
     GITHUB_JSON_ROLE,
     GITHUB_REQUEST_PUT,
 )
-from ._helpers import _check_response, _paginate_all, _resolve_team_id
+from ._helpers import (
+    _check_response,
+    _format_endpoint,
+    _paginate_all,
+    _resolve_team_id,
+)
 
 logger = getLogger()
 
@@ -82,7 +87,7 @@ def add_member(
     team_id = _resolve_team_id(params.team, params.organization_name, asset)
 
     members = _paginate_all(
-        GITHUB_GET_MEMBERS_ENDPOINT.format(team_id=team_id),
+        _format_endpoint(GITHUB_GET_MEMBERS_ENDPOINT, team_id=team_id),
         asset,
         extra_params={GITHUB_JSON_ROLE: role},
     )
@@ -97,8 +102,10 @@ def add_member(
 
     response = call_github(
         GITHUB_REQUEST_PUT.upper(),
-        GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.format(
-            team_id=team_id, user_name=params.user
+        _format_endpoint(
+            GITHUB_ADD_REMOVE_MEMBER_ENDPOINT,
+            team_id=team_id,
+            user_name=params.user,
         ),
         asset,
         json={GITHUB_JSON_ROLE: role},

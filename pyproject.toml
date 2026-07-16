@@ -15,7 +15,7 @@ main_module = "src.app:app"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["."]
 
 ### YOU SHOULD NOT NEED TO TOUCH ANYTHING BELOW THIS LINE ###
 
