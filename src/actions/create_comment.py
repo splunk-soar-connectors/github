@@ -27,7 +27,7 @@ from ..consts import (
     GITHUB_ENDPOINT_COMMENTS,
     GITHUB_REQUEST_POST,
 )
-from ._helpers import _check_response
+from ._helpers import _check_response, _format_endpoint
 
 logger = getLogger()
 
@@ -151,7 +151,8 @@ class CreateCommentSummary(ActionOutput):
 def create_comment(
     params: CreateCommentParams, soar: SOARClient, asset: Asset
 ) -> CreateCommentOutput:
-    endpoint = GITHUB_ENDPOINT_COMMENTS.format(
+    endpoint = _format_endpoint(
+        GITHUB_ENDPOINT_COMMENTS,
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
         issue_number=params.issue_number,

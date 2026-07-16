@@ -26,7 +26,7 @@ from ..asset import Asset
 from ..consts import (
     GITHUB_ENDPOINT_ISSUES,
 )
-from ._helpers import _paginate_all
+from ._helpers import _format_endpoint, _paginate_all
 
 logger = getLogger()
 
@@ -382,8 +382,8 @@ def list_issues(
 ) -> list[ListIssuesOutput]:
     if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
-    endpoint = GITHUB_ENDPOINT_ISSUES.format(
-        repo_owner=params.repo_owner, repo_name=params.repo_name
+    endpoint = _format_endpoint(
+        GITHUB_ENDPOINT_ISSUES, repo_owner=params.repo_owner, repo_name=params.repo_name
     )
     output = [
         ListIssuesOutput(**_flatten_assignee(i))

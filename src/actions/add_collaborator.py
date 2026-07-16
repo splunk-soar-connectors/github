@@ -49,7 +49,7 @@ from ..consts import (
     GITHUB_REQUEST_PUT,
     GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT,
 )
-from ._helpers import _check_response, _if_role_same, _paginate_all
+from ._helpers import _check_response, _format_endpoint, _if_role_same, _paginate_all
 
 logger = getLogger()
 
@@ -234,7 +234,11 @@ def add_collaborator(
     }
 
     # 1. Check direct collaborators
-    direct_endpoint = GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo)
+    direct_endpoint = _format_endpoint(
+        GITHUB_LIST_COLLABORATOR_ENDPOINT,
+        repo_owner=params.repo_owner,
+        repo_name=params.repo_name,
+    )
     direct_collaborators = _paginate_all(
         direct_endpoint,
         asset,
@@ -252,10 +256,10 @@ def add_collaborator(
             break
     else:
         # 2. User is not a direct collaborator — check pending invitations
-        invitations_endpoint = (
-            GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT.format(
-                repo_full_name=repo
-            )
+        invitations_endpoint = _format_endpoint(
+            GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT,
+            repo_owner=params.repo_owner,
+            repo_name=params.repo_name,
         )
         pending = _paginate_all(invitations_endpoint, asset)
 
@@ -274,11 +278,11 @@ def add_collaborator(
                         invite_sent=False, collaborator_added=False
                     )
                 if override:
-                    upd_endpoint = (
-                        GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT.format(
-                            repo_full_name=repo,
-                            invitation_id=invitation[GITHUB_JSON_ID],
-                        )
+                    upd_endpoint = _format_endpoint(
+                        GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT,
+                        repo_owner=params.repo_owner,
+                        repo_name=params.repo_name,
+                        invitation_id=invitation[GITHUB_JSON_ID],
                     )
                     _check_response(
                         call_github(
@@ -298,8 +302,11 @@ def add_collaborator(
         raise ActionFailure(GITHUB_COLLABORATOR_ROLE_NOT_UPDATED_MSG)
 
     # 4. PUT /repos/{repo}/collaborators/{user} — adds new collaborator or updates role
-    add_endpoint = GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT.format(
-        repo_full_name=repo, user_name=user
+    add_endpoint = _format_endpoint(
+        GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT,
+        repo_owner=params.repo_owner,
+        repo_name=params.repo_name,
+        user_name=user,
     )
     response = call_github(
         GITHUB_REQUEST_PUT.upper(),

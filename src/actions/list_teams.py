@@ -22,7 +22,7 @@ from ..asset import Asset
 from ..consts import (
     GITHUB_LIST_TEAMS_ENDPOINT,
 )
-from ._helpers import _paginate_all
+from ._helpers import _format_endpoint, _paginate_all
 
 logger = getLogger()
 
@@ -129,7 +129,9 @@ def list_teams(
 ) -> list[ListTeamsOutput]:
     if params.limit is not None and params.limit <= 0:
         raise ActionFailure("limit must be a positive integer")
-    endpoint = GITHUB_LIST_TEAMS_ENDPOINT.format(org_name=params.organization_name)
+    endpoint = _format_endpoint(
+        GITHUB_LIST_TEAMS_ENDPOINT, org_name=params.organization_name
+    )
     output = [
         ListTeamsOutput(**t) for t in _paginate_all(endpoint, asset, limit=params.limit)
     ]

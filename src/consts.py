@@ -101,15 +101,15 @@ GITHUB_GET_MEMBERS_ENDPOINT = "/teams/{team_id}/members"
 GITHUB_LIST_MEMBERS_PENDING_INVITATIONS_ENDPOINT = "/teams/{team_id}/invitations"
 GITHUB_LIST_USERS_ENDPOINT = "/orgs/{organization_name}/members"
 GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT = (
-    "/repos/{repo_full_name}/invitations"
+    "/repos/{repo_owner}/{repo_name}/invitations"
 )
 GITHUB_ADD_REMOVE_MEMBER_ENDPOINT = "/teams/{team_id}/memberships/{user_name}"
 GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT = (
-    "/repos/{repo_full_name}/collaborators/{user_name}"
+    "/repos/{repo_owner}/{repo_name}/collaborators/{user_name}"
 )
-GITHUB_LIST_COLLABORATOR_ENDPOINT = "/repos/{repo_full_name}/collaborators"
+GITHUB_LIST_COLLABORATOR_ENDPOINT = "/repos/{repo_owner}/{repo_name}/collaborators"
 GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT = (
-    "/repos/{repo_full_name}/invitations/{invitation_id}"
+    "/repos/{repo_owner}/{repo_name}/invitations/{invitation_id}"
 )
 GITHUB_JSON_ORGANIZATION = "organization_name"
 GITHUB_JSON_ID = "id"

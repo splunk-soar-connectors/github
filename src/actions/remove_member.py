@@ -28,7 +28,12 @@ from ..consts import (
     GITHUB_REQUEST_DELETE,
     GITHUB_USER_NOT_TEAM_MEMBER_MSG,
 )
-from ._helpers import _check_response, _paginate_all, _resolve_team_id
+from ._helpers import (
+    _check_response,
+    _format_endpoint,
+    _paginate_all,
+    _resolve_team_id,
+)
 
 logger = getLogger()
 
@@ -65,14 +70,18 @@ def remove_member(
 ) -> RemoveMemberOutput:
     team_id = _resolve_team_id(params.team, params.organization_name, asset)
 
-    members = _paginate_all(GITHUB_GET_MEMBERS_ENDPOINT.format(team_id=team_id), asset)
+    members = _paginate_all(
+        _format_endpoint(GITHUB_GET_MEMBERS_ENDPOINT, team_id=team_id), asset
+    )
     for member in members:
         if member.get(GITHUB_JSON_LOGIN, "").lower() == params.user.lower():
             _check_response(
                 call_github(
                     GITHUB_REQUEST_DELETE.upper(),
-                    GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.format(
-                        team_id=team_id, user_name=params.user
+                    _format_endpoint(
+                        GITHUB_ADD_REMOVE_MEMBER_ENDPOINT,
+                        team_id=team_id,
+                        user_name=params.user,
                     ),
                     asset,
                 )
@@ -85,15 +94,20 @@ def remove_member(
             return RemoveMemberOutput(status="success")
 
     pending = _paginate_all(
-        GITHUB_LIST_MEMBERS_PENDING_INVITATIONS_ENDPOINT.format(team_id=team_id), asset
+        _format_endpoint(
+            GITHUB_LIST_MEMBERS_PENDING_INVITATIONS_ENDPOINT, team_id=team_id
+        ),
+        asset,
     )
     for invitation in pending:
         if params.user.lower() == invitation.get(GITHUB_JSON_LOGIN, "").lower():
             _check_response(
                 call_github(
                     GITHUB_REQUEST_DELETE.upper(),
-                    GITHUB_ADD_REMOVE_MEMBER_ENDPOINT.format(
-                        team_id=team_id, user_name=params.user
+                    _format_endpoint(
+                        GITHUB_ADD_REMOVE_MEMBER_ENDPOINT,
+                        team_id=team_id,
+                        user_name=params.user,
                     ),
                     asset,
                 )

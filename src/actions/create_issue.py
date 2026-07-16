@@ -27,7 +27,7 @@ from ..consts import (
     GITHUB_ENDPOINT_ISSUES,
     GITHUB_REQUEST_POST,
 )
-from ._helpers import _check_response
+from ._helpers import _check_response, _format_endpoint
 
 logger = getLogger()
 
@@ -476,8 +476,8 @@ def create_issue(
         "assignees": assignees,
         "labels": labels,
     }
-    endpoint = GITHUB_ENDPOINT_ISSUES.format(
-        repo_owner=params.repo_owner, repo_name=params.repo_name
+    endpoint = _format_endpoint(
+        GITHUB_ENDPOINT_ISSUES, repo_owner=params.repo_owner, repo_name=params.repo_name
     )
     response = call_github(GITHUB_REQUEST_POST.upper(), endpoint, asset, json=body)
     _check_response(response)

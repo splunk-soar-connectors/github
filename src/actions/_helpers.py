@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from soar_sdk.exceptions import ActionFailure
+from urllib.parse import quote
 
 from ..client import call_github
 from ..consts import (
@@ -27,6 +28,13 @@ from ..consts import (
     GITHUB_REPO_ROLE_PULL,
     GITHUB_REPO_ROLE_PUSH,
 )
+
+
+def _format_endpoint(template: str, **segments: object) -> str:
+    """Format an API endpoint after encoding each caller-controlled path segment."""
+    return template.format(
+        **{name: quote(str(value), safe="") for name, value in segments.items()}
+    )
 
 
 def _paginate_all(
@@ -70,7 +78,9 @@ def _resolve_team_id(team: str, org_name: str | None, asset) -> int:
     if not org_name:
         raise ActionFailure(GITHUB_ORGANIZATION_REQUIRED_MSG)
 
-    teams = _paginate_all(GITHUB_LIST_TEAMS_ENDPOINT.format(org_name=org_name), asset)
+    teams = _paginate_all(
+        _format_endpoint(GITHUB_LIST_TEAMS_ENDPOINT, org_name=org_name), asset
+    )
     for t in teams:
         if t.get(GITHUB_JSON_NAME, "").lower() == team.lower():
             return t[GITHUB_JSON_ID]

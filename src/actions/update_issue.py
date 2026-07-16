@@ -27,7 +27,7 @@ from ..consts import (
     GITHUB_ENDPOINT_GET_ISSUE,
     GITHUB_REQUEST_PATCH,
 )
-from ._helpers import _check_response
+from ._helpers import _check_response, _format_endpoint
 
 logger = getLogger()
 
@@ -480,7 +480,8 @@ def update_issue(
     if params.state:
         body["state"] = params.state
 
-    endpoint = GITHUB_ENDPOINT_GET_ISSUE.format(
+    endpoint = _format_endpoint(
+        GITHUB_ENDPOINT_GET_ISSUE,
         repo_owner=params.repo_owner,
         repo_name=params.repo_name,
         issue_number=params.issue_number,

@@ -33,7 +33,7 @@ from ..consts import (
     GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT,
     GITHUB_USER_NOT_COLLABORATOR_MSG,
 )
-from ._helpers import _check_response, _paginate_all
+from ._helpers import _check_response, _format_endpoint, _paginate_all
 
 logger = getLogger()
 
@@ -69,7 +69,11 @@ def remove_collaborator(
     repo = f"{params.repo_owner}/{params.repo_name}"
     user = params.user
 
-    direct_endpoint = GITHUB_LIST_COLLABORATOR_ENDPOINT.format(repo_full_name=repo)
+    direct_endpoint = _format_endpoint(
+        GITHUB_LIST_COLLABORATOR_ENDPOINT,
+        repo_owner=params.repo_owner,
+        repo_name=params.repo_name,
+    )
     direct_collaborators = _paginate_all(
         direct_endpoint,
         asset,
@@ -78,8 +82,11 @@ def remove_collaborator(
 
     for collaborator in direct_collaborators:
         if user.lower() == collaborator.get(GITHUB_JSON_LOGIN, "").lower():
-            remove_endpoint = GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT.format(
-                repo_full_name=repo, user_name=user
+            remove_endpoint = _format_endpoint(
+                GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT,
+                repo_owner=params.repo_owner,
+                repo_name=params.repo_name,
+                user_name=user,
             )
             _check_response(
                 call_github(GITHUB_REQUEST_DELETE.upper(), remove_endpoint, asset)
@@ -91,8 +98,10 @@ def remove_collaborator(
             )
             return RemoveCollaboratorOutput(invite_deleted=False)
 
-    invitations_endpoint = GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT.format(
-        repo_full_name=repo
+    invitations_endpoint = _format_endpoint(
+        GITHUB_LIST_COLLABORATOR_PENDING_INVITATIONS_ENDPOINT,
+        repo_owner=params.repo_owner,
+        repo_name=params.repo_name,
     )
     pending = _paginate_all(invitations_endpoint, asset)
 
@@ -104,8 +113,11 @@ def remove_collaborator(
             .get(GITHUB_JSON_LOGIN, "")
             .lower()
         ):
-            del_endpoint = GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT.format(
-                repo_full_name=repo, invitation_id=invitation[GITHUB_JSON_ID]
+            del_endpoint = _format_endpoint(
+                GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT,
+                repo_owner=params.repo_owner,
+                repo_name=params.repo_name,
+                invitation_id=invitation[GITHUB_JSON_ID],
             )
             _check_response(
                 call_github(GITHUB_REQUEST_DELETE.upper(), del_endpoint, asset)
