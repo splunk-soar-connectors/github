@@ -108,6 +108,9 @@ GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT = (
     "/repos/{repo_owner}/{repo_name}/collaborators/{user_name}"
 )
 GITHUB_LIST_COLLABORATOR_ENDPOINT = "/repos/{repo_owner}/{repo_name}/collaborators"
+GITHUB_COLLABORATOR_PERMISSION_ENDPOINT = (
+    "/repos/{repo_owner}/{repo_name}/collaborators/{user_name}/permission"
+)
 GITHUB_UPDATE_DELETE_COLLABORATOR_INVITATION_ENDPOINT = (
     "/repos/{repo_owner}/{repo_name}/invitations/{invitation_id}"
 )

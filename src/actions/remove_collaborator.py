@@ -14,6 +14,7 @@
 
 from soar_sdk.abstract import SOARClient
 from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
@@ -21,6 +22,7 @@ from ..asset import Asset
 from ..client import call_github
 from ..consts import (
     GITHUB_ADD_REMOVE_COLLABORATOR_ENDPOINT,
+    GITHUB_COLLABORATOR_PERMISSION_ENDPOINT,
     GITHUB_COLLABORATOR_REMOVED_MSG,
     GITHUB_JSON_ID,
     GITHUB_JSON_INVITEE,
@@ -36,6 +38,34 @@ from ..consts import (
 from ._helpers import _check_response, _format_endpoint, _paginate_all
 
 logger = getLogger()
+
+
+def _effective_permission(
+    params: "RemoveCollaboratorParams", user: str, asset: Asset
+) -> str | None:
+    endpoint = _format_endpoint(
+        GITHUB_COLLABORATOR_PERMISSION_ENDPOINT,
+        repo_owner=params.repo_owner,
+        repo_name=params.repo_name,
+        user_name=user,
+    )
+    response = call_github("GET", endpoint, asset)
+    if response.status_code == 404:
+        return None
+    _check_response(response)
+    return response.json().get("permission") or "unknown"
+
+
+def _raise_if_access_remains(
+    params: "RemoveCollaboratorParams", user: str, asset: Asset
+) -> None:
+    permission = _effective_permission(params, user, asset)
+    if permission:
+        repo = f"{params.repo_owner}/{params.repo_name}"
+        raise ActionFailure(
+            f'User "{user}" still has "{permission}" access to repo "{repo}" '
+            "through team or organization permissions"
+        )
 
 
 class RemoveCollaboratorParams(Params):
@@ -91,6 +121,7 @@ def remove_collaborator(
             _check_response(
                 call_github(GITHUB_REQUEST_DELETE.upper(), remove_endpoint, asset)
             )
+            _raise_if_access_remains(params, user, asset)
             soar.set_message(
                 GITHUB_COLLABORATOR_REMOVED_MSG.format(
                     repo_full_name=repo, user_name=user
@@ -125,10 +156,12 @@ def remove_collaborator(
             invite_deleted = True
 
     if not invite_deleted:
+        _raise_if_access_remains(params, user, asset)
         soar.set_message(
             GITHUB_USER_NOT_COLLABORATOR_MSG.format(user_name=user, repo_full_name=repo)
         )
     else:
+        _raise_if_access_remains(params, user, asset)
         soar.set_message(
             GITHUB_COLLABORATOR_REMOVED_MSG.format(repo_full_name=repo, user_name=user)
         )
