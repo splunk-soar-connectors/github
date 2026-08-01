@@ -33,8 +33,17 @@ from ..consts import (
 
 def _format_endpoint(template: str, **segments: object) -> str:
     """Format an API endpoint after encoding each caller-controlled path segment."""
+    normalized = {name: str(value) for name, value in segments.items()}
+    invalid_segments = [
+        name for name, value in normalized.items() if value in {".", ".."}
+    ]
+    if invalid_segments:
+        raise ActionFailure(
+            f"Invalid path identifier: {', '.join(sorted(invalid_segments))} cannot be a dot segment"
+        )
+
     return template.format(
-        **{name: quote(str(value), safe="") for name, value in segments.items()}
+        **{name: quote(value, safe="") for name, value in normalized.items()}
     )
 
 

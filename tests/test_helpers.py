@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from unittest.mock import Mock
+from urllib.parse import quote
 
 import pytest
 from soar_sdk.exceptions import ActionFailure
@@ -27,6 +28,38 @@ def test_format_endpoint_encodes_path_delimiters():
     )
 
     assert endpoint == "/repos/splunk/target%2Fcontents%2Fx%3F%23/issues"
+
+
+@pytest.mark.parametrize("dot_segment", [".", ".."])
+@pytest.mark.parametrize(
+    ("template", "segments"),
+    [
+        ("/repos/{owner}/{repo}/issues", {"owner": "splunk", "repo": "connector"}),
+        ("/orgs/{organization}/members", {"organization": "splunk"}),
+        ("/teams/{team}/memberships/{user}", {"team": 42, "user": "octocat"}),
+    ],
+)
+def test_format_endpoint_rejects_exact_dot_segments(dot_segment, template, segments):
+    target = next(reversed(segments))
+    segments[target] = dot_segment
+
+    with pytest.raises(ActionFailure, match=rf"{target} cannot be a dot segment"):
+        _format_endpoint(template, **segments)
+
+
+@pytest.mark.parametrize("encoded_dot", ["%2e", "%2E%2E", "%252e%252e"])
+def test_format_endpoint_keeps_encoded_dots_in_one_component(encoded_dot):
+    endpoint = _format_endpoint(
+        "/repos/{owner}/{repo}/collaborators/{user}",
+        owner="splunk",
+        repo="connector",
+        user=encoded_dot,
+    )
+
+    assert (
+        endpoint
+        == f"/repos/splunk/connector/collaborators/{quote(encoded_dot, safe='')}"
+    )
 
 
 def test_paginate_all_stops_at_page_safety_limit(monkeypatch):
