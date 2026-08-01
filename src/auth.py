@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import httpx
@@ -36,6 +37,8 @@ from soar_sdk.auth import (
     StaticTokenAuth,
 )
 from soar_sdk.auth.client import ConfigurationChangedError, OAuthToken
+from soar_sdk.auth.models import OAuthState
+from soar_sdk.logging import getLogger
 from soar_sdk.exceptions import ActionFailure
 
 from .consts import (
@@ -54,6 +57,59 @@ if TYPE_CHECKING:
 # How long test_connectivity waits (in seconds) for the user to complete the
 # browser authorization step before giving up.
 _OAUTH_POLL_TIMEOUT = 300
+_LEGACY_AUTH_STATE_KEYS = frozenset(
+    {
+        "access_token",
+        "authorization_url",
+        "code",
+        "oauth_token",
+        "redirect_uri",
+        "refresh_token",
+        "session",
+        "token",
+    }
+)
+logger = getLogger()
+
+
+def _migrate_legacy_oauth_state(asset: Asset) -> None:
+    """Move pre-SDK OAuth data into encrypted auth state and remove raw copies."""
+    auth_state = asset.auth_state
+    backend = auth_state.backend
+    state = backend.load_state() or {}
+    legacy_keys = _LEGACY_AUTH_STATE_KEYS.intersection(state)
+    if not legacy_keys:
+        return
+
+    legacy_token = state.get("token")
+    current_auth = auth_state.get_all()
+    if isinstance(legacy_token, dict) and "oauth" not in current_auth:
+        try:
+            token = OAuthToken.model_validate(legacy_token)
+        except Exception:
+            logger.warning(
+                "Discarding invalid legacy OAuth token state; reauthorization is required"
+            )
+        else:
+            current_auth["oauth"] = OAuthState(
+                token=token,
+                client_id=asset.client_id,
+            ).model_dump(mode="json", exclude_none=True)
+            auth_state.put_all(current_auth)
+
+    sanitized_state = backend.load_state() or {}
+    for key in _LEGACY_AUTH_STATE_KEYS:
+        sanitized_state.pop(key, None)
+    backend.save_state(sanitized_state)
+
+    legacy_file = Path(backend.get_app_dir()) / f"{auth_state.asset_id}_state.json"
+    if legacy_file.is_file():
+        try:
+            file_state = backend.load_state_from_file(auth_state.asset_id)
+        except Exception:
+            file_state = {}
+        if _LEGACY_AUTH_STATE_KEYS.intersection(file_state):
+            legacy_file.unlink()
 
 
 def build_pat_auth(asset: Asset) -> StaticTokenAuth:
@@ -89,6 +145,7 @@ def build_oauth_client(
     asset: Asset, *, redirect_uri: str | None = None
 ) -> SOARAssetOAuthClient:
     """Return the SDK OAuth client bound to the asset's persisted auth_state."""
+    _migrate_legacy_oauth_state(asset)
     return SOARAssetOAuthClient(
         _build_oauth_config(asset, redirect_uri=redirect_uri),
         asset.auth_state,
