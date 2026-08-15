@@ -7,7 +7,7 @@ requires-python = ">=3.13, <3.15"
 authors = [
 ]
 dependencies = [
-    "splunk-soar-sdk>=3.22.2",
+    "splunk-soar-sdk>=4.0.0",
 ]
 
 [tool.soar.app]

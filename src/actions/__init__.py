@@ -86,12 +86,14 @@ def register_actions(app: App) -> App:
         description="Retrieve an issue for the GitHub repository",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_comments,
         description="List comments for an issue on the GitHub repository",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_events,
@@ -99,36 +101,42 @@ def register_actions(app: App) -> App:
         action_type="investigate",
         verbose="Action will list a maximum of 300 events. Only events from the past 90 days will be listed.",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_issues,
         description="Get a list of issues for the GitHub repository",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_organizations,
         description="List all organizations",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_repos,
         description="List all repos of an organization",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_teams,
         description="List all teams of an organization",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=list_users,
         description="List users of an organization",
         action_type="investigate",
         render_as="table",
+        read_only=True,
     )
     app.register_action(
         action=remove_collaborator,
