@@ -23,3 +23,10 @@ class Asset(BaseAsset):
     client_secret: str | None = AssetField(
         description="OAuth App Client Secret", sensitive=True
     )
+    app_id: str | None = AssetField(description="GitHub App ID")
+    app_private_key: str | None = AssetField(
+        description="GitHub App private key (PEM format)", sensitive=True
+    )
+    app_installation_id: str | None = AssetField(
+        description="GitHub App installation ID"
+    )

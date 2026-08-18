@@ -21,7 +21,7 @@ from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 
 from ..asset import Asset
-from ..auth import complete_oauth_authorization
+from ..auth import complete_oauth_authorization, has_github_app_config
 from ..client import call_github
 from ..consts import (
     GITHUB_CONFIG_PARAMS_REQUIRED,
@@ -47,15 +47,17 @@ def run_test_connectivity(
 ) -> None:
     """Validate the asset configuration for connectivity using supplied configuration.
 
-    Supports both credential styles:
+    Supports all three credential styles:
       * Personal Access Token — probes GET /user directly.
+      * GitHub App (app_id/app_private_key/app_installation_id) — exchanges an
+        installation token and probes GET /user directly.
       * OAuth App (client_id/client_secret) — runs the authorization code flow
         (prompting the user to authorize in a browser) before probing GET /user.
     """
 
     logger.progress("Starting connectivity test")
 
-    if not asset.personal_access_token:
+    if not asset.personal_access_token and not has_github_app_config(asset):
         _authorize_oauth(soar, asset, app=app)
 
     # GET /user is the canonical connectivity probe.

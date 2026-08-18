@@ -15,6 +15,9 @@
 GITHUB_CONFIG_CLIENT_ID = "client_id"
 GITHUB_CONFIG_CLIENT_SECRET = "client_secret"  # pragma: allowlist secret  # noqa: S105
 GITHUB_CONFIG_AUTH_TOKEN = "personal_access_token"  # noqa: S105
+GITHUB_CONFIG_APP_ID = "app_id"
+GITHUB_CONFIG_APP_PRIVATE_KEY = "app_private_key"  # pragma: allowlist secret
+GITHUB_CONFIG_APP_INSTALLATION_ID = "app_installation_id"
 GITHUB_JSON_REPO_OWNER = "repo_owner"
 GITHUB_JSON_REPO_NAME = "repo_name"
 GITHUB_JSON_ISSUE_NUMBER = "issue_number"
@@ -30,6 +33,9 @@ GITHUB_ENDPOINT_COMMENTS = (
 )
 GITHUB_ENDPOINT_GET_ISSUE = "/repos/{repo_owner}/{repo_name}/issues/{issue_number}"
 GITHUB_ENDPOINT_LABELS = "/repos/{repo_owner}/{repo_name}/issues/{issue_number}/labels"
+GITHUB_ENDPOINT_APP_INSTALLATION_TOKEN = (
+    "/app/installations/{installation_id}/access_tokens"  # noqa: S105
+)
 GITHUB_INVALID_INTEGER = 'Please provide non-zero positive integer in "{parameter}"'
 GITHUB_MAKING_CONNECTION_MSG = "Connecting to an endpoint"
 GITHUB_TEST_CONNECTIVITY_FAILED_MSG = "Test connectivity failed"
@@ -44,10 +50,12 @@ GITHUB_MEMBER_REMOVAL_MSG = (
     'Member with username "{user_name}" successfully removed from Team "{team}"'
 )
 GITHUB_CONFIG_PARAMS_REQUIRED_CONNECTIVITY = (
-    "A 'personal_access_token' is required for test connectivity"
+    "A 'personal_access_token' or 'client_id'/'client_secret' or "
+    "'app_id'/'app_private_key'/'app_installation_id' is required for test connectivity"
 )
 GITHUB_CONFIG_PARAMS_REQUIRED = (
-    "Please provide a 'personal_access_token' in the asset configuration"
+    "Please provide a 'personal_access_token', or 'client_id' and 'client_secret', or "
+    "'app_id', 'app_private_key', and 'app_installation_id' in the asset configuration"
 )
 GITHUB_BASE_URL_NOT_FOUND_MSG = "Phantom Base URL not found in System Settings. Please specify the value in System Settings"
 GITHUB_OAUTH_URL_MSG = "Using OAuth URL:"
@@ -163,3 +171,29 @@ GITHUB_PAGINATION_MAX_PAGES = 1000
 GITHUB_TC_STATUS_SLEEP = 3
 GITHUB_AUTHORIZE_WAIT_TIME = 15
 DEFAULT_TIMEOUT = 30  # seconds
+
+# GitHub App (installation) authentication
+GITHUB_APP_JWT_IAT_BACKDATE_SECONDS = 60
+GITHUB_APP_JWT_EXP_SECONDS = 540  # 9 minutes; GitHub enforces a 10-minute maximum
+GITHUB_APP_TOKEN_EXPIRY_BUFFER = 300  # seconds
+GITHUB_APP_JWT_GENERATION_FAILED_MSG = (
+    "Failed to generate GitHub App JWT. Please verify 'app_private_key' is a "
+    "valid PEM-encoded RSA private key."
+)
+GITHUB_APP_INVALID_PEM_PUBLIC_KEY_MSG = (
+    "The 'app_private_key' value appears to be a public key. Please re-download "
+    "the private key from your GitHub App's settings page and paste the full "
+    "contents of the .pem file."
+)
+GITHUB_APP_INVALID_PEM_FORMAT_MSG = (
+    "The 'app_private_key' value does not appear to be a valid PEM private key. "
+    "Expected a string containing a '-----BEGIN RSA PRIVATE KEY-----' or "
+    "'-----BEGIN PRIVATE KEY-----' header and a matching "
+    "'-----END ... PRIVATE KEY-----' footer."
+)
+GITHUB_APP_INSTALLATION_TOKEN_FAILED_MSG = (
+    "Failed to obtain GitHub App installation access token"  # noqa: S105
+)
+GITHUB_APP_INSTALLATION_TOKEN_MISSING_MSG = (
+    "GitHub API response did not contain an installation access token"  # noqa: S105
+)

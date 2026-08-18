@@ -17,6 +17,9 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **personal_access_token** | optional | password | Personal Access Token (PAT) |
 **client_id** | optional | string | OAuth App Client ID |
 **client_secret** | optional | password | OAuth App Client Secret |
+**app_id** | optional | string | GitHub App ID |
+**app_private_key** | optional | password | GitHub App private key (PEM format) |
+**app_installation_id** | optional | string | GitHub App installation ID |
 
 ### Supported Actions
 

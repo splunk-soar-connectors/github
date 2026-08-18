@@ -8,6 +8,7 @@ authors = [
 ]
 dependencies = [
     "splunk-soar-sdk>=3.22.2",
+    "pyjwt[crypto]>=2.8.0",
 ]
 
 [tool.soar.app]
