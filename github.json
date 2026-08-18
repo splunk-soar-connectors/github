@@ -1,6 +1,6 @@
 {
-    "appid": "5553a13b-ca44-4d03-ac48-293fce874001",
-    "name": "GitHub",
+    "appid": "b3660e6c-e689-445c-938c-1e721a7e1486",
+    "name": "GitHub KEYES",
     "description": "This app integrates with GitHub to support various investigative and issue-based actions",
     "type": "information",
     "product_vendor": "Microsoft",
@@ -14,7 +14,7 @@
     "python_version": "3.9, 3.13",
     "fips_compliant": true,
     "utctime_updated": "2025-09-05T16:34:33.381906Z",
-    "package_name": "phantom_github",
+    "package_name": "phantom_githubkeyes",
     "main_module": "github_connector.py",
     "min_phantom_version": "5.5.0",
     "app_wizard_version": "1.0.0",
