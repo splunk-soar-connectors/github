@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
-from src.auth import _migrate_legacy_oauth_state
+from src.auth import _migrate_legacy_oauth_state, resolve_github_auth
 
 
 class Backend:
@@ -125,8 +125,6 @@ def test_migration_removes_app_file_when_platform_state_is_already_clean(tmp_pat
 
 
 def test_pat_authentication_still_runs_legacy_cleanup(tmp_path):
-    from src.auth import resolve_github_auth
-
     backend = Backend({"token": {"access_token": "legacy-token"}}, tmp_path)
     legacy_file = tmp_path / "42_state.json"
     legacy_file.write_text(json.dumps({"token": {"access_token": "legacy-token"}}))
