@@ -1,4 +1,1 @@
 **Unreleased**
-
-* - Updated the bundled click dependency to 8.3.3.
-* - Updated the bundled setuptools dependency to 83.0.0.
