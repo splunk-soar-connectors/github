@@ -3,11 +3,11 @@ name = "github"
 version = "3.0.4"
 description = "This app integrates with GitHub to support various investigative and issue-based actions"
 license = "Copyright (c) 2019-2025 Splunk Inc."
-requires-python = ">=3.13, <3.15"
+requires-python = ">=3.13, <3.16, !=3.14.*"
 authors = [
 ]
 dependencies = [
-    "splunk-soar-sdk>=4.1.2",
+    "splunk-soar-sdk>=7.1.2",
 ]
 
 [tool.soar.app]
@@ -39,14 +39,14 @@ environments = [
     "sys_platform == 'linux' and platform_machine == 'aarch64' and python_version == '3.13'",
     "sys_platform == 'darwin' and platform_machine == 'x86_64' and python_version == '3.13'",
     "sys_platform == 'darwin' and platform_machine == 'arm64' and python_version == '3.13'",
-    "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.14'",
-    "sys_platform == 'linux' and platform_machine == 'aarch64' and python_version == '3.14'",
-    "sys_platform == 'darwin' and platform_machine == 'x86_64' and python_version == '3.14'",
-    "sys_platform == 'darwin' and platform_machine == 'arm64' and python_version == '3.14'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.15'",
+    "sys_platform == 'linux' and platform_machine == 'aarch64' and python_version == '3.15'",
+    "sys_platform == 'darwin' and platform_machine == 'x86_64' and python_version == '3.15'",
+    "sys_platform == 'darwin' and platform_machine == 'arm64' and python_version == '3.15'",
 ]
 required-environments = [
     "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.13'",
-    "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.14'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64' and python_version == '3.15'",
 ]
 
 [tool.ruff]
