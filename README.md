@@ -1,7 +1,7 @@
 # GitHub
 
 Publisher: Splunk <br>
-Connector Version: 3.0.4 <br>
+Connector Version: 4.0.0 <br>
 Product Vendor: Microsoft <br>
 Product Name: GitHub <br>
 Minimum Product Version: 7.0.0
